@@ -12,7 +12,7 @@ const CartNavigator = createStackNavigator(
 
       
         ShoppingCart: {
-            screen: ShoppingCart
+            screen: ShoppingCart,
         }
     },
     {

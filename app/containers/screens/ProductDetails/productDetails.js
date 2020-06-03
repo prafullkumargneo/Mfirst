@@ -290,7 +290,7 @@ export default class ProductDetails extends Component {
                             onPress={() => {
                                 RNToasty.Success({
                                     title:"Item added to cart",
-                                    titleSize:20
+                                    titleSize:15
                                 })
                             }}
                             halfButton={true}

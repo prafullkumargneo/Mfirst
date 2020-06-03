@@ -66,7 +66,24 @@ const RootNavigation = createStackNavigator(
     Cart: {
       screen: () => (
         <CartNavigator ref={nav => NavService.setNavigator(nav, 'cart')} />
-      )
+      ),
+      navigationOptions: {
+        // gestureEnabled: false,
+        headerTitleAlign: 'center',
+        // headerTintColor: white,
+        headerTitle: "Shopping Cart",
+        headerTitleStyle: {
+          fontWeight: '600',
+          fontSize: 18
+        },
+        // headerStyle: {
+        //   shadowOpacity: 0,
+        //   shadowOffset: {
+        //     height: 0,
+        //   },
+        //   shadowRadius: 0,
+        // },
+      },
     },
     ProductDetailsStack: {
       screen: ProductDetails,
