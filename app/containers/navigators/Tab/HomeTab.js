@@ -5,6 +5,7 @@ import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 
 import _Categories from '../../screens/Categories/_Categories';
 import _Discover from '../../screens/Discover/_Discover';
+import DiscoverNavigator from "../Stack/DiscoverStack";
 import _Trending from '../../screens/Trending/_Trending';
 import * as colors from '../../../constants/colors';
 
@@ -13,12 +14,13 @@ const HomeTabNav = createMaterialTopTabNavigator(
     Categories: {
       screen: _Categories,
     },
-    Discover: {
-      screen: _Discover,
-    },
     Trending: {
       screen: _Trending,
     },
+    Discover: {
+      screen: DiscoverNavigator,
+      
+    }
   },
   {
     tabBarOptions: {

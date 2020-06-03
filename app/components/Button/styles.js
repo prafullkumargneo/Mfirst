@@ -22,7 +22,8 @@ export default (styles = StyleSheet.create({
   },
 
   halfButton: {
-    width: '47%',
+    width: '80%',
+    height:'35%'
   },
 
   imageIcon: {

@@ -31,6 +31,7 @@ export default class Button extends Component {
                   : this.props.theme === 'secondary'
                   ? colors.blue
                   : colors.white,
+                  
             },
           ]}>
           {this.props.text}

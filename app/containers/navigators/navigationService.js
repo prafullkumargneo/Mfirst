@@ -7,6 +7,8 @@ let _navigators = {
   loginPhone: undefined,
   app: undefined,
   home: undefined,
+  discover:undefined,
+  cart:undefined
 };
 
 function setNavigator(navigatorRef, navigatorName) {
