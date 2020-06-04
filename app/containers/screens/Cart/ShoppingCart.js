@@ -121,7 +121,7 @@ export default class ShoppingCart extends Component {
 
         <View style={{ backgroundColor: "transparent", paddingHorizontal: deviceWidth * 0.07, paddingVertical: deviceHeight * 0.03, borderWidth: 0.5, borderColor: "#A5A5A5" }}>
           <View style={{ paddingVertical: deviceHeight * 0.03, backgroundColor: "transparent" }}>
-            <TouchableOpacity style={{ flexDirection: "row", backgroundColor: "transparent", alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.01, borderWidth: 1.5, borderColor: "#003A51" }}>
+            <TouchableOpacity onPress={() => { NavService.navigate('root', 'GiftWrapping'); }} style={{ flexDirection: "row", backgroundColor: "transparent", alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.01, borderWidth: 1.5, borderColor: "#003A51" }}>
               <Icon name={"gift"} size={26} color={"#003A51"} />
               <Text style={{ fontSize: 15, color: "#003A51", fontWeight: "700" }}>   Modify Gift Wrapping</Text>
             </TouchableOpacity>

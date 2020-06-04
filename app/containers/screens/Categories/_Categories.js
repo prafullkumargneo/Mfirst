@@ -40,7 +40,7 @@ export default class Categories extends Component {
     console.log("categories", this.state.categoriesDescriptionArray[index])
     this.setState({ categoriesindex: index })
   }
-  _keyExtractor = (item, index) => item._id;
+  _keyExtractor = (item, index) => item._id.toString();
 
   _renderCategoriesList = ({ item, index }) => {
     console.log("item", item)

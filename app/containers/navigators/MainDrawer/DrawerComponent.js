@@ -37,6 +37,8 @@ class DrawerComponent extends PureComponent {
 
   logout = () => {};
 
+  _keyExtractor = (item, index) => item._id;
+  
   renderCloseButton() {
     return (
       <View style={[styles.closeButton, {marginTop: StatusBar.currentHeight}]}>

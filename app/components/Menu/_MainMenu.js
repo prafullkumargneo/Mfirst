@@ -21,7 +21,7 @@ export default class MainMenu extends Component {
             zIndex: 20,
           }}>
           <Image
-            style={{resizeMethod: 'contain'}}
+            style={{resizeMode: 'contain'}}
             source={this.props.image_url}
           />
         </View>

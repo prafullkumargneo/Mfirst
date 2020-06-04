@@ -23,6 +23,7 @@ import LoginPhone from './Stack/LoginPhoneStack';
 import DiscoverNavigator from './Stack/DiscoverStack';
 import ProductDetails from '../screens/ProductDetails/productDetails';
 import CartNavigator from './Stack/CartStack';
+import GiftWrapping from '../screens/Cart/GiftWrapping';
 import AppStack from './Stack/AppStack';
 import HeaderMenu from './HeaderMenuButton';
 import { white } from '../../constants/colors';
@@ -85,6 +86,26 @@ const RootNavigation = createStackNavigator(
         // },
       },
     },
+    GiftWrapping: {
+      screen: GiftWrapping,
+      navigationOptions: {
+          // gestureEnabled: false,
+          headerTitleAlign: 'center',
+          // headerTintColor: white,
+          headerTitle: "Choose Gift Wrap",
+          headerTitleStyle: {
+            fontWeight: '600',
+            fontSize: 18
+          },
+          // headerStyle: {
+          //   shadowOpacity: 0,
+          //   shadowOffset: {
+          //     height: 0,
+          //   },
+          //   shadowRadius: 0,
+          // },
+        },
+  },
     ProductDetailsStack: {
       screen: ProductDetails,
       navigationOptions: {

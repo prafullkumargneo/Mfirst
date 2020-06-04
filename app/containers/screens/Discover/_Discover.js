@@ -212,7 +212,7 @@ export default class Discover extends Component {
                   <Slider
                     value={this.state.priceValue}
                     onValueChange={(priceValue) => this.setState({ priceValue })}
-                    trackStyle={{ color: "#003A51" }}
+                    // trackStyle={{ color: "#003A51" }}
                     minimumValue={30}
                     maximumValue={500}
                     step={20}
