@@ -8,7 +8,8 @@ let _navigators = {
   app: undefined,
   home: undefined,
   discover:undefined,
-  cart:undefined
+  cart:undefined,
+  payment:undefined
 };
 
 function setNavigator(navigatorRef, navigatorName) {

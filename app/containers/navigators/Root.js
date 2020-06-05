@@ -22,7 +22,9 @@ import Login from './Stack/LoginStack';
 import LoginPhone from './Stack/LoginPhoneStack';
 import DiscoverNavigator from './Stack/DiscoverStack';
 import ProductDetails from '../screens/ProductDetails/productDetails';
+import ShippingAddress from '../screens/Payment/ShippingAddress';
 import CartNavigator from './Stack/CartStack';
+import PaymentNavigator from './Stack/PaymentStack';
 import GiftWrapping from '../screens/Cart/GiftWrapping';
 import AppStack from './Stack/AppStack';
 import HeaderMenu from './HeaderMenuButton';
@@ -86,26 +88,68 @@ const RootNavigation = createStackNavigator(
         // },
       },
     },
+    Payement: {
+      screen: () => (
+        <PaymentNavigator ref={nav => NavService.setNavigator(nav, 'payment')} />
+      ),
+      navigationOptions: {
+        // gestureEnabled: false,
+        headerTitleAlign: 'center',
+        // headerTintColor: white,
+        headerTitle: "Payment Method",
+        headerTitleStyle: {
+          fontWeight: '600',
+          fontSize: 18
+        },
+        // headerStyle: {
+        //   shadowOpacity: 0,
+        //   shadowOffset: {
+        //     height: 0,
+        //   },
+        //   shadowRadius: 0,
+        // },
+      },
+    },
     GiftWrapping: {
       screen: GiftWrapping,
       navigationOptions: {
-          // gestureEnabled: false,
-          headerTitleAlign: 'center',
-          // headerTintColor: white,
-          headerTitle: "Choose Gift Wrap",
-          headerTitleStyle: {
-            fontWeight: '600',
-            fontSize: 18
-          },
-          // headerStyle: {
-          //   shadowOpacity: 0,
-          //   shadowOffset: {
-          //     height: 0,
-          //   },
-          //   shadowRadius: 0,
-          // },
+        // gestureEnabled: false,
+        headerTitleAlign: 'center',
+        // headerTintColor: white,
+        headerTitle: "Choose Gift Wrap",
+        headerTitleStyle: {
+          fontWeight: '600',
+          fontSize: 18
         },
-  },
+        // headerStyle: {
+        //   shadowOpacity: 0,
+        //   shadowOffset: {
+        //     height: 0,
+        //   },
+        //   shadowRadius: 0,
+        // },
+      },
+    },
+    ShippingAddress: {
+      screen: ShippingAddress,
+      navigationOptions: {
+        // gestureEnabled: false,
+        headerTitleAlign: 'center',
+        // headerTintColor: white,
+        headerTitle: "Shipping Address",
+        headerTitleStyle: {
+          fontWeight: '600',
+          fontSize: 18
+        },
+        // headerStyle: {
+        //   shadowOpacity: 0,
+        //   shadowOffset: {
+        //     height: 0,
+        //   },
+        //   shadowRadius: 0,
+        // },
+      },
+    },
     ProductDetailsStack: {
       screen: ProductDetails,
       navigationOptions: {
@@ -115,7 +159,7 @@ const RootNavigation = createStackNavigator(
         headerRight: () => (
           <_TouchItem
             style={{ marginRight: 10, flexDirection: 'row' }}
-            onPress={() => {NavService.navigate('root', 'Cart'); }}>
+            onPress={() => { NavService.navigate('root', 'Cart'); }}>
             <Icon
               name={'cart-outline'}
               color={'black'}

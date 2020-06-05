@@ -54,6 +54,10 @@ export default class ShoppingCart extends Component {
 
   }
 
+  checkoutCart(){
+    NavService.navigate('root','ShippingAddress')
+  }
+
   render() {
     console.log("product quantity increase", this.state.productQuantity)
     return (
@@ -62,7 +66,7 @@ export default class ShoppingCart extends Component {
         <View style={{ backgroundColor: "white", paddingHorizontal: deviceWidth * 0.07, justifyContent: "center", alignItems: "center" }}>
           <Text style={{ paddingVertical: deviceHeight * 0.02, fontSize: 16, color: "#2C2C2C" }}>Total <Text style={{ fontSize: 20, fontWeight: "bold", color: "#003351" }}>77.500 KWD</Text></Text>
 
-          <TouchableOpacity style={{ backgroundColor: "#3FC1C9", height: deviceHeight * 0.05, width: deviceWidth * 0.7, alignItems: "center", justifyContent: "center", borderRadius: 20 }}>
+          <TouchableOpacity onPress={()=>this.checkoutCart()} style={{ backgroundColor: "#3FC1C9", height: deviceHeight * 0.05, width: deviceWidth * 0.7, alignItems: "center", justifyContent: "center", borderRadius: 20 }}>
             <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Checkout</Text>
           </TouchableOpacity>
           <View style={{ backgroundColor: "transparent", flexDirection: "row", paddingVertical: deviceHeight * 0.011 }}>
