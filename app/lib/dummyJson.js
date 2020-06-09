@@ -76,18 +76,18 @@ export default DummyJSON = {
             categoryDescription: "Baby natural electric pump",
             cost: "2000",
             discountcost: "1000",
-            productQualityDescription: [{QualityDetails:"Best in Stocks",Qualitycolor:"pink"}, {QualityDetails:"Best Selling", Qualitycolor:"brown"}, {QualityDetails:"New",Qualitycolor:"orange"}],
+            productQualityDescription: [{ QualityDetails: "Best in Stocks", Qualitycolor: "pink" }, { QualityDetails: "Best Selling", Qualitycolor: "brown" }, { QualityDetails: "New", Qualitycolor: "orange" }],
             productDeliveryStatus: "4hrs",
             overview: {
-              
+
                 ExparationDate: "07.02.202",
                 Details: ["Product detail description UI, product handling functionality according to different features and types, and its navigation.",
                     "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged",
                     "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
                     "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
                 ]
-              
-        },
+
+            },
             Details: [
                 "Product detail description UI, product handling functionality according to different features and types, and its navigation.",
                 "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged",
@@ -120,7 +120,7 @@ export default DummyJSON = {
                     relatedItemDescription: "Baby natural electric pump",
                     relatedItemcost: "2000",
                 }
-            
+
             ]
 
         },
@@ -129,7 +129,7 @@ export default DummyJSON = {
             categoryTitle: "Toy items",
             categoryDescription: "Electric train and gift",
             cost: "2000",
-            productQualityDescription: [{QualityDetails:"Best in Stocks",Qualitycolor:"pink"}, {QualityDetails:"Best Selling", Qualitycolor:"brown"}, {QualityDetails:"New",Qualitycolor:"orange"}],
+            productQualityDescription: [{ QualityDetails: "Best in Stocks", Qualitycolor: "pink" }, { QualityDetails: "Best Selling", Qualitycolor: "brown" }, { QualityDetails: "New", Qualitycolor: "orange" }],
             productDeliveryStatus: "4hrs",
             overview: {
                 ExparationDate: "07.02.202",
@@ -169,7 +169,7 @@ export default DummyJSON = {
             categoryTitle: "Food items",
             categoryDescription: "Baby bottle and daily care",
             cost: "2000",
-            productQualityDescription: [{QualityDetails:"Best in Stocks",Qualitycolor:"pink"}, {QualityDetails:"Best Selling", Qualitycolor:"brown"}, {QualityDetails:"New",Qualitycolor:"orange"}],
+            productQualityDescription: [{ QualityDetails: "Best in Stocks", Qualitycolor: "pink" }, { QualityDetails: "Best Selling", Qualitycolor: "brown" }, { QualityDetails: "New", Qualitycolor: "orange" }],
             productDeliveryStatus: "4hrs",
             overview: {
                 ExparationDate: "07.02.202",
@@ -210,7 +210,7 @@ export default DummyJSON = {
             categoryDescription: "Baby natural electric pump",
             cost: "2000",
             discountcost: "1000",
-            productQualityDescription: [{QualityDetails:"Best in Stocks",Qualitycolor:"pink"}, {QualityDetails:"Best Selling", Qualitycolor:"brown"}, {QualityDetails:"New",Qualitycolor:"orange"}],
+            productQualityDescription: [{ QualityDetails: "Best in Stocks", Qualitycolor: "pink" }, { QualityDetails: "Best Selling", Qualitycolor: "brown" }, { QualityDetails: "New", Qualitycolor: "orange" }],
             productDeliveryStatus: "4hrs",
             overview: {
                 ExparationDate: "07.02.202",
@@ -249,7 +249,7 @@ export default DummyJSON = {
             categoryDescription: "Baby natural electric pump",
             cost: "2000",
             discountcost: "1000",
-            productQualityDescription: [{QualityDetails:"Best in Stocks",Qualitycolor:"pink"}, {QualityDetails:"Best Selling", Qualitycolor:"brown"}, {QualityDetails:"New",Qualitycolor:"orange"}],
+            productQualityDescription: [{ QualityDetails: "Best in Stocks", Qualitycolor: "pink" }, { QualityDetails: "Best Selling", Qualitycolor: "brown" }, { QualityDetails: "New", Qualitycolor: "orange" }],
             productDeliveryStatus: "4hrs",
             overview: {
                 ExparationDate: "07.02.202",
@@ -289,7 +289,7 @@ export default DummyJSON = {
             categoryTitle: "Toy items",
             categoryDescription: "Electric train and gift",
             cost: "2000",
-            productQualityDescription: [{QualityDetails:"Best in Stocks",Qualitycolor:"pink"}, {QualityDetails:"Best Selling", Qualitycolor:"brown"}, {QualityDetails:"New",Qualitycolor:"orange"}],
+            productQualityDescription: [{ QualityDetails: "Best in Stocks", Qualitycolor: "pink" }, { QualityDetails: "Best Selling", Qualitycolor: "brown" }, { QualityDetails: "New", Qualitycolor: "orange" }],
             productDeliveryStatus: "4hrs",
             overview: {
                 ExparationDate: "07.02.202",
@@ -329,7 +329,7 @@ export default DummyJSON = {
             categoryTitle: "Food items",
             categoryDescription: "Baby bottle and daily care",
             cost: "2000",
-            productQualityDescription: [{QualityDetails:"Best in Stocks",Qualitycolor:"pink"}, {QualityDetails:"Best Selling", Qualitycolor:"brown"}, {QualityDetails:"New",Qualitycolor:"orange"}],
+            productQualityDescription: [{ QualityDetails: "Best in Stocks", Qualitycolor: "pink" }, { QualityDetails: "Best Selling", Qualitycolor: "brown" }, { QualityDetails: "New", Qualitycolor: "orange" }],
             productDeliveryStatus: "4hrs",
             overview: {
                 ExparationDate: "07.02.202",
@@ -370,7 +370,7 @@ export default DummyJSON = {
             categoryDescription: "Baby natural electric pump",
             cost: "2000",
             discountcost: "1000",
-            productQualityDescription: [{QualityDetails:"Best in Stocks",Qualitycolor:"pink"}, {QualityDetails:"Best Selling", Qualitycolor:"brown"}, {QualityDetails:"New",Qualitycolor:"orange"}],
+            productQualityDescription: [{ QualityDetails: "Best in Stocks", Qualitycolor: "pink" }, { QualityDetails: "Best Selling", Qualitycolor: "brown" }, { QualityDetails: "New", Qualitycolor: "orange" }],
             productDeliveryStatus: "4hrs",
             overview: {
                 ExparationDate: "07.02.202",
@@ -405,8 +405,60 @@ export default DummyJSON = {
 
 
         }
-    ]
+    ],
 
+    OrdersList: [
+        {
+            orderId: "#456212",
+            orderStatus: "On its way",
+            amount: 28.00,
+            orderDate: "24 July 2000"
+        },
+        {
+            orderId: "#456215",
+            orderStatus: "Delivered",
+            amount: 15.00,
+            orderDate: "24 Aug 2000"
+        },
+        {
+            orderId: "#456245",
+            orderStatus: "Delivered",
+            amount: 90.00,
+            orderDate: "24 Aug 2000"
+        },
+        {
+            orderId: "#345672",
+            orderStatus: "Cancelled",
+            amount: 200.00,
+            orderDate: "24 Aug 2000"
+        },
+        {
+            orderId: "#456212",
+            orderStatus: "On its way",
+            amount: 28.00,
+            orderDate: "24 July 2000"
+        },
+        {
+            orderId: "#456215",
+            orderStatus: "Delivered",
+            amount: 15.00,
+            orderDate: "24 Aug 2000"
+        },
+        {
+            orderId: "#456245",
+            orderStatus: "Delivered",
+            amount: 90.00,
+            orderDate: "24 Aug 2000"
+        },
+        {
+            orderId: "#345672",
+            orderStatus: "Cancelled",
+            amount: 200.00,
+            orderDate: "24 Aug 2000"
+        },
+
+
+    ]
 
 
 }

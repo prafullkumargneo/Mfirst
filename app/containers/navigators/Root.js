@@ -17,15 +17,18 @@ import { createStackNavigator } from 'react-navigation-stack';
 import _TouchItem from '../../components/TouchItem/_TouchItem';
 import NavService from './navigationService';
 import MainDrawer from './MainDrawer/MainDrawer';
-
+import OrderAccepted from '../screens/Order/acceptedOrder';
 import Login from './Stack/LoginStack';
 import LoginPhone from './Stack/LoginPhoneStack';
 import DiscoverNavigator from './Stack/DiscoverStack';
 import ProductDetails from '../screens/ProductDetails/productDetails';
 import ShippingAddress from '../screens/Payment/ShippingAddress';
+import ReviewOrder from '../screens/Order/reviewOrder';
+import Orders from '../screens/Order/Orders';
 import CartNavigator from './Stack/CartStack';
 import PaymentNavigator from './Stack/PaymentStack';
 import GiftWrapping from '../screens/Cart/GiftWrapping';
+import OrdersDetails from '../screens/Order/orderDetails';
 import AppStack from './Stack/AppStack';
 import HeaderMenu from './HeaderMenuButton';
 import { white } from '../../constants/colors';
@@ -148,6 +151,70 @@ const RootNavigation = createStackNavigator(
         //   },
         //   shadowRadius: 0,
         // },
+      },
+    },
+    ReviewOrder: {
+      screen: ReviewOrder,
+      navigationOptions: {
+        // gestureEnabled: false,
+        headerTitleAlign: 'center',
+        // headerTintColor: white,
+        headerTitle: "Review Your Order",
+        headerTitleStyle: {
+          fontWeight: '600',
+          fontSize: 18
+        },
+         headerLeft: null
+        // headerStyle: {
+        //   shadowOpacity: 0,
+        //   shadowOffset: {
+        //     height: 0,
+        //   },
+        //   shadowRadius: 0,
+        // },
+      },
+    },
+    OrderAccepted: {
+      screen: OrderAccepted,
+      navigationOptions: {
+        // gestureEnabled: false,
+        headerTitleAlign: 'center',
+        // headerTintColor: white,
+        headerTitle: "Thanku You",
+        headerTitleStyle: {
+          fontWeight: '600',
+          fontSize: 18
+        },
+         headerLeft: null
+       
+      },
+    },
+    Orders: {
+      screen: Orders,
+      navigationOptions: {
+        // gestureEnabled: false,
+        headerTitleAlign: 'center',
+        // headerTintColor: white,
+        headerTitle: "My Orders",
+        headerTitleStyle: {
+          fontWeight: '600',
+          fontSize: 18
+        }
+       
+      },
+    },
+    OrdersDetails: {
+      screen: OrdersDetails,
+      navigationOptions: {
+        // gestureEnabled: false,
+        headerTitleAlign: 'center',
+        // headerTintColor: white,
+        headerTitle: "Order Details",
+        headerTitleStyle: {
+          fontWeight: '600',
+          fontSize: 18
+        }
+         
       },
     },
     ProductDetailsStack: {

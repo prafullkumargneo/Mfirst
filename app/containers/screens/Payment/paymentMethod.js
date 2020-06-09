@@ -127,7 +127,7 @@ export default class PaymentMethod extends Component {
 
                     <View style={{ paddingVertical: deviceHeight * 0.01, paddingHorizontal: deviceWidth * 0.3, backgroundColor: "transparent" }}>
 
-                        <TouchableOpacity onPress={() => { }} style={{ backgroundColor: '#3FC1C9', alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.015 }}>
+                        <TouchableOpacity onPress={() => {NavService.navigate('root','ReviewOrder') }} style={{ backgroundColor: '#3FC1C9', alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.015 }}>
                             <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Continue</Text>
                         </TouchableOpacity>
 

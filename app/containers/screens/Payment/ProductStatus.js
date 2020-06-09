@@ -51,16 +51,16 @@ export default class ProductStatus extends Component {
         return (
             <View style={{ flex: 1, paddingVertical: "5%", paddingHorizontal: "7%", flexDirection: "row" }}>
 
-                <View style={{ flex: 0.33, backgroundColor: "blue", paddingHorizontal: "1%" }} >
+                <View style={{ flex: 0.33, backgroundColor: "transparent", paddingHorizontal: "1%" }} >
                     <View style={{ backgroundColor: "blue", borderWidth: 3, borderColor: ProductStatus == 'shipping' ? colors.darkSkyBlue : colors.lightGrey }} />
                 </View>
 
-                <View style={{ flex: 0.33, backgroundColor: "blue", paddingHorizontal: "1%" }} >
+                <View style={{ flex: 0.33, backgroundColor: "transparent", paddingHorizontal: "1%" }} >
                     <View style={{ backgroundColor: "blue", borderWidth: 3, borderColor:ProductStatus == 'payment' ? colors.darkSkyBlue:colors.lightGrey }} />
                 </View>
 
-                <View style={{ flex: 0.33, backgroundColor: "blue", paddingHorizontal: "1%" }} >
-                    <View style={{ backgroundColor: "blue", borderWidth: 3,  borderColor:colors.lightGrey  }} />
+                <View style={{ flex: 0.33, backgroundColor: "transparent", paddingHorizontal: "1%" }} >
+                    <View style={{ backgroundColor: "blue", borderWidth: 3,  borderColor:ProductStatus == 'reviewOrder' ? colors.darkSkyBlue:colors.lightGrey   }} />
                 </View>
 
             </View>
