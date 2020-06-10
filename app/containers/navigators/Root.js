@@ -25,10 +25,12 @@ import ProductDetails from '../screens/ProductDetails/productDetails';
 import ShippingAddress from '../screens/Payment/ShippingAddress';
 import ReviewOrder from '../screens/Order/reviewOrder';
 import Orders from '../screens/Order/Orders';
+import FavoriteOrders from '../screens/Order/favouritesOrder';
 import CartNavigator from './Stack/CartStack';
 import PaymentNavigator from './Stack/PaymentStack';
 import GiftWrapping from '../screens/Cart/GiftWrapping';
 import OrdersDetails from '../screens/Order/orderDetails';
+import Search from '../screens/Search/search';
 import AppStack from './Stack/AppStack';
 import HeaderMenu from './HeaderMenuButton';
 import { white } from '../../constants/colors';
@@ -203,6 +205,21 @@ const RootNavigation = createStackNavigator(
        
       },
     },
+    FavoriteOrders: {
+      screen: FavoriteOrders,
+      navigationOptions: {
+        // gestureEnabled: false,
+        headerTitleAlign: 'center',
+        // headerTintColor: white,
+        headerTitle: "Favorites",
+        headerTitleStyle: {
+          fontWeight: '600',
+          fontSize: 18
+        }
+       
+      },
+    },
+    
     OrdersDetails: {
       screen: OrdersDetails,
       navigationOptions: {
@@ -214,6 +231,15 @@ const RootNavigation = createStackNavigator(
           fontWeight: '600',
           fontSize: 18
         }
+         
+      },
+    },
+    SearchBar: {
+      screen: Search,
+      navigationOptions: {
+       
+        headerTitle: false,
+      
          
       },
     },

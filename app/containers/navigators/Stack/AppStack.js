@@ -9,6 +9,7 @@ import NavService from '../navigationService';
 import Home from '../Tab/HomeTab';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import SearchIcon from 'react-native-vector-icons/AntDesign';
 import HeaderMenu from '../HeaderMenuButton';
 import {white} from '../../../constants/colors';
 const AppStack = createStackNavigator(
@@ -26,18 +27,27 @@ const AppStack = createStackNavigator(
       headerRight: () => (
         <_TouchItem
           style={{marginRight: 10, flexDirection: 'row'}}
-          onPress={() => {}}>
+        >
+          <SearchIcon
+            name={'search1'}
+            onPress={() => {NavService.navigate('root','SearchBar')}}
+            color={'black'}
+            size={27}
+            style={{marginRight: 23,top:"5%"}}
+          />
           <Icon
             name={'heart-outline'}
+            onPress={() => {NavService.navigate('root','FavoriteOrders')}}
             color={'black'}
-            size={40}
-            style={{marginRight: 10}}
+            size={30}
+            style={{marginRight: 25,top:"5%"}}
           />
           <Icon
             name={'cart-outline'}
+            onPress={() => {NavService.navigate('root','Cart')}}
             color={'black'}
-            size={40}
-            style={{marginRight: 5}}
+            size={30}
+            style={{marginRight: 5,top:"5%"}}
           />
         </_TouchItem>
       ),

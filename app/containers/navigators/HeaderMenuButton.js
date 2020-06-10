@@ -11,7 +11,7 @@ export default class HeaderMenuButton extends PureComponent {
         <TouchItem
           ripple
           onPress={() => NavService.getNavigator('drawer').openDrawer()}>
-          <Icon name={'menu'} color={'black'} size={40} />
+          <Icon name={'menu'} color={'black'} size={30} />
         </TouchItem>
       </View>
     );
