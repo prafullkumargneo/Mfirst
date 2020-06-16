@@ -9,7 +9,7 @@ import {
     AsyncStorage,
     StatusBar,
     ScrollView,
-    FlatList,TouchableOpacity
+    FlatList, TouchableOpacity, ActivityIndicator
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DrawerActions } from 'react-navigation-drawer';
@@ -49,7 +49,8 @@ export default class Search extends Component {
         super(props);
         this.state = {
             search: '',
-            searchArrayData: null
+            searchArrayData: null,
+            isloadingFilter: false
         };
     }
 
@@ -71,40 +72,59 @@ export default class Search extends Component {
     render() {
         console.log("searchData", this.state.searchArrayData)
         const { search, searchArrayData } = this.state;
-        return (
-            <View style={{ flex: 1, backgroundColor:"white" }}>
-               
-                <View style={{ flex: 0.17, backgroundColor: "transparent" }}>
-                
-                    <SearchBar
-                        placeholder="Search..."
-                        onChangeText={this.updateSearch}
-                        value={search}
-                        containerStyle={{ backgroundColor: "white",paddingHorizontal:deviceWidth*0.05,borderWidth:1 }}
-                        inputContainerStyle={{ borderWidth: 1, backgroundColor: "#e5e8e7" }}
-                    />
-                    
+        if (this.state.isloadingFilter) {
+            return (
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <ActivityIndicator animating={true} color={"#003a51"} size={"large"} />
                 </View>
-                <View style={{ flex: 0.83, backgroundColor: "transparent",paddingHorizontal:deviceWidth*0.07 }}>
-                 <ScrollView>
-                    {
-                        searchArrayData&&searchArrayData.map((item, index) => {
-                            return (
-                                <View key ={index} style={{padding:"1.5%"}}>
-                                    <TouchableOpacity>
-                                    <Text style={{fontSize:17,color:"#737373",fontWeight:"bold"}}>{item}</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            )
-                        })
-                    }
-                      </ScrollView>
+            )
+        }
+        else {
+
+            return (
+                <View style={{ flex: 1, backgroundColor: "white" }}>
+
+                    <View style={{ flex: 0.17, backgroundColor: "transparent" }}>
+
+                        <SearchBar
+                            placeholder="Search..."
+                            onChangeText={this.updateSearch}
+                            value={search}
+                            containerStyle={{ backgroundColor: "white", paddingHorizontal: deviceWidth * 0.05, borderWidth: 1 }}
+                            inputContainerStyle={{ borderWidth: 1, backgroundColor: "#e5e8e7" }}
+                        />
+
+                    </View>
+                    <View style={{ flex: 0.83, backgroundColor: "transparent", paddingHorizontal: deviceWidth * 0.07 }}>
+                        <ScrollView>
+                            {
+                                searchArrayData && searchArrayData.map((item, index) => {
+                                    return (
+                                        <View key={index} style={{ padding: "1.5%" }}>
+                                            <TouchableOpacity key={index} onPress={() => {
+                                           this.setState({ isloadingFilter: true })
+                                                setTimeout(() => {
+                                                    NavService.navigate('root', 'SearchDetails',item);
+                                                    this.setState({ isloadingFilter: false })
+                                                }, 300
+
+                                                )
+                                            }}>
+
+                                                <Text style={{ fontSize: 17, color: "#737373", fontWeight: "bold" }}>{item}</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    )
+                                })
+                            }
+                        </ScrollView>
+
+                    </View>
 
                 </View>
-    
-            </View>
 
-        );
+            );
+        }
     }
 }
 

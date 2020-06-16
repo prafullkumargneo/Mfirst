@@ -23,8 +23,11 @@ import appStyles from '../../../constants/appStyle';
 import DummyJSON from "../../../lib/dummyJson";
 import * as image_url from '../../../assets/images/map';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import  fetchTodos  from '../../../actions/TestActions';
 
-export default class Categories extends Component {
+class Categories extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,6 +37,12 @@ export default class Categories extends Component {
       password: '',
     };
   }
+  
+  componentDidMount() {
+
+    this.props.fetchTodos()
+
+}
 
   categoriesDescription(index) {
     console.log("indexx of prop", index)
@@ -87,7 +96,7 @@ export default class Categories extends Component {
     )
   }
   render() {
-    console.log("dummyjson", DummyJSON)
+    console.log("dummyjson", this.props.todosReducer)
     return (
       <SafeAreaView style={[appStyles.container]}>
         <View
@@ -126,6 +135,19 @@ export default class Categories extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    todosReducer: state.todosReducer
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+      ...bindActionCreators({ fetchTodos }, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Categories)
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -162,3 +184,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   }
 });
+

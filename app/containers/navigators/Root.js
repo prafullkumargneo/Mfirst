@@ -31,6 +31,7 @@ import PaymentNavigator from './Stack/PaymentStack';
 import GiftWrapping from '../screens/Cart/GiftWrapping';
 import OrdersDetails from '../screens/Order/orderDetails';
 import Search from '../screens/Search/search';
+import SearchDetails from '../screens/Search/searchDetails';
 import AppStack from './Stack/AppStack';
 import HeaderMenu from './HeaderMenuButton';
 import { white } from '../../constants/colors';
@@ -243,6 +244,15 @@ const RootNavigation = createStackNavigator(
          
       },
     },
+    SearchDetails: {
+      screen: SearchDetails,
+      navigationOptions: {
+        headerShown: false
+        
+         
+      },
+    },
+    
     ProductDetailsStack: {
       screen: ProductDetails,
       navigationOptions: {
