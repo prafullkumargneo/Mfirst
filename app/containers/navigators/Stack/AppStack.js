@@ -32,21 +32,21 @@ const AppStack = createStackNavigator(
             name={'search1'}
             onPress={() => {NavService.navigate('root','SearchBar')}}
             color={'black'}
-            size={27}
+            size={24}
             style={{marginRight: 23,top:"5%"}}
           />
           <Icon
             name={'heart-outline'}
             onPress={() => {NavService.navigate('root','FavoriteOrders')}}
             color={'black'}
-            size={30}
+            size={25}
             style={{marginRight: 25,top:"5%"}}
           />
           <Icon
             name={'cart-outline'}
             onPress={() => {NavService.navigate('root','Cart')}}
             color={'black'}
-            size={30}
+            size={25}
             style={{marginRight: 5,top:"5%"}}
           />
         </_TouchItem>
@@ -59,6 +59,8 @@ const AppStack = createStackNavigator(
           height: 0,
         },
         shadowRadius: 0,
+        shadowColor: 'transparent',
+        elevation: 0
       },
     },
     // headerTransitionPreset: 'uikit'

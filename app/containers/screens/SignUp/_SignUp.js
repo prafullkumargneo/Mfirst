@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   AsyncStorage,
   StatusBar,
 } from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import _Input from '../../../components/Input/_Input';
 import _Button from '../../../components/Button/_Button';
@@ -17,11 +17,13 @@ import _TouchItem from '../../../components/TouchItem/_TouchItem';
 import _Text from '../../../components/Text/_Text';
 import _RadioCheck from '../../../components/RadioCheck/_RadioCheck';
 import appStyles from '../../../constants/appStyle';
-
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import * as colors from '../../../constants/colors';
 import styles from './styles';
 
-export default class SignUp extends Component {
+
+class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,8 +39,10 @@ export default class SignUp extends Component {
     //this.props.navigation.setOptions({title: 'Hello'});
   }
 
-  login = () => {};
-  onToggleCheckBox = () => {};
+  login = () => {
+  
+  };
+  onToggleCheckBox = () => { };
   render() {
     return (
       <SafeAreaView style={[appStyles.container]}>
@@ -55,12 +59,12 @@ export default class SignUp extends Component {
             width: '100%',
             backgroundColor: colors.white,
           }}>
-          <View style={{paddingTop: 20}}>
+          <View style={{ paddingTop: 20 }}>
             <_Input
               ref={el => (this.firstName = el)}
               label=""
               placeholder="First Name"
-              onChangeText={firstName => this.setState({firstName})}
+              onChangeText={firstName => this.setState({ firstName })}
               text={this.state.firstName}
               returnKeyType="next"
               keyboardType="default"
@@ -74,7 +78,7 @@ export default class SignUp extends Component {
               ref={el => (this.lastName = el)}
               label=""
               placeholder="Last name"
-              onChangeText={lastName => this.setState({lastName})}
+              onChangeText={lastName => this.setState({ lastName })}
               text={this.state.lastName}
               returnKeyType="next"
               keyboardType="default"
@@ -88,7 +92,7 @@ export default class SignUp extends Component {
               ref={el => (this.email = el)}
               label=""
               placeholder="Email"
-              onChangeText={email => this.setState({email})}
+              onChangeText={email => this.setState({ email })}
               text={this.state.email}
               returnKeyType="next"
               keyboardType="email-address"
@@ -101,11 +105,11 @@ export default class SignUp extends Component {
               ref={el => (this.idInput = el)}
               label=""
               placeholder="Password"
-              onChangeText={password => this.setState({password})}
+              onChangeText={password => this.setState({ password })}
               text={this.state.password}
               returnKeyType="next"
               keyboardType="default"
-              onSubmitEditing={() => {}}
+              onSubmitEditing={() => { }}
               validationMode="req"
               theme="primary"
               secureTextEntry
@@ -116,7 +120,7 @@ export default class SignUp extends Component {
           <_Button text="Create Account" theme="primary" onPress={this.login} />
 
           <_RadioCheck
-            style={{marginBottom: 25}}
+            style={{ marginBottom: 25 }}
             label="I agree with Terms & Conditions"
             checked={true}
             labelStyle={styles.checkbox}
@@ -128,3 +132,17 @@ export default class SignUp extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    ...bindActionCreators({  }, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp)

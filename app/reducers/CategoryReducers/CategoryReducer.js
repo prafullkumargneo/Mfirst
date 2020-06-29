@@ -1,26 +1,26 @@
-import { FETCH_TODOS_SUCCESS, FETCH_TODOS_FAILURE, FETCHING_TODOS } from '../actions/api/types';
+import { GET_CATEGORIES_SUCCESS,GET_CATEGORIES_FAILURE,GET_CATEGORIES_LOADING } from '../../actions/api/types';
 
 const initialState = {
-    todos: [],
+    categoriesData: [],
     isFetching: false,
     error: false
 }
 
-export default function todosReducer(state = initialState, action) {
+export default function categoryReducer(state = initialState, action) {
 
     switch(action.type) {
-        case FETCHING_TODOS:
+        case GET_CATEGORIES_LOADING:
             return {
                 ...state,
                 isFetching: true
             }
-        case FETCH_TODOS_SUCCESS:
+        case GET_CATEGORIES_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
-                todos: action.data
+                categoriesData: action.data
             }
-        case FETCH_TODOS_FAILURE:
+        case GET_CATEGORIES_FAILURE:
             return {
                 ...state,
                 isFetching: false,

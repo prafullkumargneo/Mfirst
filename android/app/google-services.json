@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "747175508914",
+    "firebase_url": "https://mamasfirstnotif.firebaseio.com",
+    "project_id": "mamasfirstnotif",
+    "storage_bucket": "mamasfirstnotif.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:747175508914:android:c68b2aff767c2529d482ab",
+        "android_client_info": {
+          "package_name": "com.mamasfirst"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "747175508914-5e4tveklfrtlohdh4ng184vssv2mdv57.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBc2G15jHa64DhOgLn2s7OWIecz5LDXLGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747175508914-5e4tveklfrtlohdh4ng184vssv2mdv57.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "747175508914-nqem8u1ohda5f9pjmuqtjbed4b8pvb0b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.commerce.MamasFirst"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

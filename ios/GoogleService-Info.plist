@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>747175508914-nqem8u1ohda5f9pjmuqtjbed4b8pvb0b.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.747175508914-nqem8u1ohda5f9pjmuqtjbed4b8pvb0b</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAMD_hhdgsM1cf0OV1BOL20izHZMUbAD3o</string>
+	<key>GCM_SENDER_ID</key>
+	<string>747175508914</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.commerce.MamasFirst</string>
+	<key>PROJECT_ID</key>
+	<string>mamasfirstnotif</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mamasfirstnotif.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:747175508914:ios:218d8de9763447b9d482ab</string>
+	<key>DATABASE_URL</key>
+	<string>https://mamasfirstnotif.firebaseio.com</string>
+</dict>
+</plist>

@@ -8,7 +8,7 @@ import {
   Alert,
   AsyncStorage,
   StatusBar,
-  FlatList, TouchableOpacity, ScrollView, Image
+  FlatList, TouchableOpacity, ScrollView, ActivityIndicator
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -25,7 +25,9 @@ import * as image_url from '../../../assets/images/map';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import  fetchTodos  from '../../../actions/TestActions';
+import categoryDetails from '../../../actions/CategoriesActions/CategoryActions';
+import Image from 'react-native-image-progress';
+import NavService from '../../navigators/navigationService';
 
 class Categories extends Component {
   constructor(props) {
@@ -37,19 +39,19 @@ class Categories extends Component {
       password: '',
     };
   }
-  
+
   componentDidMount() {
 
-    this.props.fetchTodos()
+    this.props.categoryDetails()
 
-}
+  }
 
   categoriesDescription(index) {
     console.log("indexx of prop", index)
     console.log("categories", this.state.categoriesDescriptionArray[index])
     this.setState({ categoriesindex: index })
   }
-  _keyExtractor = (item, index) => item._id.toString();
+  _keyExtractor = (item, index) => item.categoryId;
 
   _renderCategoriesList = ({ item, index }) => {
     console.log("item", item)
@@ -58,61 +60,69 @@ class Categories extends Component {
 
         <TouchableOpacity onPress={() => { this.categoriesDescription(index) }} style={{ backgroundColor: "white", paddingVertical: 3, margin: 2 }}>
           <View style={{ flexDirection: 'row', paddingVertical: 3, paddingHorizontal: 13 }}>
-            <View style={{ flex: 0.3 }}>
-              <Image style={{ height: deviceHeight * 0.1, width: deviceWidth * 0.2, borderRadius: 70 }} source={{ uri: 'https://picsum.photos/200/300' }} />
+            <View style={{ flex: 0.25 }}>
+              <Image style={{ height:56, width: 57 }} source={{ uri: item.categoryImage }} />
 
             </View>
-            <View style={{ flex: 0.6, justifyContent: "center" }}>
+            <View style={{ flex: 0.65, justifyContent: "center" }}>
 
-              <Text style={{ color: "#393939", fontSize: 16, fontWeight: "700" }}>{item.name}</Text>
+              <Text style={{ color: "#393939", fontSize: 15, fontWeight: "700" }}>{item.categoryTitle}</Text>
             </View>
             <View style={{ flex: 0.1, alignItems: "flex-end", margin: 3, justifyContent: "center" }}>
-              {this.state.categoriesindex === index ? <Icon size={24} color="#3FC1C9" name="ios-arrow-up" /> : <Icon size={24} color="#3FC1C9" name="ios-arrow-down" />}
+              {this.state.categoriesindex === index ? <Icon size={18} color="#3FC1C9" name="ios-arrow-up" /> : <Icon size={18} color="#3FC1C9" name="ios-arrow-down" />}
             </View>
 
           </View>
         </TouchableOpacity>
-        <ScrollView horizontal={true} contentContainerStyle={{ flexDirection: "row", backgroundColor: "white" }}>
+        <ScrollView horizontal={true} style={{ flexDirection: "row", backgroundColor: "white",width:deviceWidth }}>
           {this.state.categoriesindex === index ?
-            item.description && item.description.map((item) => {
+
+          item.subCategory?
+            item.subCategory && item.subCategory.map((item) => {
               return (
-                <View style={{ height: deviceHeight * 0.21, justifyContent: "center", paddingHorizontal: 15, left: "10%" }}>
+                <TouchableOpacity onPress={() => { NavService.navigate('root', 'SearchDetails', item); }} style={{ height: deviceHeight * 0.2, justifyContent: "center", paddingHorizontal: 15}}>
                   <View style={{ paddingVertical: 10 }}>
-                    <Image style={{ height: deviceHeight * 0.1, width: deviceWidth * 0.2, borderRadius: 70 }} source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }} />
+                    <Image style={{ height: 66, width: 66 }} source={{ uri: item.categoryImage }} />
                   </View>
                   <View style={{ alignItems: "center" }}>
-                    {item.split(' ').map((item, i) => <Text style={{ justifyContent: "space-between", color: "#2B2B2B", fontSize: 13 }}>{item}</Text>)}
+                    {item.categoryTitle.split(' ').map((item, i) => <Text style={{ justifyContent: "space-between", color: "#2B2B2B", fontSize: 12,fontWeight:'700' }}>{item}</Text>)}
                   </View>
 
-                </View>
-
-
+                </TouchableOpacity>
               )
             })
-
-            : null}
+            :
+            <View style={{ height:deviceHeight*0.05, backgroundColor:"transparent",justifyContent:"center",width:deviceWidth,alignItems:"center"}}>
+            <Text style={{fontWeight:"700"}}>Product coming soon...</Text>
+            </View>
+            : 
+           null
+            }
         </ScrollView>
       </View>
     )
   }
   render() {
-    console.log("dummyjson", this.props.todosReducer)
+    console.log("dummyjson", this.props.categoryReducer)
     return (
       <SafeAreaView style={[appStyles.container]}>
         <View
           style={{
             flex: 1,
-            backgroundColor: "yellow"
+            backgroundColor: "white",
+            paddingTop: "2.5%"
           }}
         >
-          <View style={{ flex: 0.25, backgroundColor: "red" }}>
-            <Swiper style={styles.wrapper} showsButtons={true}>
+          <View style={{ flex: 0.25, backgroundColor: "transparent" }}>
+            <Swiper showsButtons={false}
+              buttonWrapperStyle={{ top: "10%" }}
+              style={styles.wrapper} showsButtons={true}>
               <View style={styles.slide1}>
                 <Image style={{ width: deviceWidth * 1, height: deviceHeight * 0.28 }} source={{ uri: "https://picsum.photos/seed/picsum/200/300" }} />
 
               </View>
               <View style={styles.slide2}>
-                <Image style={{ width: deviceWidth, height: deviceHeight }} source={{ uri: "https://i.picsum.photos/id/631/200/300.jpg" }} />
+                <Image style={{ width: deviceWidth, height: deviceHeight }} source={{ uri: "https://picsum.photos/seed/picsum/200/300" }} />
               </View>
               <View style={styles.slide3}>
                 <Image style={{ width: deviceWidth * 0.97, height: deviceHeight * 0.2 }} source={{ uri: "https://picsum.photos/id/870/200/300?grayscale&blur=2" }} />
@@ -121,13 +131,19 @@ class Categories extends Component {
             </Swiper>
           </View>
 
-          <View style={{ flex: 0.75, backgroundColor: "orange" }}>
-            <FlatList
-              data={DummyJSON.categoriesData}
-              extraData={this.state}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderCategoriesList}
-            />
+          <View style={{ flex: 0.75, backgroundColor: "transparent" }}>
+            {
+              this.props.categoryReducer && this.props.categoryReducer.isFetching ?
+                <View style={{ flex:0.75,alignItems: "center", justifyContent: "center" }}>
+                  <ActivityIndicator size={'large'} />
+                </View>
+                :
+                <FlatList
+                  data={this.props.categoryReducer && this.props.categoryReducer.categoriesData}
+                  extraData={this.state}
+                  keyExtractor={this._keyExtractor}
+                  renderItem={this._renderCategoriesList}
+                />}
           </View>
 
         </View>
@@ -137,13 +153,13 @@ class Categories extends Component {
 }
 function mapStateToProps(state) {
   return {
-    todosReducer: state.todosReducer
+    categoryReducer: state.categoryReducer
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-      ...bindActionCreators({ fetchTodos }, dispatch)
+    ...bindActionCreators({ categoryDetails }, dispatch)
   }
 }
 
@@ -159,6 +175,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
 
     justifyContent: 'space-around',
+  },
+  wrapper: {
+    height: 150
   },
   slide1: {
     flex: 1,

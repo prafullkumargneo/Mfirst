@@ -41,26 +41,29 @@ const style = StyleSheet.create({
   reset: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    paddingBottom: 15,
-    paddingTop: 10,
-    alignItems: 'center',
+    // paddingBottom: 15,
+    // paddingTop: 10,
+    // alignItems: 'center',
+    
   },
   resetBtnText: {
     color: colors.blue,
-    fontSize: 15,
+    fontSize: 13.5,
+    textDecorationLine:"underline"
   },
 
   createAccount: {
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingBottom: 20,
-    paddingTop: 15,
+    paddingBottom: "10%",
+    paddingTop: 5,
     alignItems: 'center',
-    paddingHorizontal: '7%',
+    paddingHorizontal: '7%'
   },
   createAccountBtnText: {
     color: colors.blue,
-    fontSize: 15,
+    fontSize: 13.5,
+    textDecorationLine:"underline"
   },
 
   iconContainer: {

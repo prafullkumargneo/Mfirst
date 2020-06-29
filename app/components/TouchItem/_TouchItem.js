@@ -29,6 +29,7 @@ export default class TouchItem extends Component {
       : TouchableNativeFeedback.SelectableBackground();
     return (
       <TouchableNativeFeedback
+      disabled={this.props.disabled}
         hitSlop={{top: 5, bottom: 5, left: 5, right: 5}}
         {...this.props}
         background={feedback}>
@@ -60,6 +61,7 @@ TouchItem.propTypes = {
   onPress: PropTypes.func,
   noFeedback: PropTypes.bool,
   ripple: PropTypes.bool,
+  disabled: PropTypes.bool,
   white: PropTypes.bool,
 };
 

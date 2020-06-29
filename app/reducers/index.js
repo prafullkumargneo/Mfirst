@@ -1,8 +1,12 @@
 import { combineReducers } from 'redux';
-import todosReducer from './TestReducer';
+import categoryReducer from './CategoryReducers/CategoryReducer';
+import subcategoryReducer from './CategoryReducers/subCategoryReducer';
+import signInReducer from './authReducers/signInReducer';
 
 const rootReducer = combineReducers({
-    todosReducer
+    categoryReducer,
+    subcategoryReducer,
+    signInReducer
 })
 
 export default rootReducer

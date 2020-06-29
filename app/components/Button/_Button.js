@@ -75,6 +75,7 @@ export default class Button extends Component {
     return (
       <_TouchItem
         activeOpacity={0.6}
+        disabled={this.props.disabled}
         onPress={() => {
           !this.props.loading ? this.props.onPress() : '';
         }}
@@ -98,6 +99,7 @@ Button.propTypes = {
   halfButton: PropTypes.bool,
   noMargin: PropTypes.bool,
   loading: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 Button.defaultProps = {

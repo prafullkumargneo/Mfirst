@@ -38,12 +38,15 @@ const HomeTabNav = createMaterialTopTabNavigator(
         borderRadius: 40,
       },
       style: {
+        height:"6%",
         backgroundColor: colors.white,
         shadowOpacity: 0,
         shadowOffset: {
           height: 0,
         },
         shadowRadius: 0,
+        shadowColor: 'transparent',
+        elevation: 0
       },
       activeTintColor: colors.white,
       inactiveTintColor: colors.primaryColor,
