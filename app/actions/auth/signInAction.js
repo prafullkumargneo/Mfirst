@@ -2,8 +2,8 @@ import { SIGN_IN_SUCCESS, SIGN_IN_FAILURE, SIGN_IN_LOADING } from '../api/types'
 import ApiCaller from '../api/CustomApiCaller';
 import ApiConstants from '../api/ApiConstants';
 
-export default function signUp(signUpData) {
-  let api = 'login=' + signUpData.login + '&password=' + signUpData.password
+export default function signIn(signInData) {
+  let api = 'login=' + signInData.login + '&password=' + signInData.password
   console.log("signupsData:", api)
   return (dispatch) => {
     dispatch(signInLoading())

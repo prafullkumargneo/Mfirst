@@ -26,6 +26,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import categoryDetails from '../../../actions/CategoriesActions/CategoryActions';
+import bannerCategory from '../../../actions/CategoriesActions/categoryBannerAction';
 import Image from 'react-native-image-progress';
 import NavService from '../../navigators/navigationService';
 
@@ -43,7 +44,12 @@ class Categories extends Component {
   componentDidMount() {
 
     this.props.categoryDetails()
+    this.props.bannerCategory()
 
+  }
+
+  retryBanner(){
+    this.props.bannerCategory()
   }
 
   categoriesDescription(index) {
@@ -61,7 +67,7 @@ class Categories extends Component {
         <TouchableOpacity onPress={() => { this.categoriesDescription(index) }} style={{ backgroundColor: "white", paddingVertical: 3, margin: 2 }}>
           <View style={{ flexDirection: 'row', paddingVertical: 3, paddingHorizontal: 13 }}>
             <View style={{ flex: 0.25 }}>
-              <Image style={{ height:56, width: 57 }} source={{ uri: item.categoryImage }} />
+              <Image style={{ height: 56, width: 57 }} source={{ uri: item.categoryImage }} />
 
             </View>
             <View style={{ flex: 0.65, justifyContent: "center" }}>
@@ -74,36 +80,51 @@ class Categories extends Component {
 
           </View>
         </TouchableOpacity>
-        <ScrollView horizontal={true} style={{ flexDirection: "row", backgroundColor: "white",width:deviceWidth }}>
+        <ScrollView horizontal={true} style={{ flexDirection: "row", backgroundColor: "white", width: deviceWidth }}>
           {this.state.categoriesindex === index ?
 
-          item.subCategory?
-            item.subCategory && item.subCategory.map((item) => {
-              return (
-                <TouchableOpacity onPress={() => { NavService.navigate('root', 'SearchDetails', item); }} style={{ height: deviceHeight * 0.2, justifyContent: "center", paddingHorizontal: 15}}>
-                  <View style={{ paddingVertical: 10 }}>
-                    <Image style={{ height: 66, width: 66 }} source={{ uri: item.categoryImage }} />
-                  </View>
-                  <View style={{ alignItems: "center" }}>
-                    {item.categoryTitle.split(' ').map((item, i) => <Text style={{ justifyContent: "space-between", color: "#2B2B2B", fontSize: 12,fontWeight:'700' }}>{item}</Text>)}
-                  </View>
+            item.subCategory ?
+              item.subCategory && item.subCategory.map((item) => {
+                return (
+                  <TouchableOpacity onPress={() => { NavService.navigate('root', 'SearchDetails', item); }} style={{ height: deviceHeight * 0.2, justifyContent: "center", paddingHorizontal: 15 }}>
+                    <View style={{ paddingVertical: 10 }}>
+                      <Image style={{ height: 66, width: 66 }} source={{ uri: item.categoryImage }} />
+                    </View>
+                    <View style={{ alignItems: "center" }}>
+                      {item.categoryTitle.split(' ').map((item, i) => <Text style={{ justifyContent: "space-between", color: "#2B2B2B", fontSize: 12, fontWeight: '700' }}>{item}</Text>)}
+                    </View>
 
-                </TouchableOpacity>
-              )
-            })
+                  </TouchableOpacity>
+                )
+              })
+              :
+              <View style={{ height: deviceHeight * 0.05, backgroundColor: "transparent", justifyContent: "center", width: deviceWidth, alignItems: "center" }}>
+                <Text style={{ fontWeight: "700" }}>Product coming soon...</Text>
+              </View>
             :
-            <View style={{ height:deviceHeight*0.05, backgroundColor:"transparent",justifyContent:"center",width:deviceWidth,alignItems:"center"}}>
-            <Text style={{fontWeight:"700"}}>Product coming soon...</Text>
-            </View>
-            : 
-           null
-            }
+            null
+          }
         </ScrollView>
       </View>
     )
   }
+  bannerView(item, index) {
+    console.log("item of banner", item)
+    return (
+      <View style={styles.slide1}>
+        <Image style={{
+          width:deviceWidth,
+          flex: 1,
+          backgroundColor: 'transparent'
+        }} source={{ uri: item }} />
+
+      </View>
+    )
+  }
+
+
   render() {
-    console.log("dummyjson", this.props.categoryReducer)
+    console.log("dummyjson", this.props.categoryBannerReducer)
     return (
       <SafeAreaView style={[appStyles.container]}>
         <View
@@ -114,10 +135,17 @@ class Categories extends Component {
           }}
         >
           <View style={{ flex: 0.25, backgroundColor: "transparent" }}>
-            <Swiper showsButtons={false}
+           {
+             this.props.categoryBannerReducer.bannerCategoryLoading?
+             <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+             <ActivityIndicator/>
+             </View>
+             :
+             this.props.categoryBannerReducer.bannerCategoryData  && this.props.categoryBannerReducer.bannerCategoryData.data ?
+              <Swiper showsButtons={false}
               buttonWrapperStyle={{ top: "10%" }}
               style={styles.wrapper} showsButtons={true}>
-              <View style={styles.slide1}>
+              {/* <View style={styles.slide1}>
                 <Image style={{ width: deviceWidth * 1, height: deviceHeight * 0.28 }} source={{ uri: "https://picsum.photos/seed/picsum/200/300" }} />
 
               </View>
@@ -127,14 +155,27 @@ class Categories extends Component {
               <View style={styles.slide3}>
                 <Image style={{ width: deviceWidth * 0.97, height: deviceHeight * 0.2 }} source={{ uri: "https://picsum.photos/id/870/200/300?grayscale&blur=2" }} />
 
-              </View>
+              </View> */}
+              {
+                this.props.categoryBannerReducer.bannerCategoryData  && this.props.categoryBannerReducer.bannerCategoryData.data.map((item, index) => {
+                  return (
+                    this.bannerView(item, index)
+                  )
+                })
+              }
             </Swiper>
+          :
+          <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+          <Text style={{paddingVertical:'3%'}}>Something went wrong ..</Text>  
+          <Text onPress={()=>this.retryBanner()} style={{color:'skyblue'}}>Retry</Text>  
+          </View>
+          }
           </View>
 
           <View style={{ flex: 0.75, backgroundColor: "transparent" }}>
             {
               this.props.categoryReducer && this.props.categoryReducer.isFetching ?
-                <View style={{ flex:0.75,alignItems: "center", justifyContent: "center" }}>
+                <View style={{ flex: 0.75, alignItems: "center", justifyContent: "center" }}>
                   <ActivityIndicator size={'large'} />
                 </View>
                 :
@@ -153,13 +194,14 @@ class Categories extends Component {
 }
 function mapStateToProps(state) {
   return {
-    categoryReducer: state.categoryReducer
+    categoryReducer: state.categoryReducer,
+    categoryBannerReducer: state.categoryBannerReducer
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    ...bindActionCreators({ categoryDetails }, dispatch)
+    ...bindActionCreators({ categoryDetails, bannerCategory }, dispatch)
   }
 }
 
@@ -182,8 +224,9 @@ const styles = StyleSheet.create({
   slide1: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#9DD6EB'
+    backgroundColor: 'transparent'
+    
+  
   },
   slide2: {
     flex: 1,

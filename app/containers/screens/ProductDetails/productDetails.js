@@ -9,9 +9,11 @@ import {
     AsyncStorage,
     StatusBar,
     ScrollView,
-    FlatList, Image
+    FlatList, Image, ActivityIndicator
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { DrawerActions } from 'react-navigation-drawer';
 import _Input from '../../../components/Input/_Input';
 import _Button from '../../../components/Button/_Button';
@@ -27,8 +29,9 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import DeliveryIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Swiper from 'react-native-swiper';
 import { RNToasty } from 'react-native-toasty';
+import productDetailsActions from '../../../actions/ProductActions/productDetailsAction';
 
-export default class ProductDetails extends Component {
+class ProductDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -36,8 +39,12 @@ export default class ProductDetails extends Component {
         };
     }
 
-
-
+    componentDidMount() {
+        const { params } = this.props.navigation.state;
+        let productId = params && params.productId;
+        this.props.productDetailsActions(productId)
+        console.log("product details", productId)
+    }
 
     productQualityDescription(item, index) {
 
@@ -66,7 +73,7 @@ export default class ProductDetails extends Component {
 
     relatedItemList(item, index) {
         return (
-            <TouchableOpacity style={{paddingHorizontal:17,backgroundColor:"transparent",width:deviceWidth*0.3}}>
+            <TouchableOpacity style={{ paddingHorizontal: 17, backgroundColor: "transparent", width: deviceWidth * 0.3 }}>
 
                 <View style={{ paddingVertical: 5, backgroundColor: "transparent" }}>
                     <Image style={{ height: 101, width: 72, alignSelf: "center" }} source={{ uri: item.relatedItemImage }} />
@@ -85,10 +92,18 @@ export default class ProductDetails extends Component {
     render() {
         const { params } = this.props.navigation.state;
         console.log("props of discover", params)
-        return (
-            <SafeAreaView style={{ flex: 1, backgroundColor:"transparent" }}>
+        if (this.props.productDetailReducer.productDetailLoading) {
+            return (
+                <View style={{ flex: 1,justifyContent:"center",alignItems:"center" }}>
+                    <ActivityIndicator size={'large'} />
+                </View>
+            )
+        }
+        else {
+            return (
+                <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
 
-                <View style={{ flex: 0.9, backgroundColor: "#D8D8D8" }}>
+                    {/* <View style={{ flex: 0.9, backgroundColor: "#D8D8D8" }}>
                     <ScrollView style={{ height: deviceHeight, width: deviceWidth }}>
 
                         <View style={{ backgroundColor: "white", marginBottom: 10 }}>
@@ -298,15 +313,40 @@ export default class ProductDetails extends Component {
                     </View>
 
 
-                </View>
+                </View> */}
+                   <View style={{ flex: 0.5, backgroundColor: "white", justifyContent: "center", alignItems: "center", top: "3%" }}>
+                        <_Button
+                            text="Add to cart"
+                            theme={"primary"}
+                            onPress={() => {
+                                RNToasty.Success({
+                                    title:"Item added to cart",
+                                    titleSize:15
+                                })
+                            }}
+                            halfButton={true}
+                        />
+                    </View>
+                </SafeAreaView>
 
-
-
-            </SafeAreaView>
-
-        );
+            );
+        }
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        productDetailReducer: state.productDetailReducer
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        ...bindActionCreators({ productDetailsActions }, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails)
 
 const styles = StyleSheet.create({
     headerContainer: {

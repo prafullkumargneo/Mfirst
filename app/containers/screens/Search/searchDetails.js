@@ -53,6 +53,8 @@ class SearchDetails extends Component {
 
 
     categorySelectedData(item, index) {
+        console.log("item of category",item,index)
+        NavService.navigate('root', 'ProductDetailsStack',item);
         this.setState({ isSelectedCategory: index })
 
     }
@@ -193,7 +195,7 @@ class SearchDetails extends Component {
                     <ScrollView style={{ backgroundColor: "white", height: deviceHeight, paddingHorizontal: 20 }}>
 
                         {
-                            this.state.subCategoryProductFlag ?
+                            this.state.subCategoryProductFlag ||  this.props.subcategoryReducer.issubcategoryLoading ?
                                 <View style={{ paddingTop: "4%", width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
                                     <ActivityIndicator size={"large"} />
                                 </View>

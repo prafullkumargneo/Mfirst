@@ -21,7 +21,7 @@ import _Text from '../../../components/Text/_Text';
 import appStyles from '../../../constants/appStyle';
 import * as colors from '../../../constants/colors';
 import styles from './styles';
-import signUp from '../../../actions/auth/signInAction';
+import signIn from '../../../actions/auth/signInAction';
 
 class _SignUp extends Component {
   constructor(props) {
@@ -89,12 +89,12 @@ class _SignUp extends Component {
         title: "working",
         titleSize: 15
       })
-      let signUpData = {
-        "login": "test@test.com",
-        "password": "123",
+      let signInData = {
+        "login": this.state.email,
+        "password": this.state.password
       }
 
-      this.props.signUp(signUpData)
+      this.props.signIn(signInData)
     }
 
 
@@ -194,7 +194,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    ...bindActionCreators({ signUp }, dispatch)
+    ...bindActionCreators({ signIn }, dispatch)
   }
 }
 

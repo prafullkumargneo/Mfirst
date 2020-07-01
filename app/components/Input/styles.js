@@ -12,15 +12,15 @@ const style = StyleSheet.create({
   wrapperStyle: {
     width: WINDOW.width - 2 * standardPadding,
     marginTop: 0,
-    paddingBottom: 0,
-    marginBottom: 20,
+
+    marginBottom: 5,
     alignSelf: 'center',
   },
   wrapperStyleCode: {
     width: 50,
     marginTop: 0,
     paddingBottom: 0,
-    marginBottom: 20,
+    marginBottom: 10,
     alignSelf: 'center',
   },
 

@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import {
   View,
   SafeAreaView,
@@ -7,18 +7,19 @@ import {
   StyleSheet,
   Platform,
   StatusBar,
-  FlatList,
+  FlatList, TouchableOpacity
 } from 'react-native';
-import {NavigationActions} from 'react-navigation';
-import {DrawerItems} from 'react-navigation-drawer';
+import AsyncStorage from '@react-native-community/async-storage';
+import { NavigationActions } from 'react-navigation';
+import { DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import NavService from '../navigationService';
 
-import {lightGrey, white, greyIcon} from '../../../constants/colors';
+import { lightGrey, white, greyIcon } from '../../../constants/colors';
 import * as menuList from '../../../constants/menu';
 
-import {HEIGHT} from '../../../constants/dimensions';
+import { HEIGHT } from '../../../constants/dimensions';
 
 import _Button from '../../../components/Button/_Button';
 import _TouchItem from '../../../components/TouchItem/_TouchItem';
@@ -32,16 +33,30 @@ class DrawerComponent extends PureComponent {
     super();
     this.state = {
       activeSwitch: 1,
+      loggedInCredentials: null
     };
   }
 
-  logout = () => {};
+  componentDidMount() {
+    AsyncStorage.getItem('LoggedInData').then(value => {
+      if (value) {
+        let objectvalue = JSON.parse(value)
+        this.setState({ loggedInCredentials: objectvalue })
+        console.log("async value", objectvalue)
+      }
+    });
+  }
+
+  logout() {
+    AsyncStorage.clear()
+
+  }
 
   _keyExtractor = (item, index) => item._id;
-  
+
   renderCloseButton() {
     return (
-      <View style={[styles.closeButton, {marginTop: StatusBar.currentHeight}]}>
+      <View style={[styles.closeButton, { marginTop: StatusBar.currentHeight }]}>
         <_TouchItem onPress={this.props.navigation.toggleDrawer}>
           <Icon name="close" size={30} color="black" />
         </_TouchItem>
@@ -50,28 +65,41 @@ class DrawerComponent extends PureComponent {
   }
 
   renderUser() {
-    return (
-      <View style={[styles.userHeaderContainer, {marginTop: 1}]}>
-        <_Button
-          text="Sign In or Register"
-          theme="primary"
-          onPress={() => {
-            NavService.reset('root');
-            NavService.navigate('root', 'Login');
-          }}
-          size="M"
-        />
-        <_Button
-          text="Continue with your phone"
-          theme="secondary"
-          onPress={() => {
-            NavService.reset('root');
-            NavService.navigate('root', 'LoginPhone');
-          }}
-          leftIcon
-        />
-      </View>
-    );
+    if (this.state.loggedInCredentials) {
+      return (
+        <View style={[styles.userHeaderContainer, { marginTop: 1, paddingVertical: "13%" }]}>
+
+          <Text style={{ fontSize: 22, textAlign: "center", fontWeight: '700' }}>Hello, {this.state.loggedInCredentials.name}</Text>
+
+        </View>
+      );
+    }
+    else {
+      return (
+        <View style={[styles.userHeaderContainer, { marginTop: 1 }]}>
+
+          <_Button
+            text="Sign In or Register"
+            theme="primary"
+            onPress={() => {
+              NavService.reset('root');
+              NavService.navigate('root', 'Login');
+            }}
+            size="M"
+          />
+          <_Button
+            text="Continue with your phone"
+            theme="secondary"
+            onPress={() => {
+              NavService.reset('root');
+              NavService.navigate('root', 'LoginPhone');
+            }}
+            leftIcon
+          />
+
+        </View>
+      );
+    }
   }
 
   renderMainMenu() {
@@ -79,7 +107,7 @@ class DrawerComponent extends PureComponent {
     return (
       <FlatList
         data={menu_list}
-        renderItem={({item, index}) => (
+        renderItem={({ item, index }) => (
           <_MainMenu title={item.title} image_url={item.image} key={index} />
         )}
         ItemSeparatorComponent={() => <_Separator />}
@@ -89,17 +117,17 @@ class DrawerComponent extends PureComponent {
 
   renderSubMenu() {
     return (
-      <View style={{marginTop: 20}}>
+      <View style={{ marginTop: 20 }}>
         <_SubMenu title={'Rate Us'} />
         <_SubMenu title={'Share this app'} />
         <_SubMenu
           switch
-          swicthName={{on: 'ARB', off: 'ENG'}}
+          swicthName={{ on: 'ARB', off: 'ENG' }}
           title={'Language'}
         />
         <_SubMenu
           switch
-          swicthName={{on: 'KWD', off: '$'}}
+          swicthName={{ on: 'KWD', off: '$' }}
           title={'Currency'}
         />
       </View>
@@ -108,7 +136,7 @@ class DrawerComponent extends PureComponent {
 
   renderAppSubMenu() {
     return (
-      <View style={{marginTop: 20}}>
+      <View style={{ marginTop: 20 }}>
         <_SubMenu title={'About'} heading />
         <_SubMenu title={'About Us'} />
         <_SubMenu title={'Refund Policy'} />
@@ -120,33 +148,19 @@ class DrawerComponent extends PureComponent {
   }
   renderLogout() {
     return (
-      <_TouchItem
-        style={[
-          styles.navItem,
-          {
-            backgroundColor: 'rgba(255,255,255,0.25)',
-            borderTopColor: white,
-            borderTopWidth: 2,
-            paddingBottom: 20,
-          },
-        ]}
-        onPress={this.logout}>
-        <View style={styles.iconTextContainer}>
-          <_Text weight="medium" style={[styles.navText, {color: white}]}>
-            Logout
-          </_Text>
-        </View>
-      </_TouchItem>
+      <TouchableOpacity onPress={() => this.logout()} style={{ paddingHorizontal: "13%", backgroundColor: "yellow", paddingTop: "3%" }}>
+        <Text style={{ fontSize: 16 }}>Sign out</Text>
+      </TouchableOpacity>
     );
   }
 
   render() {
     return (
-      <View style={{width: '100%', height: '100%'}}>
+      <View style={{ width: '100%', height: '100%' }}>
         {this.renderCloseButton()}
         <ScrollView
           alwaysBounceVertical={false}
-          contentContainerStyle={{paddingBottom: 15}}>
+          contentContainerStyle={{ paddingBottom: 15 }}>
           <SafeAreaView>
             {this.renderUser()}
             <_Separator />
@@ -154,6 +168,7 @@ class DrawerComponent extends PureComponent {
             <_Separator />
             {this.renderSubMenu()}
             {this.renderAppSubMenu()}
+            {this.renderLogout()}
 
             {/* <DrawerItems {...this.props} getLabel={this.renderMenuItem} /> */}
           </SafeAreaView>
