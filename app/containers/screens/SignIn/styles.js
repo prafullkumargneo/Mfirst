@@ -41,6 +41,7 @@ const style = StyleSheet.create({
   reset: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    backgroundColor:'transparent'
     // paddingBottom: 15,
     // paddingTop: 10,
     // alignItems: 'center',
@@ -108,6 +109,9 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'stretch',
   },
+  inputStyles: {
+    height: 47, borderWidth: 1, paddingLeft: '4%'
+}
 });
 
 export default style;

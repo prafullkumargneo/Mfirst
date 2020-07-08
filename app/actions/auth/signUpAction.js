@@ -2,6 +2,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { SIGN_UP_SUCCESS, SIGN_UP_FAILURE, SIGN_UP_LOADING } from '../api/types';
 import ApiCaller from '../api/CustomApiCaller';
 import ApiConstants from '../api/ApiConstants';
+import drawerProfile from '../DrawerAction/drawerProfileAction';
+import NavService from '../../containers/navigators/navigationService';
+import { RNToasty } from 'react-native-toasty';
 
 export default function signUp(signUpData) {
     console.log("signupdata", signUpData)
@@ -13,6 +16,13 @@ export default function signUp(signUpData) {
               if (res && res.data) {
                 AsyncStorage.setItem('LoggedInData',JSON.stringify(res.data));
                 dispatch(signUpSuccess(res.data));
+                dispatch(drawerProfile(res))
+                RNToasty.Success({
+                    title: "You have succcessfully registered.",
+                    titleSize: 15
+                  })
+            
+                NavService.navigate('root', 'MainDrawer');
               } else {
                 dispatch(signUpFailure(res))
               }

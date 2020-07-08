@@ -1,6 +1,12 @@
+import {Alert} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { SIGN_IN_SUCCESS, SIGN_IN_FAILURE, SIGN_IN_LOADING } from '../api/types';
 import ApiCaller from '../api/CustomApiCaller';
 import ApiConstants from '../api/ApiConstants';
+import NavService from '../../containers/navigators/navigationService';
+import drawerProfile from '../DrawerAction/drawerProfileAction';
+import { RNToasty } from 'react-native-toasty';
+
 
 export default function signIn(signInData) {
   let api = 'login=' + signInData.login + '&password=' + signInData.password
@@ -10,7 +16,18 @@ export default function signIn(signInData) {
     return ApiCaller(ApiConstants.SIGNIN + api).then(res => {
       if (res && res.Data) {
         dispatch(signInSuccess(res.Data));
+        AsyncStorage.setItem('LoggedInData',JSON.stringify(res.Data));
+        AsyncStorage.getItem('LoggedInData').then(value => {
+         console.log("value of async",value)
+        });
+        dispatch(drawerProfile(res))
+        NavService.navigate('root', 'MainDrawer');
       } else {
+        RNToasty.Error({
+          title: res.error,
+          titleSize: 15
+        })
+        // Alert.alert('Error',res.error)
         dispatch(signInFailure(res))
       }
       console.log("response of custom api caller", res)

@@ -31,8 +31,8 @@ const LoginNavigator = createStackNavigator(
             <_TouchItem
               style={{margin: 10}}
               onPress={() => {
-                NavService.goBack('root');
-                NavService.navigate('root', 'Home');
+                // NavService.goBack('root');
+                NavService.navigate('root', 'MainDrawer');
               }}>
               <Icon
                 style={{fontSize: 40}}

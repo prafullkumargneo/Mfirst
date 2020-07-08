@@ -23,6 +23,7 @@ import LoginPhone from './Stack/LoginPhoneStack';
 import DiscoverNavigator from './Stack/DiscoverStack';
 import ProductDetails from '../screens/ProductDetails/productDetails';
 import ShippingAddress from '../screens/Payment/ShippingAddress';
+import AddShippingAddress from '../screens/Payment/addShippingAddress';
 import ReviewOrder from '../screens/Order/reviewOrder';
 import Orders from '../screens/Order/Orders';
 import FavoriteOrders from '../screens/Order/favouritesOrder';
@@ -138,6 +139,26 @@ const RootNavigation = createStackNavigator(
     },
     ShippingAddress: {
       screen: ShippingAddress,
+      navigationOptions: {
+        // gestureEnabled: false,
+        headerTitleAlign: 'center',
+        // headerTintColor: white,
+        headerTitle: "Shipping Address",
+        headerTitleStyle: {
+          fontWeight: '600',
+          fontSize: 18
+        },
+        // headerStyle: {
+        //   shadowOpacity: 0,
+        //   shadowOffset: {
+        //     height: 0,
+        //   },
+        //   shadowRadius: 0,
+        // },
+      },
+    },
+    AddShippingAddress: {
+      screen: AddShippingAddress,
       navigationOptions: {
         // gestureEnabled: false,
         headerTitleAlign: 'center',

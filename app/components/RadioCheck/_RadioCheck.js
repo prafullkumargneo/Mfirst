@@ -13,7 +13,7 @@ class RadioCheck extends Component {
     super(props);
 
     this.state = {
-      checked: !!props.checked,
+      checked:props.checked,
       label: props.label,
       label_style: props.labelStyle,
       check_color: props.checkColor,
@@ -27,9 +27,10 @@ class RadioCheck extends Component {
   }
 
   componentWillReceiveProps(new_props) {
-    this.setState({
-      checked: new_props.checked,
-    });
+    console.log('new props',new_props)
+    // this.setState({
+    //   checked: new_props.checked,
+    // });
   }
 
   toggleCheck() {

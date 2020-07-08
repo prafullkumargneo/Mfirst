@@ -44,6 +44,7 @@ class SearchDetails extends Component {
     }
 
     componentDidMount() {
+      
         console.log("this.props.navigation.state", this.props.navigation.state)
         const { params } = this.props.navigation.state;
         console.log("params in componentDid", params)

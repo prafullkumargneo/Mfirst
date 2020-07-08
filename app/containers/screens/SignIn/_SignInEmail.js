@@ -8,7 +8,7 @@ import {
   Alert,
   AsyncStorage,
   StatusBar,
-  ActivityIndicator,
+  ActivityIndicator, TextInput
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { bindActionCreators } from 'redux';
@@ -22,6 +22,7 @@ import appStyles from '../../../constants/appStyle';
 import * as colors from '../../../constants/colors';
 import styles from './styles';
 import signIn from '../../../actions/auth/signInAction';
+import { deviceWidth, deviceHeight } from '../../../constants/globals';
 
 class _SignUp extends Component {
   constructor(props) {
@@ -29,13 +30,33 @@ class _SignUp extends Component {
     this.state = {
       email: '',
       password: '',
-      emailValidationFlag: false
+      emailValidationFlag: false,
+      emailEmptyCheck:false,
+      passwordValidationFlag:false
     };
+
+    this.reRenderSomething = this.props.navigation.addListener('willFocus', () => {
+      //Put your code here you want to rerender, in my case i want to rerender the data 
+      //im fetching from firebase and display the changes
+
+      this.someAction();
+      this.forceUpdate();
+    });
   }
 
+  someAction() {
+    // alert('Some action is called!');
+  }
+
+  componentDidMount() {
+    // alert()
+  }
+  componentWillUnmount() {
+    this.reRenderSomething.remove();
+  }
   static getDerivedStateFromProps(nextProps, prevState) {
     // do things with nextProps.someProp and prevState.cachedSomeProp
-   console.log("in will receive props",nextProps,prevState)
+    console.log("in will receive props", nextProps, prevState)
     // return {
     //   cachedSomeProp: nextProps.someProp,
     //   // ... other derived state properties
@@ -48,13 +69,15 @@ class _SignUp extends Component {
     if (!mail.test(this.state.email)) {
       this.setState({
         emailValidationFlag: true,
-        email: email
+        email: email,
+        emailEmptyCheck:false
       });
     }
     else {
       this.setState({
         emailValidationFlag: false,
-        email: email
+        email: email,
+        emailEmptyCheck:false
       });
     }
 
@@ -62,8 +85,9 @@ class _SignUp extends Component {
 
 
   login = () => {
+  
     if (this.state.email === "") {
-
+      this.setState({emailEmptyCheck:true})
       RNToasty.Error({
         title: "Email cannot be blank",
         titleSize: 15
@@ -78,6 +102,7 @@ class _SignUp extends Component {
       })
     }
     else if (this.state.password === "") {
+      this.setState({passwordValidationFlag:true})
       RNToasty.Error({
         title: "Password cannot be blank",
         titleSize: 15
@@ -85,10 +110,6 @@ class _SignUp extends Component {
     }
     else {
       console.log("email,and password", this.state.email, this.state.password)
-      RNToasty.Success({
-        title: "working",
-        titleSize: 15
-      })
       let signInData = {
         "login": this.state.email,
         "password": this.state.password
@@ -102,8 +123,9 @@ class _SignUp extends Component {
   };
   signInWithPhone = () => {
     this.props.navigation.navigate({
-      routeName: 'SignInPhone',
+      routeName: 'SignInPhone'
     });
+
   };
   createAccount = () => {
     this.props.navigation.navigate({
@@ -128,7 +150,32 @@ class _SignUp extends Component {
             backgroundColor: colors.white,
           }}>
           <View style={styles.reset}>
-            <View style={{ paddingTop: 15 }}>
+
+            <View style={{ paddingHorizontal: deviceWidth * 0.06, paddingVertical: deviceHeight * 0.01, backgroundColor: "transparent", paddingTop: deviceHeight * 0.06 }}>
+              <TextInput
+                style={[styles.inputStyles, { borderColor: this.state.emailEmptyCheck ||this.state.emailValidationFlag ? 'red' : "#A5A5A5" }]}
+                returnKeyType="next"
+                keyboardType="email-address"
+                onChangeText={email => this.emailValidation(email)}
+                placeholder={"Email"}
+                placeholderTextColor={this.state.emailEmptyCheck ||this.state.emailValidationFlag ? 'red' : colors.lightGrey}
+                value={this.state.email}
+                onSubmitEditing={() => { this.secondTextInput.focus(); }}
+
+              />
+            </View>
+
+            <View style={{ paddingHorizontal: deviceWidth * 0.06, paddingVertical: deviceHeight * 0.02, backgroundColor: "transparent" }}>
+              <TextInput
+                ref={(input) => { this.secondTextInput = input; }}
+                style={[styles.inputStyles,{borderColor: this.state.passwordValidationFlag ? 'red' : "#A5A5A5" }]}
+                onChangeText={password => this.setState({ password,passwordValidationFlag:false })}
+                placeholder={"Password"}
+                placeholderTextColor={ this.state.passwordValidationFlag ? 'red' :colors.lightGrey}
+                value={this.state.password}
+              />
+            </View>
+            {/* <View style={{ paddingTop: 15 }}>
               <_Input
                 ref={el => (this.email = el)}
                 label=""
@@ -156,7 +203,7 @@ class _SignUp extends Component {
                 secureTextEntry
                 placeholderTextColor={colors.greyLight}
               />
-            </View>
+            </View> */}
 
             <View style={{ paddingVertical: "2%", paddingBottom: "10%", paddingHorizontal: "6%" }}>
               <_TouchItem onPress={() => console.log('Hello')}>

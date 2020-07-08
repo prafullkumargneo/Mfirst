@@ -75,7 +75,7 @@ const MainDrawer = createDrawerNavigator(
       itemsContainerStyle: styles.itemsContainerStyle,
       labelStyle: styles.labelStyle,
     },
-    overlayColor: 'rgba(0,0,0,0.7)',
+    overlayColor: 'rgba(0,0,0,0.7)'
   },
   [],
 );

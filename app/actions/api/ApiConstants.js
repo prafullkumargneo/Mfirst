@@ -7,7 +7,10 @@ const ApiConstants = {
     BANNERCATEGORY:'api/get_banner',
     SIGNIN:'api/login?',
     SIGNUP:'api/signup?',
-    PRODUCT_DETAILS:'api/shop/product/info?product_id='
+    PRODUCT_DETAILS:'api/shop/product/info?product_id=',
+    ADDTOCART:'api/shop/cart/update?',
+    GETCART:'api/shop/cart?',
+    SHIPPINGADDRESS:'api/checkout/shipping'
   };
   
   export default ApiConstants;

@@ -6,8 +6,7 @@ import {
   Image,
   Keyboard,
   Alert,
-  AsyncStorage,
-  StatusBar,
+  StatusBar,TextInput,StyleSheet
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { RNToasty } from 'react-native-toasty';
@@ -23,17 +22,23 @@ import * as colors from '../../../constants/colors';
 import styles from './styles';
 import signUp from '../../../actions/auth/signUpAction';
 import NavService from '../../navigators/navigationService';
+import { deviceWidth, deviceHeight } from '../../../constants/globals';
+
 
 class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
       firstName: '',
+      firstNameValidationFlag:false,
       lastName: '',
+      lastNameValidationFlag:false,
       email: '',
+      emailEmptyCheck:false,
       password: '',
+      passwordValidationFlag:false,
       emailValidationFlag: false,
-    
+      TermsConditionFlag:true
     };
   }
 
@@ -45,12 +50,12 @@ class SignUp extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     // do things with nextProps.someProp and prevState.cachedSomeProp
     console.log("in will receive props of signup", nextProps, prevState)
-    if (nextProps.signUpReducer && nextProps.signUpReducer.signUpData) {
-      NavService.navigate('root', 'MainDrawer');
-// return(
-//   NavService.navigate('home','home')
-// )
-    }
+//     if (nextProps.signUpReducer && nextProps.signUpReducer.signUpData !== nextProps.signUpReducer && nextProps.signUpReducer.signUpData ) {
+//       NavService.navigate('root', 'MainDrawer');
+// // return(
+// //   NavService.navigate('home','home')
+// // )
+//     }
     // return {
     //   cachedSomeProp: nextProps.someProp,
     //   // ... other derived state properties
@@ -63,13 +68,15 @@ class SignUp extends Component {
     if (!mail.test(this.state.email)) {
       this.setState({
         emailValidationFlag: true,
-        email: email
+        email: email,
+        emailEmptyCheck:false
       });
     }
     else {
       this.setState({
         emailValidationFlag: false,
-        email: email
+        email: email,
+        emailEmptyCheck:false
       });
     }
 
@@ -79,19 +86,21 @@ class SignUp extends Component {
   login = () => {
 
     if (this.state.firstName === "") {
+      this.setState({firstNameValidationFlag:true})
       RNToasty.Error({
         title: "First Name cannot be blank",
         titleSize: 15
       })
     }
     else if (this.state.lastName === "") {
+      this.setState({lastNameValidationFlag:true})
       RNToasty.Error({
         title: "Last Name cannot be blank",
         titleSize: 15
       })
     }
     else if (this.state.email === "") {
-
+      this.setState({emailEmptyCheck:true})
       RNToasty.Error({
         title: "Email cannot be blank",
         titleSize: 15
@@ -106,18 +115,20 @@ class SignUp extends Component {
       })
     }
     else if (this.state.password === "") {
+      this.setState({passwordValidationFlag:true})
       RNToasty.Error({
         title: "Password cannot be blank",
         titleSize: 15
       })
     }
-    else {
-
-      RNToasty.Success({
-        title: "working",
+    else if(!this.state.TermsConditionFlag){
+      this.setState({TermsConditionFlag:false})
+      RNToasty.Error({
+        title: "Select terms and condition to proceed",
         titleSize: 15
       })
-
+    }
+    else {
       let signUpData = {
         login: this.state.email,
         name: this.state.firstName + "" + this.state.lastName,
@@ -127,14 +138,15 @@ class SignUp extends Component {
       }
       this.props.signUp(signUpData)
     }
-
-
-
   };
+  
   onToggleCheckBox(status) {
-
+this.setState({TermsConditionFlag:status})
   };
+
+
   render() {
+    console.log("terms",this.state.TermsConditionFlag)
     return (
       <SafeAreaView style={[appStyles.container]}>
         <StatusBar
@@ -150,8 +162,62 @@ class SignUp extends Component {
             width: '100%',
             backgroundColor: colors.white,
           }}>
-          <View style={{ paddingVertical: "4%" }}>
-            <_Input
+          <View style={{ paddingVertical: "8%",backgroundColor:"transparent" }}>
+
+
+            <View style={{ paddingHorizontal: deviceWidth * 0.06, paddingVertical: deviceHeight * 0.015, backgroundColor: "transparent" }}>
+              <TextInput
+                returnKeyType="next"
+                onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                style={[customstyle.inputStyles,{borderColor: this.state.firstNameValidationFlag ? 'red' : "#A5A5A5" }]}
+                onChangeText={firstName => this.setState({ firstName,firstNameValidationFlag:false})}
+                placeholder={"First Name"}
+                placeholderTextColor={ this.state.firstNameValidationFlag ? 'red' :colors.lightGrey}
+                value={this.state.firstName}
+              />
+            </View>
+            <View style={{ paddingHorizontal: deviceWidth * 0.06, paddingVertical: deviceHeight * 0.015, backgroundColor: "transparent" }}>
+              <TextInput
+                returnKeyType="next"
+                onSubmitEditing={() => { this.thirdTextInput.focus(); }}
+                ref={(input) => { this.secondTextInput = input; }}
+                style={[customstyle.inputStyles,{borderColor: this.state.lastNameValidationFlag ? 'red' : "#A5A5A5" }]}
+                onChangeText={lastName => this.setState({ lastName,lastNameValidationFlag:false })}
+                placeholder={"Last name"}
+                placeholderTextColor={ this.state.lastNameValidationFlag ? 'red' :colors.lightGrey}
+                value={this.state.lastName}
+              />
+            </View>
+
+          <View style={{ paddingHorizontal: deviceWidth * 0.06, paddingVertical: deviceHeight * 0.015 }}>
+              <TextInput
+                 ref={(input) => { this.thirdTextInput = input; }}
+                style={[customstyle.inputStyles, { borderColor: this.state.emailEmptyCheck ||this.state.emailValidationFlag ? 'red' : "#A5A5A5" }]}
+                returnKeyType="next"
+                keyboardType="email-address"
+                onChangeText={email => this.emailValidation(email)}
+                placeholder={"Email"}
+                placeholderTextColor={this.state.emailEmptyCheck ||this.state.emailValidationFlag ? 'red' : colors.lightGrey}
+                value={this.state.email}
+                onSubmitEditing={() => { this.fourthTextInput.focus(); }}
+
+              />
+            </View>
+
+            <View style={{ paddingHorizontal: deviceWidth * 0.06, paddingVertical: deviceHeight * 0.015, backgroundColor: "transparent" }}>
+              <TextInput
+                ref={(input) => { this.fourthTextInput = input; }}
+                style={[customstyle.inputStyles,{borderColor: this.state.passwordValidationFlag ? 'red' : "#A5A5A5" }]}
+                onChangeText={password => this.setState({ password,passwordValidationFlag:false })}
+                placeholder={"Password"}
+                placeholderTextColor={ this.state.passwordValidationFlag ? 'red' :colors.lightGrey}
+                value={this.state.password}
+              />
+            </View>
+
+
+
+            {/* <_Input
               ref={el => (this.firstName = el)}
               label=""
               placeholder="First Name"
@@ -201,7 +267,7 @@ class SignUp extends Component {
               theme="primary"
               secureTextEntry
               placeholderTextColor={colors.greyLight}
-            />
+            /> */}
           </View>
           <View style={{ paddingTop: "2%" }}>
             <_Button disabled={this.props.signUpReducer.signUpLoading} text={this.props.signUpReducer.signUpLoading ? "Please wait.." : "Create Account"} theme="primary" onPress={this.login} />
@@ -210,7 +276,7 @@ class SignUp extends Component {
             style={{ marginBottom: 25 }}
             label="I agree with Terms & Conditions"
             checked={true}
-            labelStyle={styles.checkbox}
+            labelStyle={[customstyle.checkbox,{ color: this.state.TermsConditionFlag==false ?'red':colors.greyDark}]}
             font="B"
             onToggleCheck={(status) => this.onToggleCheckBox(status)}
           />
@@ -233,3 +299,20 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
+
+const customstyle = StyleSheet.create({
+  headerContainer: {
+      flex: 1,
+      paddingTop: 0,
+      backgroundColor: 'yellow',
+
+      justifyContent: 'space-around',
+  },
+  inputStyles: {
+      height: 47, borderColor: "#A5A5A5", borderWidth: 1, paddingLeft: '3%'
+  },
+  checkbox: {
+ 
+    fontSize: 17,
+  },
+});

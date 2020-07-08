@@ -10,8 +10,6 @@ import {
   FlatList, TouchableOpacity
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { NavigationActions } from 'react-navigation';
-import { DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import NavService from '../navigationService';
@@ -20,24 +18,57 @@ import { lightGrey, white, greyIcon } from '../../../constants/colors';
 import * as menuList from '../../../constants/menu';
 
 import { HEIGHT } from '../../../constants/dimensions';
-
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import _Button from '../../../components/Button/_Button';
 import _TouchItem from '../../../components/TouchItem/_TouchItem';
 import _Text from '../../../components/Text/_Text';
 import _Separator from '../../../components/Separator/_Separator';
 import _MainMenu from '../../../components/Menu/_MainMenu';
 import _SubMenu from '../../../components/Menu/_SubMenu';
-
+import categoryDetails from '../../../actions/CategoriesActions/CategoryActions';
+import { StackActions, NavigationActions, DrawerItems } from 'react-navigation';
+import drawerProfile from '../../../actions/DrawerAction/drawerProfileAction';
+let loggedInCredentials;
 class DrawerComponent extends PureComponent {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       activeSwitch: 1,
       loggedInCredentials: null
     };
+
+
+  }
+
+  someAction() {
+    alert('Some action is called!');
+
+  }
+
+
+  componentWillUnmount() {
+    this.reRenderSomething.remove();
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    // do things with nextProps.someProp and prevState.cachedSomeProp
+    console.log("in drawer component will receive  props", nextProps.drawerProfileReducer, prevState)
+    // return {
+    //   cachedSomeProp: nextProps.someProp,
+    //   // ... other derived state properties
+    // };
   }
 
   componentDidMount() {
+    this.reRenderSomething = this.props.navigation.addListener('willFocus', () => {
+      //Put your code here you want to rerender, in my case i want to rerender the data 
+      //im fetching from firebase and display the changes
+
+      this.someAction();
+      this.forceUpdate();
+    });
+    this.props.categoryDetails()
     AsyncStorage.getItem('LoggedInData').then(value => {
       if (value) {
         let objectvalue = JSON.parse(value)
@@ -48,7 +79,13 @@ class DrawerComponent extends PureComponent {
   }
 
   logout() {
+    let Logoutdata = {
+      Data: null
+    }
+    this.props.drawerProfile(Logoutdata)
+    this.setState({loggedInCredentials:null})
     AsyncStorage.clear()
+
 
   }
 
@@ -65,11 +102,12 @@ class DrawerComponent extends PureComponent {
   }
 
   renderUser() {
-    if (this.state.loggedInCredentials) {
+    console.log("logincredentioal", loggedInCredentials,this.state.loggedInCredentials)
+    if (this.state.loggedInCredentials || loggedInCredentials) {
       return (
         <View style={[styles.userHeaderContainer, { marginTop: 1, paddingVertical: "13%" }]}>
 
-          <Text style={{ fontSize: 22, textAlign: "center", fontWeight: '700' }}>Hello, {this.state.loggedInCredentials.name}</Text>
+          <Text style={{ fontSize: 22, textAlign: "center", fontWeight: '700' }}>Hello, {loggedInCredentials ? loggedInCredentials.userName : this.state.loggedInCredentials.userName}</Text>
 
         </View>
       );
@@ -82,8 +120,9 @@ class DrawerComponent extends PureComponent {
             text="Sign In or Register"
             theme="primary"
             onPress={() => {
-              NavService.reset('root');
+              // NavService.reset('root');
               NavService.navigate('root', 'Login');
+
             }}
             size="M"
           />
@@ -91,7 +130,7 @@ class DrawerComponent extends PureComponent {
             text="Continue with your phone"
             theme="secondary"
             onPress={() => {
-              NavService.reset('root');
+              // NavService.reset('root');
               NavService.navigate('root', 'LoginPhone');
             }}
             leftIcon
@@ -148,13 +187,14 @@ class DrawerComponent extends PureComponent {
   }
   renderLogout() {
     return (
-      <TouchableOpacity onPress={() => this.logout()} style={{ paddingHorizontal: "13%", backgroundColor: "yellow", paddingTop: "3%" }}>
-        <Text style={{ fontSize: 16 }}>Sign out</Text>
+      <TouchableOpacity onPress={() => this.logout()} style={{ paddingHorizontal: "13%", backgroundColor: "transparent", paddingTop: "2%" }}>
+        <Text style={{ fontSize: 16,color:'red' }}>Sign out</Text>
       </TouchableOpacity>
     );
   }
 
   render() {
+    loggedInCredentials = this.props.drawerProfileReducer.drawerProfileData
     return (
       <View style={{ width: '100%', height: '100%' }}>
         {this.renderCloseButton()}
@@ -168,7 +208,7 @@ class DrawerComponent extends PureComponent {
             <_Separator />
             {this.renderSubMenu()}
             {this.renderAppSubMenu()}
-            {this.renderLogout()}
+            {loggedInCredentials ? this.renderLogout():null}
 
             {/* <DrawerItems {...this.props} getLabel={this.renderMenuItem} /> */}
           </SafeAreaView>
@@ -178,7 +218,21 @@ class DrawerComponent extends PureComponent {
   }
 }
 
-export default DrawerComponent;
+function mapStateToProps(state) {
+  return {
+    signInReducer: state.signInReducer,
+    drawerProfileReducer: state.drawerProfileReducer
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    ...bindActionCreators({ categoryDetails, drawerProfile }, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DrawerComponent)
+
 
 const styles = StyleSheet.create({
   closeButton: {

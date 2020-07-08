@@ -39,16 +39,25 @@ class Categories extends Component {
       categoriesindex: [],
       password: '',
     };
+ 
   }
+
+
 
   componentDidMount() {
-
     this.props.categoryDetails()
     this.props.bannerCategory()
+    AsyncStorage.getItem('LoggedInData').then(value => {
+      if (value) {
+        let objectvalue = JSON.parse(value)
+        this.setState({ loggedInCredentials: objectvalue })
+        console.log("async value", objectvalue)
+      }
+    });
 
   }
 
-  retryBanner(){
+  retryBanner() {
     this.props.bannerCategory()
   }
 
@@ -113,7 +122,7 @@ class Categories extends Component {
     return (
       <View style={styles.slide1}>
         <Image style={{
-          width:deviceWidth,
+          width: deviceWidth,
           flex: 1,
           backgroundColor: 'transparent'
         }} source={{ uri: item }} />
@@ -135,17 +144,17 @@ class Categories extends Component {
           }}
         >
           <View style={{ flex: 0.25, backgroundColor: "transparent" }}>
-           {
-             this.props.categoryBannerReducer.bannerCategoryLoading?
-             <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-             <ActivityIndicator/>
-             </View>
-             :
-             this.props.categoryBannerReducer.bannerCategoryData  && this.props.categoryBannerReducer.bannerCategoryData.data ?
-              <Swiper showsButtons={false}
-              buttonWrapperStyle={{ top: "10%" }}
-              style={styles.wrapper} showsButtons={true}>
-              {/* <View style={styles.slide1}>
+            {
+              this.props.categoryBannerReducer.bannerCategoryLoading ?
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                  <ActivityIndicator />
+                </View>
+                :
+                this.props.categoryBannerReducer.bannerCategoryData && this.props.categoryBannerReducer.bannerCategoryData.data ?
+                  <Swiper showsButtons={false}
+                    buttonWrapperStyle={{ top: "10%" }}
+                    style={styles.wrapper} showsButtons={true}>
+                    {/* <View style={styles.slide1}>
                 <Image style={{ width: deviceWidth * 1, height: deviceHeight * 0.28 }} source={{ uri: "https://picsum.photos/seed/picsum/200/300" }} />
 
               </View>
@@ -156,20 +165,20 @@ class Categories extends Component {
                 <Image style={{ width: deviceWidth * 0.97, height: deviceHeight * 0.2 }} source={{ uri: "https://picsum.photos/id/870/200/300?grayscale&blur=2" }} />
 
               </View> */}
-              {
-                this.props.categoryBannerReducer.bannerCategoryData  && this.props.categoryBannerReducer.bannerCategoryData.data.map((item, index) => {
-                  return (
-                    this.bannerView(item, index)
-                  )
-                })
-              }
-            </Swiper>
-          :
-          <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-          <Text style={{paddingVertical:'3%'}}>Something went wrong ..</Text>  
-          <Text onPress={()=>this.retryBanner()} style={{color:'skyblue'}}>Retry</Text>  
-          </View>
-          }
+                    {
+                      this.props.categoryBannerReducer.bannerCategoryData && this.props.categoryBannerReducer.bannerCategoryData.data.map((item, index) => {
+                        return (
+                          this.bannerView(item, index)
+                        )
+                      })
+                    }
+                  </Swiper>
+                  :
+                  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ paddingVertical: '3%' }}>Something went wrong ..</Text>
+                    <Text onPress={() => this.retryBanner()} style={{ color: 'skyblue' }}>Retry</Text>
+                  </View>
+            }
           </View>
 
           <View style={{ flex: 0.75, backgroundColor: "transparent" }}>
@@ -225,8 +234,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'transparent'
-    
-  
+
+
   },
   slide2: {
     flex: 1,

@@ -29,7 +29,10 @@ export default class _SignInPhone extends Component {
     };
   }
 
-  login = () => {};
+  login = () => {
+    this.props.navigation.state.params.onNavigateBack()
+    this.props.navigation.goBack()
+  };
   render() {
     return (
       <SafeAreaView style={[appStyles.container]}>

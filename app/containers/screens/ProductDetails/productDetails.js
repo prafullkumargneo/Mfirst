@@ -30,19 +30,28 @@ import DeliveryIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Swiper from 'react-native-swiper';
 import { RNToasty } from 'react-native-toasty';
 import productDetailsActions from '../../../actions/ProductActions/productDetailsAction';
+import addToCart from '../../../actions/CartActions/addToCartActions';
 
 class ProductDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            productDetailFlag: "overview"
+            productDetailFlag: "overview",
+            userId: null
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const { params } = this.props.navigation.state;
         let productId = params && params.productId;
         this.props.productDetailsActions(productId)
+        await AsyncStorage.getItem('LoggedInData').then(value => {
+            if (value) {
+                let objectvalue = JSON.parse(value)
+                this.setState({ userId: objectvalue.userId })
+                console.log("async value", objectvalue)
+            }
+        });
         console.log("product details", productId)
     }
 
@@ -89,12 +98,23 @@ class ProductDetails extends Component {
 
     }
 
+    addToCart(productId) {
+        let cartData = {
+            uId: this.state.userId && this.state.userId,
+            productId: productId,
+            qty: 1,
+            qtyStatus: "+",
+            token: 'null',
+        }
+        this.props.addToCart(cartData)
+    }
+
     render() {
         const { params } = this.props.navigation.state;
         console.log("props of discover", params)
         if (this.props.productDetailReducer.productDetailLoading) {
             return (
-                <View style={{ flex: 1,justifyContent:"center",alignItems:"center" }}>
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                     <ActivityIndicator size={'large'} />
                 </View>
             )
@@ -103,19 +123,19 @@ class ProductDetails extends Component {
             return (
                 <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
 
-                    {/* <View style={{ flex: 0.9, backgroundColor: "#D8D8D8" }}>
-                    <ScrollView style={{ height: deviceHeight, width: deviceWidth }}>
+                    <View style={{ flex: 0.9, backgroundColor: "#D8D8D8" }}>
+                        <ScrollView style={{ height: deviceHeight, width: deviceWidth }}>
 
-                        <View style={{ backgroundColor: "white", marginBottom: 10 }}>
+                            <View style={{ backgroundColor: "white", marginBottom: 10 }}>
 
-                            <View style={{ backgroundColor: "white", paddingVertical: 10, paddingHorizontal: 17 }}>
-                                <Text style={{ color: "#A5A5A5", fontSize: 14, paddingVertical: 2 }}>{params.categoryTitle}</Text>
-                                <Text style={{ color: "#2B2B2B", fontSize: 20 }}>{params.categoryDescription}</Text>
-                            </View>
+                                <View style={{ backgroundColor: "white", paddingVertical: 10, paddingHorizontal: 17 }}>
+                                    <Text style={{ color: "#A5A5A5", fontSize: 14, paddingVertical: 2 }}>{params.productTitle}</Text>
+                                    <Text style={{ color: "#2B2B2B", fontSize: 20 }}>{params.productTitle}</Text>
+                                </View>
 
-                            <View style={{ backgroundColor: "white", justifyContent: "center", flexDirection: "row" }}>
-                                <ScrollView horizontal={true} contentContainerStyle={{ paddingHorizontal: 17,paddingVertical:"2%" }}>
-                                    {
+                                <View style={{ backgroundColor: "white", justifyContent: "center", flexDirection: "row" }}>
+                                    <ScrollView horizontal={true} contentContainerStyle={{ paddingHorizontal: 17, paddingVertical: "2%" }}>
+                                        {/* {
                                         params.productQualityDescription.map((item, index) => {
 
                                             return (
@@ -124,78 +144,78 @@ class ProductDetails extends Component {
 
                                         })
 
-                                    }
-                                </ScrollView>
+                                    } */}
+                                    </ScrollView>
 
-                            </View>
-
-                            <View style={{ height: deviceHeight * 0.3, backgroundColor: "white" }}>
-
-                                <Swiper style={{}} showsButtons={true}>
-                                    <View style={styles.slide1}>
-                                        <Image style={{ width: deviceWidth * 1, height: deviceHeight * 0.28 }} source={{ uri: "https://picsum.photos/seed/picsum/200/300" }} />
-
-                                    </View>
-                                    <View style={styles.slide2}>
-                                        <Image style={{ width: deviceWidth, height: deviceHeight }} source={{ uri: "https://i.picsum.photos/id/631/200/300.jpg" }} />
-                                    </View>
-                                    <View style={styles.slide3}>
-                                        <Image style={{ width: deviceWidth * 0.97, height: deviceHeight * 0.2 }} source={{ uri: "https://picsum.photos/id/870/200/300?grayscale&blur=2" }} />
-
-                                    </View>
-                                </Swiper>
-                                <View style={{ position: "absolute", backgroundColor: "transparent", top: deviceHeight * 0.24, alignSelf: "flex-end", right: "6%" }}>
-                                    <Icon name={"hearto"} size={25} />
                                 </View>
 
-                            </View>
+                                <View style={{ height: deviceHeight * 0.3, backgroundColor: "white" }}>
 
-                            <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingHorizontal: 17, paddingVertical: 15, borderWidth: 0.5, borderColor: "#A5A5A5" }}>
+                                    <Swiper style={{}} showsButtons={true}>
+                                        <View style={styles.slide1}>
+                                            <Image style={{ width: deviceWidth * 1, height: deviceHeight * 0.28 }} source={{ uri: params.productImage }} />
 
-                                <View style={{ flex: 0.2, backgroundColor: "transparent", justifyContent: "center", }}>
-                                    <DeliveryIcon name={"truck-fast"} size={40} color={"#00333A"} />
-                                </View>
-                                <View style={{ flex: 0.8, justifyContent: "center", paddingHorizontal: 24 }}>
-                                    <Text style={{ fontSize: 15, }}>Fast delivery within <Text style={{ color: "#16A8B1", fontSize: 15 }}>4 hrs</Text> if you order today by 8PM</Text>
-                                </View>
-
-                            </View>
-
-                        </View>
-
-                        <View style={{ backgroundColor: "white" }}>
-
-                            <View style={{ height: deviceHeight * 0.05, backgroundColor: "transparent", flexDirection: "row", borderWidth:0.5,borderColor: "#A5A5A5" }}>
-
-                                <View style={{ flex: 0.33, backgroundColor: "transparent", justifyContent: "center", alignItems: "center", borderBottomColor: this.state.productDetailFlag === "overview" ? "#16A8B1" : null, borderBottomWidth: this.state.productDetailFlag === "overview" ? 3 : null }}>
-                                    <TouchableOpacity onPress={() => { this.setState({ productDetailFlag: "overview" }) }} style={{ backgroundColor: "white" }}>
-                                        <Text style={{ fontSize: 13, color: this.state.productDetailFlag === "overview" ? "#16A8B1" : "#A5A5A5", fontWeight:"700" }}>OVERVIEW</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{ flex: 0.34, backgroundColor: "transparent", justifyContent: "center", alignItems: "center", borderBottomColor: this.state.productDetailFlag === "Detail" ? "#16A8B1" : null, borderBottomWidth: this.state.productDetailFlag === "Detail" ? 3 : null }}>
-                                    <TouchableOpacity onPress={() => { this.setState({ productDetailFlag: "Detail" }) }}>
-                                        <Text style={{ fontSize: 13, color: this.state.productDetailFlag === "Detail" ? "#16A8B1" : "#A5A5A5", fontWeight:"700" }}>DETAILS</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{ flex: 0.33, backgroundColor: "transparent", justifyContent: "center", alignItems: "center", borderBottomColor: this.state.productDetailFlag === "ReturnPolicy" ? "#16A8B1" : null, borderBottomWidth: this.state.productDetailFlag === "ReturnPolicy" ? 3 : null }}>
-                                    <TouchableOpacity onPress={() => { this.setState({ productDetailFlag: "ReturnPolicy" }) }}>
-                                        <Text style={{ fontSize: 13, color: this.state.productDetailFlag === "ReturnPolicy" ? "#16A8B1" : "#A5A5A5", fontWeight:"700" }}>RETURN POLICY</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-
-                            {
-                                this.state.productDetailFlag == "overview" ?
-
-
-                                    <View style={{ paddingHorizontal: 35, backgroundColor: "white", paddingVertical: 25 }}>
-
-                                        <View style={{ paddingVertical: 5 }}>
-                                            <Text style={{ fontSize: 15, color: "#393939", fontWeight: "bold" }}>Exparation Date: {params.overview.ExparationDate}</Text>
                                         </View>
+                                        <View style={styles.slide2}>
+                                            <Image style={{ width: deviceWidth, height: deviceHeight }} source={{ uri: "https://i.picsum.photos/id/631/200/300.jpg" }} />
+                                        </View>
+                                        <View style={styles.slide3}>
+                                            <Image style={{ width: deviceWidth * 0.97, height: deviceHeight * 0.2 }} source={{ uri: "https://picsum.photos/id/870/200/300?grayscale&blur=2" }} />
 
-                                        <View>
-                                            {
+                                        </View>
+                                    </Swiper>
+                                    <View style={{ position: "absolute", backgroundColor: "transparent", top: deviceHeight * 0.24, alignSelf: "flex-end", right: "6%" }}>
+                                        <Icon name={"hearto"} size={25} />
+                                    </View>
+
+                                </View>
+
+                                <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingHorizontal: 17, paddingVertical: 15, borderWidth: 0.5, borderColor: "#A5A5A5" }}>
+
+                                    <View style={{ flex: 0.2, backgroundColor: "transparent", justifyContent: "center", }}>
+                                        <DeliveryIcon name={"truck-fast"} size={40} color={"#00333A"} />
+                                    </View>
+                                    <View style={{ flex: 0.8, justifyContent: "center", paddingHorizontal: 24 }}>
+                                        <Text style={{ fontSize: 15, }}>Fast delivery within <Text style={{ color: "#16A8B1", fontSize: 15 }}>4 hrs</Text> if you order today by 8PM</Text>
+                                    </View>
+
+                                </View>
+
+                            </View>
+
+                            <View style={{ backgroundColor: "white" }}>
+
+                                <View style={{ height: deviceHeight * 0.05, backgroundColor: "transparent", flexDirection: "row", borderWidth: 0.5, borderColor: "#A5A5A5" }}>
+
+                                    <View style={{ flex: 0.33, backgroundColor: "transparent", justifyContent: "center", alignItems: "center", borderBottomColor: this.state.productDetailFlag === "overview" ? "#16A8B1" : null, borderBottomWidth: this.state.productDetailFlag === "overview" ? 3 : null }}>
+                                        <TouchableOpacity onPress={() => { this.setState({ productDetailFlag: "overview" }) }} style={{ backgroundColor: "white" }}>
+                                            <Text style={{ fontSize: 13, color: this.state.productDetailFlag === "overview" ? "#16A8B1" : "#A5A5A5", fontWeight: "700" }}>OVERVIEW</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={{ flex: 0.34, backgroundColor: "transparent", justifyContent: "center", alignItems: "center", borderBottomColor: this.state.productDetailFlag === "Detail" ? "#16A8B1" : null, borderBottomWidth: this.state.productDetailFlag === "Detail" ? 3 : null }}>
+                                        <TouchableOpacity onPress={() => { this.setState({ productDetailFlag: "Detail" }) }}>
+                                            <Text style={{ fontSize: 13, color: this.state.productDetailFlag === "Detail" ? "#16A8B1" : "#A5A5A5", fontWeight: "700" }}>DETAILS</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={{ flex: 0.33, backgroundColor: "transparent", justifyContent: "center", alignItems: "center", borderBottomColor: this.state.productDetailFlag === "ReturnPolicy" ? "#16A8B1" : null, borderBottomWidth: this.state.productDetailFlag === "ReturnPolicy" ? 3 : null }}>
+                                        <TouchableOpacity onPress={() => { this.setState({ productDetailFlag: "ReturnPolicy" }) }}>
+                                            <Text style={{ fontSize: 13, color: this.state.productDetailFlag === "ReturnPolicy" ? "#16A8B1" : "#A5A5A5", fontWeight: "700" }}>RETURN POLICY</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+
+                                {
+                                    this.state.productDetailFlag == "overview" ?
+
+
+                                        <View style={{ paddingHorizontal: 35, backgroundColor: "white", paddingVertical: 25 }}>
+
+                                            <View style={{ paddingVertical: 5 }}>
+                                                <Text style={{ fontSize: 15, color: "#393939", fontWeight: "bold" }}>Exparation Date: 22/05/8</Text>
+                                            </View>
+
+                                            <View>
+                                                {/* {
                                                 params.overview.Details.map((item, index) => {
                                                     console.log("item==>", item)
 
@@ -205,21 +225,21 @@ class ProductDetails extends Component {
 
                                                 })
 
-                                            }
-                                        </View>
-
-
-                                    </View>
-                                    :
-                                    this.state.productDetailFlag == "Detail" ?
-                                        <View style={{ paddingHorizontal: 35, backgroundColor: "transparent", paddingVertical: 25 }}>
-
-                                            <View style={{ paddingVertical: 5 }}>
-                                                <Text style={{ fontSize: 15, color: "#393939", fontWeight: "bold" }}>Exparation Date: {params.overview.ExparationDate}</Text>
+                                            } */}
                                             </View>
 
-                                            <View>
-                                                {
+
+                                        </View>
+                                        :
+                                        this.state.productDetailFlag == "Detail" ?
+                                            <View style={{ paddingHorizontal: 35, backgroundColor: "transparent", paddingVertical: 25 }}>
+
+                                                <View style={{ paddingVertical: 5 }}>
+                                                    <Text style={{ fontSize: 15, color: "#393939", fontWeight: "bold" }}>Exparation Date: 22/08/9</Text>
+                                                </View>
+
+                                                <View>
+                                                    {/* {
                                                     params.overview.Details.map((item, index) => {
                                                         console.log("item==>", item)
 
@@ -229,21 +249,21 @@ class ProductDetails extends Component {
 
                                                     })
 
-                                                }
-                                            </View>
-
-
-                                        </View>
-
-                                        : this.state.productDetailFlag == "ReturnPolicy" ?
-                                            <View style={{ paddingHorizontal: 35, backgroundColor: "transparent", paddingVertical: 25 }}>
-
-                                                <View style={{ paddingVertical: 5 }}>
-                                                    <Text style={{ fontSize: 15, color: "#393939", fontWeight: "bold" }}>Exparation Date: {params.overview.ExparationDate}</Text>
+                                                } */}
                                                 </View>
 
-                                                <View>
-                                                    {
+
+                                            </View>
+
+                                            : this.state.productDetailFlag == "ReturnPolicy" ?
+                                                <View style={{ paddingHorizontal: 35, backgroundColor: "transparent", paddingVertical: 25 }}>
+
+                                                    <View style={{ paddingVertical: 5 }}>
+                                                        <Text style={{ fontSize: 15, color: "#393939", fontWeight: "bold" }}>Exparation Date: 22/08/8</Text>
+                                                    </View>
+
+                                                    <View>
+                                                        {/* {
                                                         params.overview.Details.map((item, index) => {
                                                             console.log("item==>", item)
 
@@ -253,79 +273,67 @@ class ProductDetails extends Component {
 
                                                         })
 
-                                                    }
+                                                    } */}
+                                                    </View>
+
+
                                                 </View>
 
-
-                                            </View>
-
-                                            :
-                                            null
-                            }
+                                                :
+                                                null
+                                }
 
 
-                        </View>
-
-                        <View style={{ backgroundColor: "white", borderWidth: 0.5, borderColor: "#A5A5A5", paddingVertical:"5%" }}>
-
-                            <View style={{ paddingVertical: 10, paddingHorizontal: 17 }}>
-                                <Text style={{fontWeight:"700", color: "#2B2B2B"}}>RELATED ITEMS</Text>
                             </View>
-                            <ScrollView horizontal={true} style={{backgroundColor:"transparent",paddingHorizontal: 17 }}>
-                                {
+
+                            <View style={{ backgroundColor: "white", borderWidth: 0.5, borderColor: "#A5A5A5", paddingVertical: "5%" }}>
+
+                                <View style={{ paddingVertical: 10, paddingHorizontal: 17 }}>
+                                    <Text style={{ fontWeight: "700", color: "#2B2B2B" }}>RELATED ITEMS</Text>
+                                </View>
+                                <ScrollView horizontal={true} style={{ backgroundColor: "transparent", paddingHorizontal: 17 }}>
+                                    {/* {
                                     params.RelatedItems.map((item, index) => {
                                         return (
                                             this.relatedItemList(item, index)
                                         )
                                     })
-                                }
-                            </ScrollView>
-                        </View>
-                    </ScrollView>
-                </View>
-
-                <View style={{ flex: 0.1, backgroundColor: "white", flexDirection: "row", borderWidth: 0.5, borderColor: "#A5A5A5" }}>
-
-                    <View style={{ flex: 0.5, backgroundColor: "white", justifyContent: "center", alignItems: "flex-start", paddingHorizontal: "5%" }}>
-                        <Text style={{ color: "#003A51", fontSize: 16 }}>{params.cost} KWD</Text>
-
-                        <View style={{ backgroundColor: "white", flexDirection: "row", paddingVertical: "2%" }}>
-
-                            <Text style={{ color: "#A5A5A5", textDecorationLine: "line-through", fontSize: 13 }}>1200 KWD    </Text>
-                            <Text style={{ color: "#16A8B1", fontSize: 13 }}>30% OFF</Text>
-
-                        </View>
-
+                                } */}
+                                </ScrollView>
+                            </View>
+                        </ScrollView>
                     </View>
 
-                    <View style={{ flex: 0.5, backgroundColor: "white", justifyContent: "center", alignItems: "center", top: "3%" }}>
-                        <_Button
-                            text="Add to cart"
-                            theme={"primary"}
-                            onPress={() => {
-                                RNToasty.Success({
-                                    title:"Item added to cart",
-                                    titleSize:15
-                                })
-                            }}
-                            halfButton={true}
-                        />
-                    </View>
+                    <View style={{ flex: 0.1, backgroundColor: "white", flexDirection: "row", borderWidth: 0.5, borderColor: "#A5A5A5" }}>
+
+                        <View style={{ flex: 0.5, backgroundColor: "white", justifyContent: "center", alignItems: "flex-start", paddingHorizontal: "5%" }}>
+                            <Text style={{ color: "#003A51", fontSize: 16 }}>{params.productAmount} KWD</Text>
+
+                            <View style={{ backgroundColor: "white", flexDirection: "row", paddingVertical: "2%" }}>
+
+                                <Text style={{ color: "#A5A5A5", textDecorationLine: "line-through", fontSize: 13 }}>1200 KWD    </Text>
+                                <Text style={{ color: "#16A8B1", fontSize: 13 }}>30% OFF</Text>
+
+                            </View>
+
+                        </View>
+
+                        <View style={{ flex: 0.5, backgroundColor: "white", justifyContent: "center", alignItems: "center", top: "3%" }}>
+                            <_Button
+                                text="Add to cart"
+                                theme={"primary"}
+                                onPress={() => {
+                                    this.addToCart(params.productId)
+                                    RNToasty.Success({
+                                        title: "Item added to cart",
+                                        titleSize: 15
+                                    })
+                                }}
+                                halfButton={true}
+                            />
+                        </View>
 
 
-                </View> */}
-                   <View style={{ flex: 0.5, backgroundColor: "white", justifyContent: "center", alignItems: "center", top: "3%" }}>
-                        <_Button
-                            text="Add to cart"
-                            theme={"primary"}
-                            onPress={() => {
-                                RNToasty.Success({
-                                    title:"Item added to cart",
-                                    titleSize:15
-                                })
-                            }}
-                            halfButton={true}
-                        />
                     </View>
                 </SafeAreaView>
 
@@ -342,7 +350,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        ...bindActionCreators({ productDetailsActions }, dispatch)
+        ...bindActionCreators({ productDetailsActions, addToCart }, dispatch)
     }
 }
 

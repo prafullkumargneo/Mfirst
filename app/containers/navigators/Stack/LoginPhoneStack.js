@@ -22,7 +22,7 @@ const LoginPhoneNavigator = createStackNavigator(
               style={{margin: 10}}
               onPress={() => {
                 NavService.goBack('root');
-                NavService.navigate('root', 'Home');
+                // NavService.navigate('root', 'Home');
               }}>
               <Icon
                 style={{fontSize: 40}}
