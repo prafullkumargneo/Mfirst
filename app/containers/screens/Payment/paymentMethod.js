@@ -9,7 +9,7 @@ import {
     AsyncStorage,
     StatusBar,
     ScrollView,
-    FlatList, TextInput, TouchableOpacity
+    FlatList, TextInput, TouchableOpacity, ActivityIndicator
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DrawerActions } from 'react-navigation-drawer';
@@ -27,8 +27,9 @@ import { RNToasty } from 'react-native-toasty';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CardIcon from 'react-native-vector-icons/Fontisto';
 import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-input";
-
 import Creditcard from './creditCard'
+import { WebView } from 'react-native-webview';
+
 
 const colors = {
 
@@ -44,8 +45,26 @@ export default class PaymentMethod extends Component {
         super(props);
         this.state = {
             paymentMethodFlag: "creditcard",
-            billingAddress: false
+            billingAddress: false,
+            visible: true,
+            url: 'https://obscure-journey-86933.herokuapp.com/api/payment/card',
+            onEndUrl: "https://hsa-api.herokuapp.com/api/payment/payfort/merchantUrl",
         };
+    }
+
+    _onNavigationStateChange(webViewState) {
+        console.log("webview response===>", webViewState)
+        if (webViewState.url === this.state.onEndUrl) {
+            let data = {
+                service_id: this.props.navigation.getParam('requestId', null)
+            };
+            console.log("data of payment", data)
+            this.refs.loader.load();
+            data = JSON.stringify(data);
+            Api.paymentStatus(this._makePaymentCbForCard, data);
+            console.log('webview state===>>', webViewState);
+        }
+
     }
 
     paymentMethod(method) {
@@ -56,14 +75,47 @@ export default class PaymentMethod extends Component {
         console.log(form);
     }
 
+    hideSpinner() {
+        this.setState({ visible: false });
+    }
 
     render() {
 
         return (
-            <View style={{ backgroundColor: "white", height: deviceHeight }}>
-                <ProductStatus status={"payment"} />
+            <View style={{ backgroundColor: "white", flex: 1 }}>
+                <View style={{ flex: 0.1 }}>
+                    <ProductStatus status={"payment"} />
+                </View>
+                <WebView
+                    source={{ uri: 'http://sms.future-club.com/bulksms/login.aspx' }}
+                    onNavigationStateChange={this._onNavigationStateChange.bind(this)}
+                    onError={this._onNavigationStateChange.bind(this)}
+                    onMessage={this.onMessage}
+                    onLoad={() => this.hideSpinner()}
 
-                <View style={{ flexDirection: "row", borderBottomWidth: 0.5, borderColor: "#A5A5A5", backgroundColor: "transparent", paddingTop: deviceHeight * 0.04 }}>
+                />
+                {this.state.visible && (
+                    <ActivityIndicator
+                        style={{ position: "absolute", top: deviceHeight / 3, left: deviceWidth / 2.3 }}
+                        size="large"
+                    />
+                )}
+                <View style={{ paddingVertical: deviceHeight * 0.01, paddingHorizontal: deviceWidth * 0.3, backgroundColor: "transparent" }}>
+
+                    <TouchableOpacity onPress={() => { NavService.navigate('root', 'ReviewOrder') }} style={{ backgroundColor: '#3FC1C9', alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.015 }}>
+                        <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Continue</Text>
+                    </TouchableOpacity>
+
+                </View>
+                <View style={{ paddingVertical: deviceHeight * 0.015, paddingHorizontal: deviceWidth * 0.26, backgroundColor: "transparent" }}>
+
+                    <TouchableOpacity style={{ backgroundColor: 'transparent', alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.015, borderWidth: 1, borderColor: colors.darkBlue }}>
+                        <Text style={{ fontSize: 15, color: colors.darkBlue, fontWeight: "700" }}>Pay with cash</Text>
+                    </TouchableOpacity>
+
+                </View>
+
+                {/* <View style={{ flexDirection: "row", borderBottomWidth: 0.5, borderColor: "#A5A5A5", backgroundColor: "transparent", paddingTop: deviceHeight * 0.04 }}>
 
                     <View style={{ paddingVertical: deviceHeight * 0.015, flex: 0.33, backgroundColor: "transparent", justifyContent: "center", alignItems: "center", borderBottomColor: this.state.paymentMethodFlag === "creditcard" ? colors.darkBlue : null, borderBottomWidth: this.state.paymentMethodFlag === "creditcard" ? 3 : null }}>
                         <TouchableOpacity onPress={() => this.paymentMethod("creditcard")} style={{ backgroundColor: "white" }}>
@@ -82,9 +134,9 @@ export default class PaymentMethod extends Component {
                     </View>
 
 
-                </View>
+                </View> */}
 
-                <KeyboardAwareScrollView style={{ height: deviceHeight, width: deviceWidth }}>
+                {/* <KeyboardAwareScrollView style={{ height: deviceHeight, width: deviceWidth }}>
                     {
                         this.state.paymentMethodFlag === 'creditcard' ?
 
@@ -142,7 +194,7 @@ export default class PaymentMethod extends Component {
                 </KeyboardAwareScrollView>
                 <View style={{ paddingVertical: deviceHeight * 0.015, paddingHorizontal: deviceWidth * 0.26, backgroundColor: "transparent" }}>
                     <View style={{ paddingVertical: deviceHeight * 0.025, paddingHorizontal: deviceWidth * 0.26, backgroundColor: "transparent" }} />
-                </View>
+                </View> */}
 
 
             </View>

@@ -208,7 +208,7 @@ class DrawerComponent extends PureComponent {
             <_Separator />
             {this.renderSubMenu()}
             {this.renderAppSubMenu()}
-            {loggedInCredentials ? this.renderLogout():null}
+            {loggedInCredentials || this.state.loggedInCredentials ? this.renderLogout():null}
 
             {/* <DrawerItems {...this.props} getLabel={this.renderMenuItem} /> */}
           </SafeAreaView>

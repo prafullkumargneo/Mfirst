@@ -102,16 +102,14 @@ class ProductDetails extends Component {
         let cartData = {
             uId: this.state.userId && this.state.userId,
             productId: productId,
-            qty: 1,
-            qtyStatus: "+",
-            token: 'null',
+            addQty: 1
         }
         this.props.addToCart(cartData)
     }
 
     render() {
         const { params } = this.props.navigation.state;
-        console.log("props of discover", params)
+        console.log("props of cart", this.props.addToCartReducer)
         if (this.props.productDetailReducer.productDetailLoading) {
             return (
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -320,7 +318,8 @@ class ProductDetails extends Component {
 
                         <View style={{ flex: 0.5, backgroundColor: "white", justifyContent: "center", alignItems: "center", top: "3%" }}>
                             <_Button
-                                text="Add to cart"
+                             disabled={this.props.addToCartReducer &&  this.props.addToCartReducer.addToCartLoading}
+                             text={this.props.addToCartReducer &&  this.props.addToCartReducer.addToCartLoading?"Please wait...":"Add to cart"}
                                 theme={"primary"}
                                 onPress={() => {
                                     this.addToCart(params.productId)
@@ -344,7 +343,8 @@ class ProductDetails extends Component {
 
 function mapStateToProps(state) {
     return {
-        productDetailReducer: state.productDetailReducer
+        productDetailReducer: state.productDetailReducer,
+        addToCartReducer:state.addToCartReducer
     }
 }
 

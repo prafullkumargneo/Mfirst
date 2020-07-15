@@ -1,14 +1,21 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import { ADD_TO_CART_SUCCESS, ADD_TO_CART_FAILURE, ADD_TO_CART_LOADING } from '../api/types';
 import ApiCaller from '../api/CustomApiCaller';
 import ApiConstants from '../api/ApiConstants';
 
 export default function addToCart(cartData) {
-  let api = 'uid=' + cartData.uId + '&product_id=' + cartData.productId + '&qty=' + cartData.qty + '&qtyStatus=' + cartData.qtyStatus + '&token=' + cartData.token;
+  console.log('items in cart data',cartData)
+  let method='POST'
+  //let api = 'uid=' + cartData.uId + '&product_id=' + cartData.productId + '&qty=' + cartData.qty + '&qtyStatus=' + cartData.qtyStatus + '&token=' + cartData.token;
   return (dispatch) => {
     dispatch(addToCartLoading())
-    return ApiCaller(ApiConstants.ADDTOCART + api).then(res => {
-        if (res && res.data) {
-          dispatch(addToCartSuccess(res.data));
+    return ApiCaller(ApiConstants.ADDTOCART,method,cartData).then(res => {
+        if (res && res.order_id) {
+          AsyncStorage.setItem('OrderId',JSON.stringify(res.order_id));
+          AsyncStorage.getItem('OrderId').then(value => {
+           console.log("value of cart data",value)
+          });
+          dispatch(addToCartSuccess(res));
         } else {
           dispatch(addToCartFailure(res))
         }

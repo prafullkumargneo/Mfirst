@@ -48,6 +48,7 @@ class ShippingAddress extends Component {
             phoneNumber: "",
             countryName: "",
             selectedAddress: null,
+            selectedAddressData:null,
             userId: null
 
         };
@@ -94,7 +95,7 @@ class ShippingAddress extends Component {
     }
 
     selectedAddress(item, index) {
-        this.setState({ selectedAddress: index })
+        this.setState({ selectedAddress: index,selectedAddressData:item })
     }
     editAddress(item) {
         NavService.navigate('root', 'AddShippingAddress', item);
@@ -165,7 +166,7 @@ class ShippingAddress extends Component {
     }
     shipingAddressData() {
 
-        if (!this.state.selectedAddress) {
+        if (!this.state.selectedAddressData) {
             RNToasty.Error({
                 title: "Please select address",
                 titleSize: 15
@@ -217,6 +218,7 @@ class ShippingAddress extends Component {
 
 
     render() {
+        console.log('this.state.selectedAddress',this.state.selectedAddress)
         return (
             <View style={{ backgroundColor: "white", flex: 1 }}>
                 <ProductStatus status={"shipping"} />

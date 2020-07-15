@@ -2,17 +2,18 @@ import { GET_CART_SUCCESS, GET_CART_FAILURE, GET_CART_LOADING } from '../api/typ
 import ApiCaller from '../api/CustomApiCaller';
 import ApiConstants from '../api/ApiConstants';
 
-export default function getCartProduct(cartData) {
-  let api = 'uid=' + cartData.uId + '&product_id=' + cartData.productId + '&qty=' + cartData.qty + '&qtyStatus=' + cartData.qtyStatus + '&token=' + cartData.token;
+export default function getCartProduct(getCartData) {
+  console.log("getcart details",getCartData)
+  let api = 'userId=' + getCartData.userId + '&orderId=' + getCartData.orderId;
   return (dispatch) => {
     dispatch(getCartProductLoading())
     return ApiCaller(ApiConstants.GETCART + api).then(res => {
-        // if (res && res.data) {
-        //   dispatch(getCartProductSuccess(res.data));
-        // } else {
-        //   dispatch(getCartProductFailure(res))
-        // }
-      console.log("response of cart api caller", res)
+        if (res && res.Data) {
+          dispatch(getCartProductSuccess(res.Data));
+        } else {
+          dispatch(getCartProductFailure(res))
+        }
+      console.log("response of getcart api caller", res)
     })
   }
 
