@@ -10,12 +10,19 @@ let method='POST'
   return (dispatch) => {
     dispatch(addshippingAddressLoading())
     return ApiCaller(ApiConstants.SHIPPINGADDRESS,method,addshippingData).then(res => {
-        if (res && res.Data) {
+        if (res && res.Data || res.success==true) {
           dispatch(addshippingAddressSuccess(res.Data));
+          if(res.Data){
           RNToasty.Success({
             title: "Address added.",
             titleSize: 15
         })
+      }else{
+        RNToasty.Success({
+          title: "Address Deleted.",
+          titleSize: 15
+      })
+      }
          NavService.navigate('root','ShippingAddress')
         } else {
           dispatch(addshippingAddressFailure(res))

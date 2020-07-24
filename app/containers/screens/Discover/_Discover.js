@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DrawerActions } from 'react-navigation-drawer';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import _Input from '../../../components/Input/_Input';
 import _Button from '../../../components/Button/_Button';
 import _TouchItem from '../../../components/TouchItem/_TouchItem';
@@ -29,9 +31,9 @@ import FeedingDiscover from "./_Feeding";
 import Modal from 'react-native-modal';
 import Slider from 'react-native-slider';
 import { RNToasty } from 'react-native-toasty';
-import DiscoverCategories from './_DiscoverCategories'
+import discoverCategory from '../../../actions/DiscoverActions/discoverCategoryActions';
 
-export default class Discover extends Component {
+class Discover extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -45,8 +47,16 @@ export default class Discover extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.discoverCategory()
+  }
 
-  _keyExtractor = (item, index) => item._id;
+  retryDiscoverProduct() {
+    this.props.discoverCategory()
+
+  }
+
+  _keyExtractor = (item, index) => item.valueId;
 
   _renderDiscoverTitleList = ({ item, index }) => {
     console.log("item of discover", item, this.state.isTitlecheckedindex)
@@ -54,16 +64,16 @@ export default class Discover extends Component {
       <TitleDiscover Content={item} ContentIndex={index} callbackTitleList={(item) => this.TitlefilterList(item)} />
     )
   }
-  renderTitle(DummyJSON) {
-
+  renderTitle(item, index) {
+    console.log("data of discover", item, index)
     return (
       <View style={{ backgroundColor: "white", paddingHorizontal: 25, justifyContent: "center", paddingVertical: 15 }} >
         <View style={{ paddingVertical: 10 }}>
-          <Text style={{ color: "#848484", fontSize: 15, fontWeight: '700' }}>{DummyJSON.headername}</Text>
+          <Text style={{ color: "#848484", fontSize: 15, fontWeight: '700' }}>{item.attributeName}</Text>
         </View>
         <FlatList
           horizontal
-          data={DummyJSON.titleDescription}
+          data={item.valueDetails}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderDiscoverTitleList}
         />
@@ -144,24 +154,25 @@ export default class Discover extends Component {
   findProductsFilter() {
     console.log("whole filter data", this.state.priceValue, this.state.colorFilterData)
     this.setState({ isSelectFilter: "FindProducts" })
-    if (this.state.priceValue && this.state.colorFilterData) {
-      this.setState({ isloadingFilter: true })
-      setTimeout(() => {
-        NavService.navigate('home', 'DiscoverCategories');
-        this.setState({ isloadingFilter: false })
-      }, 300
+    NavService.navigate('home', 'DiscoverCategories');
+    // if (this.state.priceValue && this.state.colorFilterData) {
+    //   this.setState({ isloadingFilter: true })
+    //   setTimeout(() => {
+    //     NavService.navigate('home', 'DiscoverCategories');
+    //     this.setState({ isloadingFilter: false })
+    //   }, 300
 
-      )
-    }
-    else {
-      RNToasty.Error({
-        title: "Please select color"
-      })
-    }
+    //   )
+    // }
+    // else {
+    //   RNToasty.Error({
+    //     title: "Please select color"
+    //   })
+    // }
   }
 
   clearProductFilter() {
-    this.setState({ isSelectFilter: "ClearProducts" })
+    this.setState({ isSelectFilter: "ClearProducts", filterData: [] })
   }
 
   filterColorData(item, index) {
@@ -170,8 +181,8 @@ export default class Discover extends Component {
   }
 
   render() {
-    console.log("dummy data", DummyJSON, this.state.filterData, this.state.isloadingFilter)
-    if (this.state.isloadingFilter) {
+    console.log("discoverCategoryData", this.props.discoverCategoryReducer)
+    if (this.props.discoverCategoryReducer.discoverCategoryLoading) {
       return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
           <ActivityIndicator animating={true} color={"#003a51"} size={"large"} />
@@ -181,28 +192,66 @@ export default class Discover extends Component {
     else {
       return (
         <SafeAreaView style={styles.headerContainer}>
-          <View style={{ flex: 0.85, backgroundColor: "yellow" }}>
-            <ScrollView
-              contentContainerStyle={{
-                height: deviceHeight, width: deviceWidth,
-                backgroundColor: "white"
-              }}>
+          {/* <View style={{ flex: 0.9, backgroundColor: "white" }}> */}
+          <ScrollView
+            style={{
+              height: deviceHeight, width: deviceWidth,
+              backgroundColor: "white"
+            }}>
 
-              {this.renderTitle(DummyJSON.DiscoverData.Title)}
-              {this.renderGender(DummyJSON.DiscoverData.Gender)}
-              {this.renderFeeding(DummyJSON.DiscoverData.Feeding)}
-              {/* <_Separator />
+            {
+              this.props.discoverCategoryReducer && this.props.discoverCategoryReducer.discoverCategoryData && this.props.discoverCategoryReducer.discoverCategoryData.attributeDetails ?
+                this.props.discoverCategoryReducer.discoverCategoryData.attributeDetails.map((item, index) => {
+                  return (
+                    this.renderTitle(item, index)
+                  )
+
+                })
+                :
+                <View style={{ height: deviceHeight * 0.7, justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={{ paddingVertical: '3%' }}>Something went wrong ..</Text>
+                  <Text onPress={() => this.retryDiscoverProduct()} style={{ color: 'skyblue' }}>Retry</Text>
+                </View>
+            }
+
+
+            <View style={{ height: deviceHeight * 0.17, backgroundColor: "transparent", flexDirection: "row", paddingTop: '9%' }}>
+              <View style={{ flex: 0.5, justifyContent: 'center', alignItems: "center" }}>
+                <_Button
+                  text="Clear all"
+                  theme={this.state.isSelectFilter == "ClearProducts" ? "primary" : "secondary"}
+                  onPress={() => {
+                    this.clearProductFilter()
+                  }}
+                  halfButton={true}
+                />
+              </View>
+              <View style={{ flex: 0.5, justifyContent: 'center', alignItems: "center" }}>
+                <_Button
+                  text="Find Products"
+                  theme={this.state.isSelectFilter == "FindProducts" ? "primary" : "secondary"}
+                  onPress={() => {
+                    this.findProductsFilter()
+                  }}
+                  halfButton={true}
+                />
+              </View>
+            </View>
+
+            {/* {this.renderGender(DummyJSON.DiscoverData.Gender)}
+             {this.renderFeeding(DummyJSON.DiscoverData.Feeding)} */}
+            {/* <_Separator />
             {this.renderMainMenu()}
             <_Separator />
             {this.renderSubMenu()}
             {this.renderAppSubMenu()}  */}
 
-              {/* <DrawerItems {...this.props} getLabel={this.renderMenuItem} /> */}
+            {/* <DrawerItems {...this.props} getLabel={this.renderMenuItem} /> */}
 
-            </ScrollView>
-          </View>
+          </ScrollView>
+          {/* </View> */}
 
-          {
+          {/* {
             this.state.isSelectFilter == "FindProducts" ?
               <View style={{ height: deviceHeight * 0.26, width: deviceWidth, position: "absolute", top: "55%", backgroundColor: "white", paddingHorizontal: 20 }}>
                 <View style={{ backgroundColor: "white", paddingVertical: 13 }}>
@@ -240,10 +289,10 @@ export default class Discover extends Component {
                 </View>
               </View>
               : null
-          }
+          } */}
 
 
-          <View style={{ flex: 0.15, backgroundColor: "white", flexDirection: "row", borderTopWidth: 0.5, borderTopColor: '#848484' }}>
+          {/* <View style={{ flex: 0.1, backgroundColor: "transparent", flexDirection: "row" }}>
             <View style={{ flex: 0.5, justifyContent: 'center', alignItems: "center" }}>
               <_Button
                 text="Clear all"
@@ -265,7 +314,7 @@ export default class Discover extends Component {
               />
             </View>
 
-          </View>
+          </View> */}
 
         </SafeAreaView>
 
@@ -274,11 +323,25 @@ export default class Discover extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    discoverCategoryReducer: state.discoverCategoryReducer
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    ...bindActionCreators({ discoverCategory }, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Discover)
+
 const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
     paddingTop: 0,
-    backgroundColor: 'yellow',
+    backgroundColor: 'white',
 
     justifyContent: 'space-around',
   },

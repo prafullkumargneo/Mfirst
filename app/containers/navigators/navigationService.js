@@ -10,7 +10,8 @@ let _navigators = {
   discover:undefined,
   cart:undefined,
   payment:undefined,
-  reviewOrder:undefined
+  reviewOrder:undefined,
+  trending:undefined
 };
 
 function setNavigator(navigatorRef, navigatorName) {

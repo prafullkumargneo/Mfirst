@@ -50,16 +50,16 @@ export default class TitleDiscover extends Component {
     let contentItem=this.props.Content
     return (
         <View>
-        {/* {item.split(' ').map((item, i) =>  */}
-        <TouchableOpacity onPress={()=>{this.Titlestatus(contentIndex,contentItem)}}>
+        {/* {contentItem.valueName.split(' ').map((item, i) =>  */}
+      <TouchableOpacity onPress={()=>{this.Titlestatus(contentIndex,contentItem)}}>
           <View style={{ height: 76, width: 83, backgroundColor: this.state.isTitlecheckedindexStatus ? "#E9F8FB" : "white", borderRadius: 20, justifyContent: "center", alignItems: "center", margin: 5,borderWidth:1,borderColor:"#003A51"}}>
           <Icon size={40} color="black" name="human-male-boy" />
           </View>
           <View>
-            <Text style={{ textAlign: 'center', fontSize: 13,color: "#848484" }}>{contentItem}</Text>
+            <Text style={{ textAlign: 'center', fontSize: 13,color: "#848484" }}>{contentItem.valueName}</Text>
           </View>
-        </TouchableOpacity>
-        {/* )} */}
+        </TouchableOpacity> 
+         {/* )}  */}
 
       </View>
 

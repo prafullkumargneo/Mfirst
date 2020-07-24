@@ -27,6 +27,7 @@ import NavService from '../../navigators/navigationService';
 import { RNToasty } from 'react-native-toasty';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import shippingAddressAction from '../../../actions/ShippingAddressActions/shippingAddressActions';
+import addshippingAddressAction from '../../../actions/ShippingAddressActions/addShippingAddressActions';
 import AsyncStorage from '@react-native-community/async-storage';
 
 
@@ -62,25 +63,18 @@ class ShippingAddress extends Component {
     }
     async someAction() {
         // alert()
-        await AsyncStorage.getItem('LoggedInData').then(value => {
-
-            if (value) {
-                let objectvalue = JSON.parse(value)
-
-                let getShippingAdress = {
-                    shipping_status: "get",
-                    user_id: objectvalue.userId
-                }
-                this.props.shippingAddressAction(getShippingAdress)
-            }
-        });
+        await  this.getAdress()
     }
 
     componentWillUnmount() {
         this.reRenderSomething.remove();
     }
     async componentDidMount() {
-        await AsyncStorage.getItem('LoggedInData').then(value => {
+        await this.getAdress()
+    }
+
+    getAdress(){
+        AsyncStorage.getItem('LoggedInData').then(value => {
 
             if (value) {
                 let objectvalue = JSON.parse(value)
@@ -115,11 +109,12 @@ class ShippingAddress extends Component {
                     text: "Yes", onPress: () => {
                         let deleteShippingAdress = {
                             shipping_status: "delete",
-                            shipping_id: item.shipping_id,
+                            ShippingId: item.shipping_id,
                             user_id: this.state.userId && this.state.userId
                         }
                         console.log('Delete shipping data', deleteShippingAdress)
-                        this.props.shippingAddressAction(deleteShippingAdress)
+                        this.props.addshippingAddressAction(deleteShippingAdress)
+                        this.getAdress()
                     }
                 }
             ],
@@ -130,12 +125,12 @@ class ShippingAddress extends Component {
 
     getShippingAddress(item, index) {
         return (
-            <TouchableOpacity onPress={() => this.selectedAddress(item, index)} style={{ borderWidth: 0.5, borderColor: colors.lightGrey, paddingVertical: '2%', margin: "2%", marginHorizontal: '5%', backgroundColor: 'white' }}>
+            <View key={index} style={{ borderWidth: 0.5, borderColor: colors.lightGrey, paddingVertical: '2%', margin: "2%", marginHorizontal: '5%', backgroundColor: 'white' }}>
 
-                <View style={{ backgroundColor: 'transparent', flexDirection: 'row', paddingHorizontal: deviceWidth * 0.035, borderBottomColor: colors.lightGrey, borderBottomWidth: 0.5, paddingVertical: '2%' }}>
+                <TouchableOpacity onPress={() => this.selectedAddress(item, index)} style={{ backgroundColor: 'transparent', flexDirection: 'row', paddingHorizontal: deviceWidth * 0.035, borderBottomColor: colors.lightGrey, borderBottomWidth: 0.5, paddingVertical: '2%' }}>
                     {this.state.selectedAddress === index ? <Icon name={'checkbox-multiple-marked-circle'} size={23} color={"#3FC1C9"} /> : <Icon name={'checkbox-blank-circle-outline'} size={23} color={"#3FC1C9"} />}
                     {this.state.selectedAddress === index ? <Text style={{ fontSize: 17, color: colors.darkSkyBlue, fontWeight: '700', paddingLeft: "3%" }}>Selected</Text> : <Text style={{ fontSize: 16, color: colors.darkBlue, paddingLeft: "3%" }}>Select</Text>}
-                </View>
+                </TouchableOpacity>
 
                 <View style={{ paddingLeft: deviceWidth * 0.11, backgroundColor: 'transparent', paddingVertical: "3%" }}>
                     {item.personName ? <Text style={{ fontSize: 14, color: colors.darkBlue }}>{item.personName}</Text> : null}
@@ -157,7 +152,7 @@ class ShippingAddress extends Component {
                 </View>
 
 
-            </TouchableOpacity>
+            </View>
         )
 
     }
@@ -222,61 +217,6 @@ class ShippingAddress extends Component {
         return (
             <View style={{ backgroundColor: "white", flex: 1 }}>
                 <ProductStatus status={"shipping"} />
-                {/* <KeyboardAwareScrollView contentContainerStyle={{ backgroundColor: "transparent", paddingVertical: deviceHeight * 0.05 }}>
-
-                    <View style={{ paddingHorizontal: deviceWidth * 0.05, paddingVertical: deviceHeight * 0.02, backgroundColor: "transparent" }}>
-                        <TextInput
-                            style={styles.inputStyles}
-                            onChangeText={firstName => this.setState({ firstName })}
-                            placeholder={"First Name"}
-                            placeholderTextColor={colors.lightGrey}
-                            value={this.state.firstName}
-
-                        />
-                    </View>
-
-                    <View style={{ paddingHorizontal: deviceWidth * 0.05, paddingVertical: deviceHeight * 0.02, backgroundColor: "transparent" }}>
-                        <TextInput
-                            style={styles.inputStyles}
-                            onChangeText={lastName => this.setState({ lastName })}
-                            placeholder={"Last Name"}
-                            placeholderTextColor={colors.lightGrey}
-                            value={this.state.lastName}
-
-                        />
-                    </View>
-
-                    <View style={{ paddingHorizontal: deviceWidth * 0.05, paddingVertical: deviceHeight * 0.02, backgroundColor: "transparent" }}>
-                        <TextInput
-                            style={styles.inputStyles}
-                            onChangeText={phoneNumber => this.setState({ phoneNumber })}
-                            placeholder={"Phone"}
-                            placeholderTextColor={colors.lightGrey}
-                            value={this.state.phoneNumber}
-
-                        />
-                    </View>
-
-                    <View style={{ paddingHorizontal: deviceWidth * 0.05, paddingVertical: deviceHeight * 0.02, backgroundColor: "transparent" }}>
-                        <TextInput
-                            style={styles.inputStyles}
-                            onChangeText={countryName => this.setState({ countryName })}
-                            placeholderTextColor={colors.lightGrey}
-                            placeholder={"Country Name"}
-                            value={this.state.countryName}
-
-                        />
-                    </View>
-
-                </KeyboardAwareScrollView>
-
-                <View style={{ paddingVertical: deviceHeight * 0.1, paddingHorizontal: deviceWidth * 0.3 }}>
-
-                    <TouchableOpacity onPress={() => this.shipingAddressData()} style={{ backgroundColor: '#3FC1C9', alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.015 }}>
-                        <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Confirm</Text>
-                    </TouchableOpacity>
-                </View> */}
-
                 <View style={{ paddingHorizontal: "9%", paddingVertical: '4%', backgroundColor: "transparent" }}>
                     <TouchableOpacity onPress={() => this.addAddress()} style={{ paddingHorizontal: '2%', paddingVertical: "3%", borderRadius: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: colors.darkBlue, flexDirection: 'row' }}>
                         <Icon size={20} name={'plus'} style={{ paddingRight: '2%' }} />
@@ -321,7 +261,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        ...bindActionCreators({ shippingAddressAction }, dispatch)
+        ...bindActionCreators({ shippingAddressAction,addshippingAddressAction }, dispatch)
     }
 }
 

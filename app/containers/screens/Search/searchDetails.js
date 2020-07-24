@@ -44,7 +44,7 @@ class SearchDetails extends Component {
     }
 
     componentDidMount() {
-      
+
         console.log("this.props.navigation.state", this.props.navigation.state)
         const { params } = this.props.navigation.state;
         console.log("params in componentDid", params)
@@ -54,8 +54,8 @@ class SearchDetails extends Component {
 
 
     categorySelectedData(item, index) {
-        console.log("item of category",item,index)
-        NavService.navigate('root', 'ProductDetailsStack',item);
+        console.log("item of category", item, index)
+        NavService.navigate('root', 'ProductDetailsStack', item);
         this.setState({ isSelectedCategory: index })
 
     }
@@ -98,7 +98,7 @@ class SearchDetails extends Component {
                     <Text style={{ paddingVertical: "5%", fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>{item.productTitle}</Text>
                     <View style={{ flexDirection: "row" }}>
                         <Text style={{ paddingVertical: 4, color: "#003A51", fontWeight: "700", fontSize: 14 }}>{item.productAmount} KWD   </Text>
-                      { item.productDiscountPercent? <Text style={{ fontSize: 14, textDecorationLine: "line-through", paddingVertical: 4, fontWeight: "700", color: "#2B2B2B" }}>30% OFF</Text>:null}
+                        {item.productDiscountPercent ? <Text style={{ fontSize: 14, textDecorationLine: "line-through", paddingVertical: 4, fontWeight: "700", color: "#2B2B2B" }}>30% OFF</Text> : null}
                     </View>
 
                     <View style={{ flexDirection: "row-reverse", paddingHorizontal: 10, backgroundColor: "transparent" }}>
@@ -113,6 +113,10 @@ class SearchDetails extends Component {
 
     sameDayDelivery() {
         this.setState({ isSameDayDeleveryFlag: !this.state.isSameDayDeleveryFlag })
+    }
+
+    retryCategories() {
+        this.props.subcategoryDetails(this.props.navigation.state.params.categoryId)
     }
 
     render() {
@@ -159,7 +163,7 @@ class SearchDetails extends Component {
                 </View>
 
 
-                <View style={{ flex: 0.18, backgroundColor: "transaparent" }}>
+                <View style={{ flex: 0.18, backgroundColor: "white" }}>
 
                     <ScrollView horizontal={true} style={{ backgroundColor: "transparent", height: deviceHeight }}>
 
@@ -169,14 +173,20 @@ class SearchDetails extends Component {
                                     <ActivityIndicator size={"large"} />
                                 </View>
                                 :
-                                this.props.subcategoryReducer.subcategoriesData && this.props.subcategoryReducer.subcategoriesData[0] && this.props.subcategoryReducer.subcategoriesData[0].subCategory.map((item, index) => {
-                                    return (
-                                        <View style={{ backgroundColor: "transparent", paddingHorizontal: 10 }}>
-                                            {this.renderSearchSubCategoriesItem(item, index)}
-                                        </View>
-                                    )
+                                this.props.subcategoryReducer.subcategoriesData ?
+                                    this.props.subcategoryReducer.subcategoriesData[0] && this.props.subcategoryReducer.subcategoriesData[0].subCategory.map((item, index) => {
+                                        return (
+                                            <View style={{ backgroundColor: "transparent", paddingHorizontal: 10 }}>
+                                                {this.renderSearchSubCategoriesItem(item, index)}
+                                            </View>
+                                        )
 
-                                })
+                                    })
+                                    :
+                                    <View style={{ width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
+                                        <Text style={{ paddingVertical: '3%' }}>Something went wrong ..</Text>
+                                        <Text onPress={() => this.retryCategories()} style={{ color: 'skyblue' }}>Retry</Text>
+                                    </View>
                         }
 
 
@@ -196,13 +206,13 @@ class SearchDetails extends Component {
                     <ScrollView style={{ backgroundColor: "white", height: deviceHeight, paddingHorizontal: 20 }}>
 
                         {
-                            this.state.subCategoryProductFlag ||  this.props.subcategoryReducer.issubcategoryLoading ?
+                            this.state.subCategoryProductFlag || this.props.subcategoryReducer.issubcategoryLoading ?
                                 <View style={{ paddingTop: "4%", width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
                                     <ActivityIndicator size={"large"} />
                                 </View>
 
                                 :
-                                this.state.subCategorySelectData && this.state.subCategorySelectData.productsData.map((item, index) => { 
+                                this.state.subCategorySelectData && this.state.subCategorySelectData.productsData.map((item, index) => {
                                     return (
                                         this.renderSearchCategoriesItem(item, index)
                                     )

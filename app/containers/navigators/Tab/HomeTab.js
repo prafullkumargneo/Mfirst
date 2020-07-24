@@ -1,13 +1,15 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-import {createAppContainer} from 'react-navigation';
-import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
+import { createAppContainer } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 
 import _Categories from '../../screens/Categories/_Categories';
 import _Discover from '../../screens/Discover/_Discover';
 import DiscoverNavigator from "../Stack/DiscoverStack";
+import TrendingNavigator from "../Stack/TrendingStack";
 import _Trending from '../../screens/Trending/_Trending';
 import * as colors from '../../../constants/colors';
+import { deviceWidth, deviceHeight } from '../../../constants/globals';
 
 const HomeTabNav = createMaterialTopTabNavigator(
   {
@@ -15,11 +17,11 @@ const HomeTabNav = createMaterialTopTabNavigator(
       screen: _Categories,
     },
     Trending: {
-      screen: _Trending,
+      screen: TrendingNavigator,
     },
     Discover: {
       screen: DiscoverNavigator,
-      
+
     }
   },
   {
@@ -33,12 +35,14 @@ const HomeTabNav = createMaterialTopTabNavigator(
       },
 
       indicatorStyle: {
-        height: '100%',
-        backgroundColor: colors.primaryColor,
-        borderRadius: 40,
+        height: deviceHeight*0.05,
+        width:deviceWidth*0.29,
+        marginHorizontal:"1%",
+         backgroundColor: colors.primaryColor,
+        borderRadius: 40
       },
       style: {
-        height:"6%",
+        height: "6%",
         backgroundColor: colors.white,
         shadowOpacity: 0,
         shadowOffset: {

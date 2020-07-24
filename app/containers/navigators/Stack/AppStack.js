@@ -12,6 +12,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SearchIcon from 'react-native-vector-icons/AntDesign';
 import HeaderMenu from '../HeaderMenuButton';
 import {white} from '../../../constants/colors';
+import DashboardHeader from '../../../components/Header/_DashboardHeader';
+
 const AppStack = createStackNavigator(
   {
     MainDrawer: {
@@ -25,31 +27,7 @@ const AppStack = createStackNavigator(
       headerTitleAlign: 'center',
       headerTintColor: white,
       headerRight: () => (
-        <_TouchItem
-          style={{marginRight: 10, flexDirection: 'row'}}
-        >
-          <SearchIcon
-            name={'search1'}
-            onPress={() => {NavService.navigate('root','SearchBar')}}
-            color={'black'}
-            size={24}
-            style={{marginRight: 23,top:"5%"}}
-          />
-          <Icon
-            name={'heart-outline'}
-            onPress={() => {NavService.navigate('root','FavoriteOrders')}}
-            color={'black'}
-            size={25}
-            style={{marginRight: 25,top:"5%"}}
-          />
-          <Icon
-            name={'cart-outline'}
-            onPress={() => {NavService.navigate('root','Cart')}}
-            color={'black'}
-            size={25}
-            style={{marginRight: 5,top:"5%"}}
-          />
-        </_TouchItem>
+        <DashboardHeader/>
       ),
       headerTitle: () => <View />,
       headerLeft: () => <HeaderMenu />,

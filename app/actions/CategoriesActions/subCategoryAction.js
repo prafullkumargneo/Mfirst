@@ -3,6 +3,7 @@ import ApiCaller from '../api/CustomApiCaller';
 import ApiConstants from '../api/ApiConstants';
 
 export default function subcategoryDetails(categoryid) {
+  console.log("data of subcategory ",categoryid)
   return (dispatch) => {
     dispatch(subCategoriesLoading())
     return ApiCaller(ApiConstants.SUBCATEGORY+categoryid).then(res => {

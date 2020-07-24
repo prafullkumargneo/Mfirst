@@ -39,7 +39,7 @@ class Categories extends Component {
       categoriesindex: [],
       password: '',
     };
- 
+
   }
 
 
@@ -76,7 +76,13 @@ class Categories extends Component {
         <TouchableOpacity onPress={() => { this.categoriesDescription(index) }} style={{ backgroundColor: "white", paddingVertical: 3, margin: 2 }}>
           <View style={{ flexDirection: 'row', paddingVertical: 3, paddingHorizontal: 13 }}>
             <View style={{ flex: 0.25 }}>
-              <Image style={{ height: 56, width: 57 }} source={{ uri: item.categoryImage }} />
+              <Image style={{
+                height: 56, width: 57, borderBottomLeftRadius: 70,  borderColor: '#848484', borderWidth:0.2,
+                borderBottomRightRadius: 70,
+                borderTopRightRadius: 70,
+                borderTopLeftRadius: 70,
+                overflow: 'hidden',
+              }} source={{ uri: item.categoryImage }} />
 
             </View>
             <View style={{ flex: 0.65, justifyContent: "center" }}>
@@ -97,7 +103,12 @@ class Categories extends Component {
                 return (
                   <TouchableOpacity onPress={() => { NavService.navigate('root', 'SearchDetails', item); }} style={{ height: deviceHeight * 0.2, justifyContent: "center", paddingHorizontal: 15 }}>
                     <View style={{ paddingVertical: 10 }}>
-                      <Image style={{ height: 66, width: 66 }} source={{ uri: item.categoryImage }} />
+                      <Image style={{ height: 66, width: 66, borderBottomLeftRadius: 70,  borderColor: '#848484', borderWidth:0.2,
+                borderBottomRightRadius: 70,
+                borderTopRightRadius: 70,
+                borderTopLeftRadius: 70,
+                overflow: 'hidden'
+                }} source={{ uri: item.categoryImage }} />
                     </View>
                     <View style={{ alignItems: "center" }}>
                       {item.categoryTitle.split(' ').map((item, i) => <Text style={{ justifyContent: "space-between", color: "#2B2B2B", fontSize: 12, fontWeight: '700' }}>{item}</Text>)}
@@ -124,7 +135,8 @@ class Categories extends Component {
         <Image style={{
           width: deviceWidth,
           flex: 1,
-          backgroundColor: 'transparent'
+          backgroundColor: 'transparent',
+          resizeMode: 'cover'
         }} source={{ uri: item }} />
 
       </View>
@@ -154,17 +166,6 @@ class Categories extends Component {
                   <Swiper showsButtons={false}
                     buttonWrapperStyle={{ top: "10%" }}
                     style={styles.wrapper} showsButtons={true}>
-                    {/* <View style={styles.slide1}>
-                <Image style={{ width: deviceWidth * 1, height: deviceHeight * 0.28 }} source={{ uri: "https://picsum.photos/seed/picsum/200/300" }} />
-
-              </View>
-              <View style={styles.slide2}>
-                <Image style={{ width: deviceWidth, height: deviceHeight }} source={{ uri: "https://picsum.photos/seed/picsum/200/300" }} />
-              </View>
-              <View style={styles.slide3}>
-                <Image style={{ width: deviceWidth * 0.97, height: deviceHeight * 0.2 }} source={{ uri: "https://picsum.photos/id/870/200/300?grayscale&blur=2" }} />
-
-              </View> */}
                     {
                       this.props.categoryBannerReducer.bannerCategoryData && this.props.categoryBannerReducer.bannerCategoryData.data.map((item, index) => {
                         return (

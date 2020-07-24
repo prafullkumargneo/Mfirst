@@ -55,6 +55,22 @@ class ProductDetails extends Component {
         console.log("product details", productId)
     }
 
+    productImages(item, index) {
+        console.log("item of banner", item)
+        return (
+            <View style={styles.slide1}>
+                <Image resizeMethod='resize' resizeMode='stretch' style={{
+                    width: deviceWidth,
+                    flex: 1,
+                    backgroundColor: 'transparent',
+                    
+
+                }} source={{ uri: item }} />
+
+            </View>
+        )
+    }
+
     productQualityDescription(item, index) {
 
         return (
@@ -109,7 +125,7 @@ class ProductDetails extends Component {
 
     render() {
         const { params } = this.props.navigation.state;
-        console.log("props of cart", this.props.addToCartReducer)
+        console.log("props of cart", this.props.productDetailReducer.productDetailData && this.props.productDetailReducer.productDetailData.productImage)
         if (this.props.productDetailReducer.productDetailLoading) {
             return (
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -122,7 +138,7 @@ class ProductDetails extends Component {
                 <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
 
                     <View style={{ flex: 0.9, backgroundColor: "#D8D8D8" }}>
-                        <ScrollView style={{ height: deviceHeight, width: deviceWidth }}>
+                        <ScrollView style={{ height: deviceHeight, width: deviceWidth }} removeClippedSubviews={true}>
 
                             <View style={{ backgroundColor: "white", marginBottom: 10 }}>
 
@@ -149,18 +165,34 @@ class ProductDetails extends Component {
 
                                 <View style={{ height: deviceHeight * 0.3, backgroundColor: "white" }}>
 
+                                    {/* <Image resizeMethod="resize"   resizeMode="contain"
+  source={{ uri: 'http://45.79.122.85:8033/web/image/product.template/6270/image_1920' }}
+                                        style={{ width: deviceWidth, height: deviceHeight * 0.7 }} /> */}
+
                                     <Swiper style={{}} showsButtons={true}>
-                                        <View style={styles.slide1}>
-                                            <Image style={{ width: deviceWidth * 1, height: deviceHeight * 0.28 }} source={{ uri: params.productImage }} />
 
-                                        </View>
-                                        <View style={styles.slide2}>
-                                            <Image style={{ width: deviceWidth, height: deviceHeight }} source={{ uri: "https://i.picsum.photos/id/631/200/300.jpg" }} />
-                                        </View>
-                                        <View style={styles.slide3}>
-                                            <Image style={{ width: deviceWidth * 0.97, height: deviceHeight * 0.2 }} source={{ uri: "https://picsum.photos/id/870/200/300?grayscale&blur=2" }} />
+                                        {
+                                            this.props.productDetailReducer.productDetailData && this.props.productDetailReducer.productDetailData.productExtraImages ?
 
-                                        </View>
+                                                this.props.productDetailReducer.productDetailData.productExtraImages.map((item, index) => {
+                                                    return (
+                                                        this.productImages(item, index)
+                                                    )
+                                                })
+                                                :
+                                                <View style={styles.slide1}>
+                                                    <Image style={{
+                                                        width: deviceWidth,
+                                                        flex: 1,
+                                                        backgroundColor: 'transparent',
+                                                        resizeMode: 'contain'
+                                                    }} source={{ uri:this.props.productDetailReducer.productDetailData && this.props.productDetailReducer.productDetailData.productImage }} />
+
+                                                </View>
+                                        }
+                      
+                                       
+
                                     </Swiper>
                                     <View style={{ position: "absolute", backgroundColor: "transparent", top: deviceHeight * 0.24, alignSelf: "flex-end", right: "6%" }}>
                                         <Icon name={"hearto"} size={25} />
@@ -209,7 +241,7 @@ class ProductDetails extends Component {
                                         <View style={{ paddingHorizontal: 35, backgroundColor: "white", paddingVertical: 25 }}>
 
                                             <View style={{ paddingVertical: 5 }}>
-                                                <Text style={{ fontSize: 15, color: "#393939", fontWeight: "bold" }}>Exparation Date: 22/05/8</Text>
+                                                <Text style={{ fontSize: 15, color: "#393939", fontWeight: "bold" }}>Expiration Date: 22/05/8</Text>
                                             </View>
 
                                             <View>
@@ -318,8 +350,8 @@ class ProductDetails extends Component {
 
                         <View style={{ flex: 0.5, backgroundColor: "white", justifyContent: "center", alignItems: "center", top: "3%" }}>
                             <_Button
-                             disabled={this.props.addToCartReducer &&  this.props.addToCartReducer.addToCartLoading}
-                             text={this.props.addToCartReducer &&  this.props.addToCartReducer.addToCartLoading?"Please wait...":"Add to cart"}
+                                disabled={this.props.addToCartReducer && this.props.addToCartReducer.addToCartLoading}
+                                text={this.props.addToCartReducer && this.props.addToCartReducer.addToCartLoading ? "Please wait..." : "Add to cart"}
                                 theme={"primary"}
                                 onPress={() => {
                                     this.addToCart(params.productId)
@@ -344,7 +376,7 @@ class ProductDetails extends Component {
 function mapStateToProps(state) {
     return {
         productDetailReducer: state.productDetailReducer,
-        addToCartReducer:state.addToCartReducer
+        addToCartReducer: state.addToCartReducer
     }
 }
 
@@ -367,8 +399,11 @@ const styles = StyleSheet.create({
     slide1: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white'
+        backgroundColor: 'transparent'
+        // flex: 1,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // backgroundColor: 'white'
     },
     slide2: {
         flex: 1,

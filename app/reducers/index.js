@@ -10,7 +10,10 @@ import addToCartReducer from './cartReducers/addToCartReducers';
 import drawerProfileReducer from './drawerReducers/drawerProfileReducer';
 import shippingAddressReducer from './ShippingAddressReducers/ShippingAddressReducer';
 import addshippingAddressReducer from './ShippingAddressReducers/addShippingAddressReducers';
- 
+import trendingProductReducers from './trendingReducers/trendingProductReducer';
+import trendingCategoryProductReducers from './trendingReducers/trendingCategoryProductReducer';
+import discoverCategoryReducer from './discoverReducers/discoverCategoryReducer';
+
 const rootReducer = combineReducers({
     categoryReducer,
     subcategoryReducer,
@@ -22,7 +25,10 @@ const rootReducer = combineReducers({
     addToCartReducer,
     drawerProfileReducer,
     shippingAddressReducer,
-    addshippingAddressReducer
+    addshippingAddressReducer,
+    trendingProductReducers,
+    trendingCategoryProductReducers,
+    discoverCategoryReducer
 })
 
 export default rootReducer

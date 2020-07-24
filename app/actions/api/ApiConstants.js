@@ -10,7 +10,10 @@ const ApiConstants = {
     PRODUCT_DETAILS:'api/shop/product/info?product_id=',
     ADDTOCART:'api/cart/update',
     GETCART:'api/shop/cart?',
-    SHIPPINGADDRESS:'api/checkout/shipping'
+    SHIPPINGADDRESS:'api/checkout/shipping',
+    TRENDINGPRODUCT:'mfl/trending/categories',
+    TRENDINGCATEGORY: 'mfl/trending/products?categoryId=',
+    DISCOVERCATEFORY:'mfl/discover'
   };
   
   export default ApiConstants;

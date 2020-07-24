@@ -8,7 +8,7 @@ import { RNToasty } from 'react-native-toasty';
 
 export default function signUp(signUpData) {
     console.log("signupdata", signUpData)
-    let api = 'login=' + signUpData.login + '&password=' + signUpData.password + '&confirm_password=' + signUpData.confirmpassword + '&token=' + signUpData.token + '&name=' + signUpData.name;
+    let api = 'login=' + signUpData.login + '&password=' + signUpData.password + '&confirm_password=' + signUpData.confirmpassword + '&name=' + signUpData.name;
     console.log("wholesignupsData:", api)
     return (dispatch) => {
          dispatch(signUpLoading())

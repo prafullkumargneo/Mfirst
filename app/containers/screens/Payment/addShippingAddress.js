@@ -153,7 +153,7 @@ class AddShippingAddress extends Component {
                 Zip: this.state.zipCode,
                 user_id: this.state.userId && this.state.userId,
                 shipping_status: this.props.navigation.state.params && this.props.navigation.state.params.shipping_id ? 'update' : 'new',
-                shipping_id:this.props.navigation.state.params && this.props.navigation.state.params.shipping_id,
+                ShippingId:this.props.navigation.state.params && this.props.navigation.state.params.shipping_id,
                 Email: 'test@test.com'
             }
             console.log("whole shipping data", addShippingData)

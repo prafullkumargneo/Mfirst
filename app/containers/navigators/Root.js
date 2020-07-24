@@ -21,6 +21,9 @@ import OrderAccepted from '../screens/Order/acceptedOrder';
 import Login from './Stack/LoginStack';
 import LoginPhone from './Stack/LoginPhoneStack';
 import DiscoverNavigator from './Stack/DiscoverStack';
+import TrendingNavigator from './Stack/TrendingStack';
+
+
 import ProductDetails from '../screens/ProductDetails/productDetails';
 import ShippingAddress from '../screens/Payment/ShippingAddress';
 import AddShippingAddress from '../screens/Payment/addShippingAddress';
@@ -68,6 +71,14 @@ const RootNavigation = createStackNavigator(
     DiscoverNavigator: {
       screen: () => (
         <DiscoverNavigator ref={nav => NavService.setNavigator(nav, 'discover')} />
+      ),
+      navigationOptions: {
+        headerShown: false,
+      },
+    },
+    TrendingNavigator: {
+      screen: () => (
+        <TrendingNavigator ref={nav => NavService.setNavigator(nav, 'trending')} />
       ),
       navigationOptions: {
         headerShown: false,
