@@ -49,6 +49,8 @@ class _SignUp extends Component {
   }
 
   componentDidMount() {
+    const { params } = this.props.navigation.state;
+    console.log("params",params)
     // alert()
   }
   componentWillUnmount() {

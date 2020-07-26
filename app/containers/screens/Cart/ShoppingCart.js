@@ -58,14 +58,23 @@ class ShoppingCart extends Component {
         console.log("async value", objectvalue)
       }
     });
+    this.getCartProductApi()
+  }
+
+  getCartProductApi() {
     this.props.getCartProduct({ userId: this.state.userId, orderId: this.state.orderId })
+
+  }
+
+  retrygetCartProduct() {
+    this.getCartProductApi()
   }
 
   productsDetails(item, index) {
     return (
-   
-      <ShoppingCartProductDetails productDetailsData={item} userId={this.state.userId}/>
-  
+
+      <ShoppingCartProductDetails productDetailsData={item} userId={this.state.userId} />
+
     )
   }
 
@@ -103,9 +112,11 @@ class ShoppingCart extends Component {
     else {
 
       return (
-        <View style={{ flex:1, backgroundColor: "white" }}>
+        <View style={{ flex: 1, backgroundColor: "white" }}>
+        { 
+                  this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData ?
 
-          <View style={{flex:0.2, backgroundColor: "white", paddingHorizontal: deviceWidth * 0.07, justifyContent: "center", alignItems: "center" }}>
+            <View style={{ flex: 0.2, backgroundColor: "white", paddingHorizontal: deviceWidth * 0.07, justifyContent: "center", alignItems: "center" }}>
             <Text style={{ paddingVertical: deviceHeight * 0.02, fontSize: 16, color: "#2C2C2C" }}>Total <Text style={{ fontSize: 20, fontWeight: "bold", color: "#003351" }}>77.500 KWD</Text></Text>
 
             <TouchableOpacity onPress={() => this.checkoutCart()} style={{ backgroundColor: "#3FC1C9", height: deviceHeight * 0.05, width: deviceWidth * 0.7, alignItems: "center", justifyContent: "center", borderRadius: 20 }}>
@@ -117,88 +128,104 @@ class ShoppingCart extends Component {
               <Text style={{ paddingHorizontal: deviceWidth * 0.05, paddingTop: "3%" }}>Fast Delivery within 4 hrs</Text>
             </View>
           </View>
+        : null  
+        }
 
-<View style={{flex:0.8}}>
-  <ScrollView>
-          <View style={{ backgroundColor: "transparent", borderWidth: 0.5, borderColor: "#A5A5A5" }}>
-            {
-              this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData.orderDetails ?
-                this.props.getCartProductReducer.getCartProductData.orderDetails.map((item, index) => {
-                  return (
-                    this.productsDetails(item, index)
-                  )
-                })
-                :
-                null
-            }
+{
+  this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData ?
 
-          </View>
+          <View style={{ flex: 0.8 }}>
+            <ScrollView>
+              <View style={{ backgroundColor: "transparent", borderWidth: 0.5, borderColor: "#A5A5A5" }}>
+                {
+              
 
-          <View style={{ backgroundColor: "transparent", paddingHorizontal: deviceWidth * 0.07, paddingVertical: deviceHeight * 0.03, borderWidth: 0.5, borderColor: "#A5A5A5" }}>
-            <View style={{ paddingVertical: deviceHeight * 0.03, backgroundColor: "transparent" }}>
-              <TouchableOpacity onPress={() => { NavService.navigate('root', 'GiftWrapping'); }} style={{ flexDirection: "row", backgroundColor: "transparent", alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.01, borderWidth: 1.5, borderColor: "#003A51" }}>
-                <Icon name={"gift"} size={26} color={"#003A51"} />
-                <Text style={{ fontSize: 15, color: "#003A51", fontWeight: "700" }}>   Modify Gift Wrapping</Text>
-              </TouchableOpacity>
-            </View>
-
-
-            <View style={{ flexDirection: "row" }}>
-              <View style={{ backgroundColor: "transparent", flexDirection: "row", paddingHorizontal: deviceWidth * 0.03 }}>
-                <Icon name={"hearto"} size={18} />
-                <Text style={{ paddingHorizontal: deviceWidth * 0.02, color: "#003351", fontSize: 13, textDecorationLine: "underline", fontWeight: "700" }}>Add from favourties</Text>
+                    this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData.orderDetails ?
+                      this.props.getCartProductReducer.getCartProductData.orderDetails.map((item, index) => {
+                        return (
+                          this.productsDetails(item, index)
+                        )
+                      })
+                      :
+                      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Text>Your cart is empty.</Text>
+                      </View>
+                 
+                }
 
               </View>
 
-              <View style={{ backgroundColor: "transparent", flexDirection: "row", paddingHorizontal: deviceWidth * 0.07 }}>
-                <Icon name={"copy1"} size={18} />
-                <Text style={{ paddingHorizontal: deviceWidth * 0.02, color: "#003351", fontSize: 13, textDecorationLine: "underline", fontWeight: "700" }} >Add from orders</Text>
-              </View>
-            </View>
+              <View style={{ backgroundColor: "transparent", paddingHorizontal: deviceWidth * 0.07, paddingVertical: deviceHeight * 0.03, borderWidth: 0.5, borderColor: "#A5A5A5" }}>
+                <View style={{ paddingVertical: deviceHeight * 0.03, backgroundColor: "transparent" }}>
+                  <TouchableOpacity onPress={() => { NavService.navigate('root', 'GiftWrapping'); }} style={{ flexDirection: "row", backgroundColor: "transparent", alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.01, borderWidth: 1.5, borderColor: "#003A51" }}>
+                    <Icon name={"gift"} size={26} color={"#003A51"} />
+                    <Text style={{ fontSize: 15, color: "#003A51", fontWeight: "700" }}>   Modify Gift Wrapping</Text>
+                  </TouchableOpacity>
+                </View>
 
-          </View>
 
-          <View style={{ backgroundColor: "transparent", paddingVertical: deviceHeight * 0.03, paddingHorizontal: deviceWidth * 0.04, borderBottomWidth: 0.5, borderColor: "#A5A5A5" }} >
+                <View style={{ flexDirection: "row" }}>
+                  <View style={{ backgroundColor: "transparent", flexDirection: "row", paddingHorizontal: deviceWidth * 0.03 }}>
+                    <Icon name={"hearto"} size={18} />
+                    <Text style={{ paddingHorizontal: deviceWidth * 0.02, color: "#003351", fontSize: 13, textDecorationLine: "underline", fontWeight: "700" }}>Add from favourties</Text>
 
-            <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
-              <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
-                <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Shipping</Text>
-              </View>
-              <View style={{ flex: 0.5, alignItems: "flex-end" }}>
-                <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>77.500 KWD</Text>
-              </View>
-            </View>
+                  </View>
 
-            <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
-              <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
-                <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }} >Discount</Text>
-              </View>
-              <View style={{ flex: 0.5, alignItems: "flex-end" }}>
-                <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>77.500 KWD</Text>
-              </View>
-            </View>
+                  <View style={{ backgroundColor: "transparent", flexDirection: "row", paddingHorizontal: deviceWidth * 0.07 }}>
+                    <Icon name={"copy1"} size={18} />
+                    <Text style={{ paddingHorizontal: deviceWidth * 0.02, color: "#003351", fontSize: 13, textDecorationLine: "underline", fontWeight: "700" }} >Add from orders</Text>
+                  </View>
+                </View>
 
-            <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
-              <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
-                <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Tax</Text>
               </View>
-              <View style={{ flex: 0.5, alignItems: "flex-end" }}>
-                <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>0 KWD</Text>
-              </View>
-            </View>
 
-            <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
-              <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
-                <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Total</Text>
-              </View>
-              <View style={{ flex: 0.5, alignItems: "flex-end" }}>
-                <Text style={{ fontSize: 20, color: "#003351", fontWeight: "700" }}>77.500 KWD</Text>
-              </View>
-            </View>
+              <View style={{ backgroundColor: "transparent", paddingVertical: deviceHeight * 0.03, paddingHorizontal: deviceWidth * 0.04, borderBottomWidth: 0.5, borderColor: "#A5A5A5" }} >
 
-          </View>
-          </ScrollView>
-</View>
+                <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
+                  <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
+                    <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Shipping</Text>
+                  </View>
+                  <View style={{ flex: 0.5, alignItems: "flex-end" }}>
+                    <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>77.500 KWD</Text>
+                  </View>
+                </View>
+
+                <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
+                  <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
+                    <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }} >Discount</Text>
+                  </View>
+                  <View style={{ flex: 0.5, alignItems: "flex-end" }}>
+                    <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>77.500 KWD</Text>
+                  </View>
+                </View>
+
+                <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
+                  <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
+                    <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Tax</Text>
+                  </View>
+                  <View style={{ flex: 0.5, alignItems: "flex-end" }}>
+                    <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>0 KWD</Text>
+                  </View>
+                </View>
+
+                <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
+                  <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
+                    <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Total</Text>
+                  </View>
+                  <View style={{ flex: 0.5, alignItems: "flex-end" }}>
+                    <Text style={{ fontSize: 20, color: "#003351", fontWeight: "700" }}>77.500 KWD</Text>
+                  </View>
+                </View>
+
+              </View>
+            </ScrollView>
+          </View> :
+          
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ paddingVertical: '3%' }}>Something went wrong ..</Text>
+          <Text onPress={() => this.retrygetCartProduct()} style={{ color: 'skyblue' }}>Retry</Text>
+        </View>
+          }
 
         </View>
 

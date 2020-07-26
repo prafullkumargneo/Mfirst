@@ -1,7 +1,7 @@
 import { GET_CATEGORIES_SUCCESS,GET_CATEGORIES_FAILURE,GET_CATEGORIES_LOADING } from '../../actions/api/types';
 
 const initialState = {
-    categoriesData: [],
+    categoriesData: null,
     isFetching: false,
     error: false
 }
@@ -18,13 +18,15 @@ export default function categoryReducer(state = initialState, action) {
             return {
                 ...state,
                 isFetching: false,
-                categoriesData: action.data
+                categoriesData: action.data,
+                error:false
             }
         case GET_CATEGORIES_FAILURE:
             return {
                 ...state,
                 isFetching: false,
-                error: true
+                error: true,
+                categoriesData:null
             }
         default:
             return state

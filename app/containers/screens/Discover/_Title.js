@@ -56,7 +56,7 @@ export default class TitleDiscover extends Component {
           <Icon size={40} color="black" name="human-male-boy" />
           </View>
           <View>
-            <Text style={{ textAlign: 'center', fontSize: 13,color: "#848484" }}>{contentItem.valueName}</Text>
+          {contentItem.valueName.split(' ').map((item, i) => <Text style={{ textAlign: 'center', fontSize: 13,color: "#848484" }}>{item}</Text>)}
           </View>
         </TouchableOpacity> 
          {/* )}  */}

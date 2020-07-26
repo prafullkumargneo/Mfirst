@@ -72,10 +72,12 @@ class Discover extends Component {
           <Text style={{ color: "#848484", fontSize: 15, fontWeight: '700' }}>{item.attributeName}</Text>
         </View>
         <FlatList
-          horizontal
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
           data={item.valueDetails}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderDiscoverTitleList}
+          numColumns={3}
         />
       </View>
     );

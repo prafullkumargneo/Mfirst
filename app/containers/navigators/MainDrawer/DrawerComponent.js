@@ -60,7 +60,7 @@ class DrawerComponent extends PureComponent {
     // };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.reRenderSomething = this.props.navigation.addListener('willFocus', () => {
       //Put your code here you want to rerender, in my case i want to rerender the data 
       //im fetching from firebase and display the changes
@@ -68,12 +68,16 @@ class DrawerComponent extends PureComponent {
       this.someAction();
       this.forceUpdate();
     });
-    this.props.categoryDetails()
-    AsyncStorage.getItem('LoggedInData').then(value => {
+
+   await AsyncStorage.getItem('LoggedInData').then(value => {
       if (value) {
         let objectvalue = JSON.parse(value)
         this.setState({ loggedInCredentials: objectvalue })
+        this.props.categoryDetails(this.state.loggedInCredentials && this.state.loggedInCredentials.userId)
         console.log("async value", objectvalue)
+      }
+      else {
+        this.props.categoryDetails()
       }
     });
   }
@@ -85,7 +89,7 @@ class DrawerComponent extends PureComponent {
     this.props.drawerProfile(Logoutdata)
     this.setState({loggedInCredentials:null})
     AsyncStorage.clear()
-
+    this.props.categoryDetails()
 
   }
 

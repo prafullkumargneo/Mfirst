@@ -6,11 +6,11 @@ import {
     StyleSheet,
     Keyboard,
     Alert,
-    AsyncStorage,
     StatusBar,
     ScrollView,
     FlatList, Image, ActivityIndicator
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -63,7 +63,7 @@ class ProductDetails extends Component {
                     width: deviceWidth,
                     flex: 1,
                     backgroundColor: 'transparent',
-                    
+
 
                 }} source={{ uri: item }} />
 
@@ -115,16 +115,27 @@ class ProductDetails extends Component {
     }
 
     addToCart(productId) {
-        let cartData = {
-            uId: this.state.userId && this.state.userId,
-            productId: productId,
-            addQty: 1
+        if (this.state.userId) {
+            let cartData = {
+                userId: this.state.userId && this.state.userId,
+                productId: productId,
+                addQty: 1
+            }
+            this.props.addToCart(cartData)
         }
-        this.props.addToCart(cartData)
+        else {
+            NavService.navigate('root', 'Login');
+            RNToasty.Warn({
+                title: "Please signin to continue.",
+                titleSize: 15
+            })
+        }
+
     }
 
     render() {
         const { params } = this.props.navigation.state;
+        let ProductId =this.props.productDetailReducer.productDetailData && this.props.productDetailReducer.productDetailData.productId
         console.log("props of cart", this.props.productDetailReducer.productDetailData && this.props.productDetailReducer.productDetailData.productImage)
         if (this.props.productDetailReducer.productDetailLoading) {
             return (
@@ -186,12 +197,12 @@ class ProductDetails extends Component {
                                                         flex: 1,
                                                         backgroundColor: 'transparent',
                                                         resizeMode: 'contain'
-                                                    }} source={{ uri:this.props.productDetailReducer.productDetailData && this.props.productDetailReducer.productDetailData.productImage }} />
+                                                    }} source={{ uri: this.props.productDetailReducer.productDetailData && this.props.productDetailReducer.productDetailData.productImage }} />
 
                                                 </View>
                                         }
-                      
-                                       
+
+
 
                                     </Swiper>
                                     <View style={{ position: "absolute", backgroundColor: "transparent", top: deviceHeight * 0.24, alignSelf: "flex-end", right: "6%" }}>
@@ -355,10 +366,10 @@ class ProductDetails extends Component {
                                 theme={"primary"}
                                 onPress={() => {
                                     this.addToCart(params.productId)
-                                    RNToasty.Success({
-                                        title: "Item added to cart",
-                                        titleSize: 15
-                                    })
+                                    // RNToasty.Success({
+                                    //     title: "Item added to cart",
+                                    //     titleSize: 15
+                                    // })
                                 }}
                                 halfButton={true}
                             />

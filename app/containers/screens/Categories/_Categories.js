@@ -6,12 +6,11 @@ import {
   StyleSheet,
   Keyboard,
   Alert,
-  AsyncStorage,
   StatusBar,
   FlatList, TouchableOpacity, ScrollView, ActivityIndicator
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import AsyncStorage from '@react-native-community/async-storage';
 import _Input from '../../../components/Input/_Input';
 import _Button from '../../../components/Button/_Button';
 import _TouchItem from '../../../components/TouchItem/_TouchItem';
@@ -34,6 +33,7 @@ class Categories extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loggedInCredentials: null,
       categoriesFlag: false,
       categoriesDescriptionArray: DummyJSON.categoriesData,
       categoriesindex: [],
@@ -44,21 +44,36 @@ class Categories extends Component {
 
 
 
-  componentDidMount() {
-    this.props.categoryDetails()
-    this.props.bannerCategory()
-    AsyncStorage.getItem('LoggedInData').then(value => {
+  async componentDidMount() {
+
+    await AsyncStorage.getItem('LoggedInData').then(value => {
       if (value) {
         let objectvalue = JSON.parse(value)
         this.setState({ loggedInCredentials: objectvalue })
         console.log("async value", objectvalue)
+        this.props.categoryDetails(this.state.loggedInCredentials && this.state.loggedInCredentials.userId)
+      }
+      else {
+        this.props.categoryDetails()
       }
     });
+
+    this.props.bannerCategory()
 
   }
 
   retryBanner() {
     this.props.bannerCategory()
+  }
+
+  retryCategories(){
+    if(this.state.loggedInCredentials){
+    this.props.categoryDetails(this.state.loggedInCredentials && this.state.loggedInCredentials.userId)
+    }
+    else{
+      this.props.categoryDetails()
+ 
+    }
   }
 
   categoriesDescription(index) {
@@ -77,7 +92,7 @@ class Categories extends Component {
           <View style={{ flexDirection: 'row', paddingVertical: 3, paddingHorizontal: 13 }}>
             <View style={{ flex: 0.25 }}>
               <Image style={{
-                height: 56, width: 57, borderBottomLeftRadius: 70,  borderColor: '#848484', borderWidth:0.2,
+                height: 56, width: 57, borderBottomLeftRadius: 70, borderColor: '#848484', borderWidth: 0.2,
                 borderBottomRightRadius: 70,
                 borderTopRightRadius: 70,
                 borderTopLeftRadius: 70,
@@ -103,12 +118,13 @@ class Categories extends Component {
                 return (
                   <TouchableOpacity onPress={() => { NavService.navigate('root', 'SearchDetails', item); }} style={{ height: deviceHeight * 0.2, justifyContent: "center", paddingHorizontal: 15 }}>
                     <View style={{ paddingVertical: 10 }}>
-                      <Image style={{ height: 66, width: 66, borderBottomLeftRadius: 70,  borderColor: '#848484', borderWidth:0.2,
-                borderBottomRightRadius: 70,
-                borderTopRightRadius: 70,
-                borderTopLeftRadius: 70,
-                overflow: 'hidden'
-                }} source={{ uri: item.categoryImage }} />
+                      <Image style={{
+                        height: 66, width: 66, borderBottomLeftRadius: 70, borderColor: '#848484', borderWidth: 0.2,
+                        borderBottomRightRadius: 70,
+                        borderTopRightRadius: 70,
+                        borderTopLeftRadius: 70,
+                        overflow: 'hidden'
+                      }} source={{ uri: item.categoryImage }} />
                     </View>
                     <View style={{ alignItems: "center" }}>
                       {item.categoryTitle.split(' ').map((item, i) => <Text style={{ justifyContent: "space-between", color: "#2B2B2B", fontSize: 12, fontWeight: '700' }}>{item}</Text>)}
@@ -143,9 +159,26 @@ class Categories extends Component {
     )
   }
 
+  reorderProductList(item, index) {
+    return (
+      <TouchableOpacity onPress={()=>{ NavService.navigate('root', 'ProductDetailsStack', item);}} style={{ backgroundColor: "transparent", width: deviceWidth * 0.3,paddingHorizontal:15 }}>
+
+        <View style={{ paddingVertical: 5, backgroundColor: "transparent" }}>
+          <Image style={{ height: 114, width: 107,resizeMode:'contain' }} source={{ uri: item.productImage }} />
+
+        </View>
+        <View style={{ paddingVertical: 10, backgroundColor: "transparent"}}>
+          <Text style={{ fontSize: 14, color: "#2B2B2B", paddingVertical: 3, fontWeight: "700" }}>{item.productTitle}</Text>
+          <Text style={{ fontSize: 14, color: "#003A51", fontWeight: "700" }}>{item.productAmount} KWD</Text>
+        </View>
+      </TouchableOpacity>
+
+    )
+
+  }
 
   render() {
-    console.log("dummyjson", this.props.categoryBannerReducer)
+    console.log("dummyjson", this.props.categoryReducer)
     return (
       <SafeAreaView style={[appStyles.container]}>
         <View
@@ -189,12 +222,43 @@ class Categories extends Component {
                   <ActivityIndicator size={'large'} />
                 </View>
                 :
-                <FlatList
-                  data={this.props.categoryReducer && this.props.categoryReducer.categoriesData}
-                  extraData={this.state}
-                  keyExtractor={this._keyExtractor}
-                  renderItem={this._renderCategoriesList}
-                />}
+                this.props.categoryReducer && this.props.categoryReducer.categoriesData && this.props.categoryReducer.categoriesData.data?
+                <ScrollView>
+                  <FlatList
+                    data={this.props.categoryReducer && this.props.categoryReducer.categoriesData && this.props.categoryReducer.categoriesData.data}
+                    extraData={this.state}
+                    keyExtractor={this._keyExtractor}
+                    renderItem={this._renderCategoriesList}
+                  />
+
+                  {
+                    this.props.categoryReducer && this.props.categoryReducer.categoriesData && this.props.categoryReducer.categoriesData.reorderProducts ?
+
+                      <View style={{ backgroundColor: "transparent", paddingVertical: "5%",marginTop:4 }}>
+
+                        <View style={{ paddingVertical: 10, paddingHorizontal: 17 }}>
+                          <Text style={{ fontWeight: "700", color: "#2B2B2B" }}>REORDER AGAIN</Text>
+                        </View>
+                        <ScrollView horizontal={true} style={{ backgroundColor: "transparent"}}>
+                          {
+                             this.props.categoryReducer.categoriesData.reorderProducts.map((item, index) => {
+                              return (
+                                this.reorderProductList(item, index)
+                              )
+                            })
+                          }
+                        </ScrollView>
+                      </View>
+                      :
+                      null
+                  }
+                </ScrollView>
+                :
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ paddingVertical: '3%' }}>Something went wrong ..</Text>
+                <Text onPress={() => this.retryCategories()} style={{ color: 'skyblue' }}>Retry</Text>
+              </View>
+            }
           </View>
 
         </View>

@@ -6,7 +6,6 @@ import {
     StyleSheet,
     Keyboard,
     Alert,
-    AsyncStorage,
     StatusBar,
     ScrollView,
     FlatList, ActivityIndicator
@@ -21,21 +20,48 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SearchIcon from 'react-native-vector-icons/AntDesign';
 import NavService from '../../containers/navigators/navigationService';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 class DashboardHeader extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            userId: null
         };
     }
 
-    componentDidMount() {
-
-
+    async componentDidMount() {
+        await AsyncStorage.getItem('LoggedInData').then(value => {
+            if (value) {
+                let objectvalue = JSON.parse(value)
+                this.setState({ userId: objectvalue.userId })
+                console.log("async value", objectvalue)
+            }
+        });
     }
 
+    cartNavigation() {
+        if (this.state.userId) {
+            NavService.navigate('root', 'Cart')
+        } else {
+            RNToasty.Warn({
+                title: "Please signin to continue.",
+                titleSize: 17
+            })
+        }
+    }
+
+    favouriteOrderNavigation() {
+        if (this.state.userId) {
+            NavService.navigate('root', 'FavoriteOrders')
+        } else {
+            RNToasty.Warn({
+                title: "Please signin to continue.",
+                titleSize: 17
+            })
+        }
+    }
 
     render() {
         return (
@@ -54,7 +80,7 @@ class DashboardHeader extends Component {
                 <View style={{ justifyContent: "center", paddingBottom: "5%" }}>
                     <Icon
                         name={'heart-outline'}
-                        onPress={() => { NavService.navigate('root', 'FavoriteOrders') }}
+                        onPress={() => { this.favouriteOrderNavigation()  }}
                         color={'black'}
                         size={25}
                         style={{ marginRight: 25, top: "5%" }}
@@ -64,7 +90,7 @@ class DashboardHeader extends Component {
                 <View style={{ justifyContent: "center", paddingBottom: "5%" }}>
                     <Icon
                         name={'cart-outline'}
-                        onPress={() => { NavService.navigate('root', 'Cart') }}
+                        onPress={() => { this.cartNavigation() }}
                         color={'black'}
                         size={25}
                         style={{ marginRight: 5, top: "5%" }}

@@ -6,7 +6,7 @@ import ApiConstants from '../api/ApiConstants';
 import NavService from '../../containers/navigators/navigationService';
 import drawerProfile from '../DrawerAction/drawerProfileAction';
 import { RNToasty } from 'react-native-toasty';
-
+import categoryDetails from "../CategoriesActions/CategoryActions";
 
 export default function signIn(signInData) {
   let api = 'login=' + signInData.login + '&password=' + signInData.password
@@ -15,9 +15,12 @@ export default function signIn(signInData) {
     dispatch(signInLoading())
     return ApiCaller(ApiConstants.SIGNIN + api).then(res => {
       if (res && res.Data) {
+        console.log("in signin api response",res)
         dispatch(signInSuccess(res.Data));
         AsyncStorage.setItem('LoggedInData',JSON.stringify(res.Data));
+        dispatch(categoryDetails(res.Data.userId));
         AsyncStorage.getItem('LoggedInData').then(value => {
+          
          console.log("value of async",value)
         });
         dispatch(drawerProfile(res))

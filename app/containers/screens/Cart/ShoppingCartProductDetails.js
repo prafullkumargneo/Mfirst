@@ -51,7 +51,7 @@ class ShoppingCartProductDetails extends Component {
 
     async setProductQuantity(productData, userId, status) {
         let cartData = {
-            uId: userId,
+            userId: userId,
             productId: productData,
             addQty: status == "increase" ? this.state.productQuantity + 1 : status == "decrease" ? this.state.productQuantity - 1 : null
         }
