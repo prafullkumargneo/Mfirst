@@ -45,17 +45,17 @@ class ShoppingCartProductDetails extends Component {
     componentDidMount() {
 
         this.setState({ productQuantity: this.props.productDetailsData && this.props.productDetailsData.productQty })
-    
+
     }
 
 
-    async setProductQuantity(productData, userId, status) {
+    async setProductQuantity(productData, userId,status,orderId ) {
         let cartData = {
             userId: userId,
             productId: productData,
-            addQty: status == "increase" ? this.state.productQuantity + 1 : status == "decrease" ? this.state.productQuantity - 1 : null
+            addQty: status == "increase" ? this.state.productQuantity + 1 : status == "decrease" ? this.state.productQuantity - 1 : status == "removeProduct" ? this.state.productQuantity : null
         }
-        this.props.addToCart(cartData)
+        this.props.addToCart(cartData,orderId, status)
         await this.quantityResponse()
     }
 
@@ -75,7 +75,7 @@ class ShoppingCartProductDetails extends Component {
     increaseProduct(productData, userId) {
         console.log("productQuantity", this.state.productQuantity)
         this.setState({ productQuantity: this.state.productQuantity + 1 })
-        this.setProductQuantity(productData, userId, "increase")
+        this.setProductQuantity(productData, userId, "increase",null)
 
     }
 
@@ -88,16 +88,38 @@ class ShoppingCartProductDetails extends Component {
         }
         else {
             this.setState({ productQuantity: this.state.productQuantity <= 1 ? 1 : this.state.productQuantity - 1 })
-            this.setProductQuantity(productData, userId, "decrease")
+            this.setProductQuantity(productData, userId, "decrease",null)
         }
 
     }
 
+    removeProduct(productData, userId,orderId) {
+        Alert.alert(
+            "Remove",
+            "Are you sure you want to remove product from cart.",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                {
+                    text: "Yes", onPress: () => {
+                        this.setState({ productQuantity: 0 })
+                        this.setProductQuantity(productData, userId,"removeProduct",orderId )
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+
+    }
 
     render() {
         console.log("productDetailsData", this.props.productDetailsData)
         let productData = this.props.productDetailsData
         let userId = this.props.userId
+        let orderId= this.props.orderId
 
         return (
 
@@ -140,7 +162,9 @@ class ShoppingCartProductDetails extends Component {
                     </View>
 
                     <View style={{ backgroundColor: "white", justifyContent: "center", paddingLeft: deviceWidth * 0.4 }}>
-                        <Text style={{ textDecorationLine: "underline", fontSize: 13, color: "#003351", fontWeight: "700" }}>Remove</Text>
+                    <TouchableOpacity onPress={() => { this.removeProduct(productData.productId, userId,orderId) }}>
+                        <Text  style={{ textDecorationLine: "underline", fontSize: 13, color: "#003351", fontWeight: "700" }}>Remove</Text>
+                        </TouchableOpacity>
                     </View>
 
                 </View>

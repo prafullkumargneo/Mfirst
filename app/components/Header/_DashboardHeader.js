@@ -31,36 +31,19 @@ class DashboardHeader extends Component {
         };
     }
 
-    async componentDidMount() {
-        await AsyncStorage.getItem('LoggedInData').then(value => {
-            if (value) {
-                let objectvalue = JSON.parse(value)
-                this.setState({ userId: objectvalue.userId })
-                console.log("async value", objectvalue)
-            }
-        });
+     componentDidMount() {
+       
     }
 
     cartNavigation() {
-        if (this.state.userId) {
-            NavService.navigate('root', 'Cart')
-        } else {
-            RNToasty.Warn({
-                title: "Please signin to continue.",
-                titleSize: 17
-            })
-        }
+        NavService.navigate('root', 'Cart')
+
     }
 
     favouriteOrderNavigation() {
-        if (this.state.userId) {
-            NavService.navigate('root', 'FavoriteOrders')
-        } else {
-            RNToasty.Warn({
-                title: "Please signin to continue.",
-                titleSize: 17
-            })
-        }
+
+        NavService.navigate('root', 'FavoriteOrders')
+
     }
 
     render() {
@@ -80,7 +63,7 @@ class DashboardHeader extends Component {
                 <View style={{ justifyContent: "center", paddingBottom: "5%" }}>
                     <Icon
                         name={'heart-outline'}
-                        onPress={() => { this.favouriteOrderNavigation()  }}
+                        onPress={() => { this.favouriteOrderNavigation() }}
                         color={'black'}
                         size={25}
                         style={{ marginRight: 25, top: "5%" }}

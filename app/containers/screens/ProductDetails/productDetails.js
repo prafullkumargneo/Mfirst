@@ -114,7 +114,7 @@ class ProductDetails extends Component {
 
     }
 
-    addToCart(productId) {
+    async addToCart(productId) {
         if (this.state.userId) {
             let cartData = {
                 userId: this.state.userId && this.state.userId,
@@ -122,6 +122,7 @@ class ProductDetails extends Component {
                 addQty: 1
             }
             this.props.addToCart(cartData)
+            await this.productAddResponse()
         }
         else {
             NavService.navigate('root', 'Login');
@@ -133,9 +134,21 @@ class ProductDetails extends Component {
 
     }
 
+    productAddResponse() {
+
+        if (this.props.addToCartReducer && this.props.addToCartReducer.addToCartData) {
+            RNToasty.Success({
+                title: "Product added to cart.",
+                titleSize: 15
+            })
+
+        }
+
+    }
+
     render() {
         const { params } = this.props.navigation.state;
-        let ProductId =this.props.productDetailReducer.productDetailData && this.props.productDetailReducer.productDetailData.productId
+        let ProductId = this.props.productDetailReducer.productDetailData && this.props.productDetailReducer.productDetailData.productId
         console.log("props of cart", this.props.productDetailReducer.productDetailData && this.props.productDetailReducer.productDetailData.productImage)
         if (this.props.productDetailReducer.productDetailLoading) {
             return (

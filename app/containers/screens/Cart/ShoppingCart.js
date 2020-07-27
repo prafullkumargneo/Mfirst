@@ -58,7 +58,17 @@ class ShoppingCart extends Component {
         console.log("async value", objectvalue)
       }
     });
-    this.getCartProductApi()
+    if(this.state.userId){
+      this.getCartProductApi()
+    }
+    else{
+       NavService.goBack('root', 'Home');
+      RNToasty.Warn({
+          title: "Please signin to continue.",
+          titleSize: 15
+      })
+    }
+  
   }
 
   getCartProductApi() {
@@ -73,7 +83,7 @@ class ShoppingCart extends Component {
   productsDetails(item, index) {
     return (
 
-      <ShoppingCartProductDetails productDetailsData={item} userId={this.state.userId} />
+      <ShoppingCartProductDetails key={index} productDetailsData={item} userId={this.state.userId} orderId={this.state.orderId} />
 
     )
   }
@@ -117,7 +127,7 @@ class ShoppingCart extends Component {
                   this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData ?
 
             <View style={{ flex: 0.2, backgroundColor: "white", paddingHorizontal: deviceWidth * 0.07, justifyContent: "center", alignItems: "center" }}>
-            <Text style={{ paddingVertical: deviceHeight * 0.02, fontSize: 16, color: "#2C2C2C" }}>Total <Text style={{ fontSize: 20, fontWeight: "bold", color: "#003351" }}>77.500 KWD</Text></Text>
+            <Text style={{ paddingVertical: deviceHeight * 0.02, fontSize: 16, color: "#2C2C2C" }}>Total <Text style={{ fontSize: 20, fontWeight: "bold", color: "#003351" }}>{  this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData.orderUntextedAmount} KWD</Text></Text>
 
             <TouchableOpacity onPress={() => this.checkoutCart()} style={{ backgroundColor: "#3FC1C9", height: deviceHeight * 0.05, width: deviceWidth * 0.7, alignItems: "center", justifyContent: "center", borderRadius: 20 }}>
               <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Checkout</Text>
@@ -204,7 +214,7 @@ class ShoppingCart extends Component {
                     <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Tax</Text>
                   </View>
                   <View style={{ flex: 0.5, alignItems: "flex-end" }}>
-                    <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>0 KWD</Text>
+                    <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>{  this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData.orderTaxAmount} KWD</Text>
                   </View>
                 </View>
 
@@ -213,7 +223,7 @@ class ShoppingCart extends Component {
                     <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Total</Text>
                   </View>
                   <View style={{ flex: 0.5, alignItems: "flex-end" }}>
-                    <Text style={{ fontSize: 20, color: "#003351", fontWeight: "700" }}>77.500 KWD</Text>
+                    <Text style={{ fontSize: 20, color: "#003351", fontWeight: "700" }}>{  this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData.orderUntextedAmount} KWD</Text>
                   </View>
                 </View>
 
