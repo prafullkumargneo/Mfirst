@@ -38,7 +38,7 @@ const HomeTabNav = createMaterialTopTabNavigator(
       indicatorStyle: {
         //  borderWidth:2,
         justifyContent:'center',
-        height: deviceHeight*0.057,
+        height: deviceHeight*0.07,
         width:deviceWidth*0.3,
         marginHorizontal:"1%",
          backgroundColor: colors.primaryColor,
