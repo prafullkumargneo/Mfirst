@@ -1,4 +1,4 @@
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { SIGN_IN_SUCCESS, SIGN_IN_FAILURE, SIGN_IN_LOADING } from '../api/types';
 import ApiCaller from '../api/CustomApiCaller';
@@ -10,18 +10,19 @@ import categoryDetails from "../CategoriesActions/CategoryActions";
 
 export default function signIn(signInData) {
   let api = 'login=' + signInData.login + '&password=' + signInData.password
-  console.log("signupsData:", api)
+  console.log("signupsData:", signInData)
+  let method = 'POST'
   return (dispatch) => {
     dispatch(signInLoading())
-    return ApiCaller(ApiConstants.SIGNIN + api).then(res => {
+    return ApiCaller(ApiConstants.SIGNIN ,method,signInData).then(res => {
       if (res && res.Data) {
-        console.log("in signin api response",res)
+        console.log("in signin api response", res)
         dispatch(signInSuccess(res.Data));
-        AsyncStorage.setItem('LoggedInData',JSON.stringify(res.Data));
+        AsyncStorage.setItem('LoggedInData', JSON.stringify(res.Data));
         dispatch(categoryDetails(res.Data.userId));
         AsyncStorage.getItem('LoggedInData').then(value => {
-          
-         console.log("value of async",value)
+
+          console.log("value of async", value)
         });
         dispatch(drawerProfile(res))
         NavService.navigate('root', 'MainDrawer');

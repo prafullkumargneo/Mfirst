@@ -202,7 +202,7 @@ class Discover extends Component {
             }}>
 
             {
-              this.props.discoverCategoryReducer && this.props.discoverCategoryReducer.discoverCategoryData && this.props.discoverCategoryReducer.discoverCategoryData.attributeDetails ?
+              this.props.discoverCategoryReducer && this.props.discoverCategoryReducer.discoverCategoryData && this.props.discoverCategoryReducer.discoverCategoryData.attributeDetails.length > 0 ?
                 this.props.discoverCategoryReducer.discoverCategoryData.attributeDetails.map((item, index) => {
                   return (
                     this.renderTitle(item, index)
@@ -217,7 +217,9 @@ class Discover extends Component {
             }
 
 
-            <View style={{ height: deviceHeight * 0.17, backgroundColor: "transparent", flexDirection: "row", paddingTop: '9%' }}>
+           { 
+             this.props.discoverCategoryReducer && this.props.discoverCategoryReducer.discoverCategoryData && this.props.discoverCategoryReducer.discoverCategoryData.attributeDetails.length > 0 ?
+           <View style={{ height: deviceHeight * 0.17, backgroundColor: "transparent", flexDirection: "row", paddingTop: '9%' }}>
               <View style={{ flex: 0.5, justifyContent: 'center', alignItems: "center" }}>
                 <_Button
                   text="Clear all"
@@ -239,6 +241,8 @@ class Discover extends Component {
                 />
               </View>
             </View>
+            :
+            null}
 
             {/* {this.renderGender(DummyJSON.DiscoverData.Gender)}
              {this.renderFeeding(DummyJSON.DiscoverData.Feeding)} */}

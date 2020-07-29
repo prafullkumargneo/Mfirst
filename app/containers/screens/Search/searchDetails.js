@@ -78,7 +78,7 @@ class SearchDetails extends Component {
         return (
             <TouchableOpacity onPress={() => this.subcategoryData(item, index)} key={index} style={{}}>
                 <View style={{ paddingVertical: "8%", backgroundColor: "transaparent" }}>
-                    <Image style={{ height: 68, width: 68, borderRadius: 33, opacity: this.state.subCategorySelectData && this.state.subCategorySelectData.categoryId === item.categoryId ? 0.5 : null, backgroundColor: this.state.subCategorySelectData && this.state.subCategorySelectData.categoryId === item.categoryId ? "#379688" : null }} source={{ uri: item.categoryImage }} />
+                    <Image resizeMethod='resize' style={{ height: 68, width: 68, borderRadius: 33, opacity: this.state.subCategorySelectData && this.state.subCategorySelectData.categoryId === item.categoryId ? 0.5 : null, backgroundColor: this.state.subCategorySelectData && this.state.subCategorySelectData.categoryId === item.categoryId ? "#379688" : null }} source={{ uri: item.categoryImage }} />
                 </View>
                 <View style={{ backgroundColor: "transaparent" }}>
                     {item.categoryTitle.split(' ').map((item, i) => <Text style={{ fontSize: 12, textAlign: "center", color: this.state.subCategorySelectData && this.state.subCategorySelectData.categoryId === item.categoryId ? '#379688' : "#2B2B2B", fontWeight: "700" }}>{item}</Text>)}
@@ -92,7 +92,7 @@ class SearchDetails extends Component {
         return (
             <TouchableOpacity key={index} onPress={() => this.categorySelectedData(item, index)} style={{ backgroundColor: "transparent", paddingVertical: 15, flexDirection: "row" }}>
                 <View style={{ flex: 0.3, backgroundColor: "transparent", paddingHorizontal: "1%", paddingVertical: "1%" }}>
-                    <Image style={{ height: 93, width: 93 }} source={{ uri: item.productImage }} />
+                    <Image resizeMethod='resize' style={{ height: 93, width: 93 }} source={{ uri: item.productImage }} />
                 </View>
                 <View style={{ flex: 0.7, backgroundColor: "transparent" }}>
                     <Text style={{ paddingVertical: "5%", fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>{item.productTitle}</Text>
@@ -212,12 +212,17 @@ class SearchDetails extends Component {
                                 </View>
 
                                 :
+                                this.state.subCategorySelectData && this.state.subCategorySelectData.productsData.length>0? 
                                 this.state.subCategorySelectData && this.state.subCategorySelectData.productsData.map((item, index) => {
                                     return (
                                         this.renderSearchCategoriesItem(item, index)
                                     )
 
                                 })
+                                :
+                                <View style={{ paddingTop: deviceHeight*0.3, width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
+                    <Text style={{fontSize:16}}>Products coming soon....</Text>
+                            </View>
 
                         }
 

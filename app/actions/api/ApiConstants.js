@@ -1,7 +1,7 @@
 /* App config for apis
  */
 const ApiConstants = {
-    BASE_URL: 'http://45.79.122.85:8033/',
+    BASE_URL: 'https://mkodoo-mamasfirst.odoo.com/',
     GETCATEGORY: 'api/shop/category',
     SUBCATEGORY: 'api/shop/category/info?category_id=',
     BANNERCATEGORY:'api/get_banner',

@@ -143,6 +143,13 @@ class ProductDetails extends Component {
             })
 
         }
+        if (this.props.addToCartReducer && this.props.addToCartReducer.addToCartError) {
+            RNToasty.Error({
+                title: "Something went wrong.Please try again.",
+                titleSize: 15
+            })
+
+        }
 
     }
 

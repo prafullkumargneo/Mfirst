@@ -113,8 +113,8 @@ class _SignUp extends Component {
     else {
       console.log("email,and password", this.state.email, this.state.password)
       let signInData = {
-        "login": this.state.email,
-        "password": this.state.password
+        login: this.state.email,
+        password: this.state.password
       }
 
       this.props.signIn(signInData)
@@ -158,7 +158,8 @@ class _SignUp extends Component {
                 style={[styles.inputStyles, { borderColor: this.state.emailEmptyCheck ||this.state.emailValidationFlag ? 'red' : "#A5A5A5" }]}
                 returnKeyType="next"
                 keyboardType="email-address"
-                onChangeText={email => this.emailValidation(email)}
+                // onChangeText={email => this.emailValidation(email)}
+                onChangeText={email => this.setState({email:email})}
                 placeholder={"Email"}
                 placeholderTextColor={this.state.emailEmptyCheck ||this.state.emailValidationFlag ? 'red' : colors.lightGrey}
                 value={this.state.email}

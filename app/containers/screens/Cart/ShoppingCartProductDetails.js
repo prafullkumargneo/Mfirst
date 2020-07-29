@@ -62,13 +62,13 @@ class ShoppingCartProductDetails extends Component {
 
     quantityResponse() {
 
-        if (this.props.addToCartReducer && this.props.addToCartReducer.addToCartError) {
-            RNToasty.Error({
-                title: "Something went wrong.Please try again.",
-                titleSize: 15
-            })
-            this.setState({ productQuantity: this.state.productQuantity })
-        }
+        // if (this.props.addToCartReducer && this.props.addToCartReducer.addToCartError) {
+        //     RNToasty.Error({
+        //         title: "Something went wrong.Please try again.",
+        //         titleSize: 15
+        //     })
+        //     this.setState({ productQuantity: this.state.productQuantity })
+        // }
 
     }
 
@@ -127,7 +127,7 @@ class ShoppingCartProductDetails extends Component {
                 <View style={{ paddingVertical: deviceHeight * 0.04, backgroundColor: "transparent", flexDirection: "row" }}>
 
                     <View style={{ backgroundColor: "transparent", paddingHorizontal: deviceWidth * 0.02 }}>
-                        <Image style={{ height: 97, width: 97 }} source={{ uri: productData && productData.productImage }} />
+                        <Image resizeMethod='resize' style={{ height: 97, width: 97 }} source={{ uri: productData && productData.productImage }} />
                     </View>
                     <View style={{ backgroundColor: "transparent", paddingLeft: deviceWidth * 0.04 }}>
 
