@@ -196,7 +196,7 @@ class Categories extends Component {
                 </View>
                 :
                 this.props.categoryBannerReducer.bannerCategoryData && this.props.categoryBannerReducer.bannerCategoryData.data ?
-                  <Swiper showsButtons={false}
+                  <Swiper showsButtons={false} autoplay={true}
                     buttonWrapperStyle={{ top: "10%" }}
                     style={styles.wrapper} showsButtons={true}>
                     {
