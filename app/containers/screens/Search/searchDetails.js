@@ -44,13 +44,13 @@ class SearchDetails extends Component {
     }
 
     componentDidMount() {
-
+        this.setState({ subCategorySelectData: null })
         console.log("this.props.navigation.state", this.props.navigation.state)
         const { params } = this.props.navigation.state;
         console.log("params in componentDid", params)
         this.props.subcategoryDetails(params.categoryId)
-    }
 
+    }
 
 
     categorySelectedData(item, index) {
@@ -64,19 +64,20 @@ class SearchDetails extends Component {
         setTimeout(() => {
             this.setState({ subCategoryProductFlag: false })
         }, 1000);
-        console.log("item,index", item, index)
+      
     }
 
-    initialProductListingData(index, item) {
-        if (index == 1 && this.state.subCategorySelectData === null) {
+    initialProductListingData(item, index) {
+        console.log("item in initail product listing data", item)
+        if (index == 1 && this.state.subCategorySelectData == null) {
             this.setState({ subCategorySelectData: item })
         }
     }
 
     renderSearchSubCategoriesItem(item, index) {
-        this.initialProductListingData(index, item)
+        this.initialProductListingData(item, index)
         return (
-            <TouchableOpacity onPress={() => this.subcategoryData(item, index)} key={index} style={{}}>
+            <TouchableOpacity onPress={() => this.subcategoryData(item, index)} key={item.categoryId} style={{}}>
                 <View style={{ paddingVertical: "8%", backgroundColor: "transaparent" }}>
                     <Image resizeMethod='resize' style={{ height: 68, width: 68, borderRadius: 33, opacity: this.state.subCategorySelectData && this.state.subCategorySelectData.categoryId === item.categoryId ? 0.5 : null, backgroundColor: this.state.subCategorySelectData && this.state.subCategorySelectData.categoryId === item.categoryId ? "#379688" : null }} source={{ uri: item.categoryImage }} />
                 </View>
@@ -121,7 +122,7 @@ class SearchDetails extends Component {
 
     render() {
         const { params } = this.props.navigation.state;
-        console.log("params of subcategory", this.state.subCategorySelectData)
+        console.log(" subcategory selected data", this.state.subCategorySelectData)
 
         return (
             <View style={{ flex: 1 }}>
@@ -212,18 +213,21 @@ class SearchDetails extends Component {
                                 </View>
 
                                 :
-                                this.state.subCategorySelectData && this.state.subCategorySelectData.productsData.length>0? 
-                                this.state.subCategorySelectData && this.state.subCategorySelectData.productsData.map((item, index) => {
-                                    return (
-                                        this.renderSearchCategoriesItem(item, index)
-                                    )
+                                this.state.subCategorySelectData && this.state.subCategorySelectData.productsData ?
+                                    this.state.subCategorySelectData && this.state.subCategorySelectData.productsData.length > 0 ?
+                                        this.state.subCategorySelectData.productsData.map((item, index) => {
+                                            return (
+                                                this.renderSearchCategoriesItem(item, index)
+                                            )
 
-                                })
-                                :
-                                <View style={{ paddingTop: deviceHeight*0.3, width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
-                    <Text style={{fontSize:16}}>Products coming soon....</Text>
-                            </View>
+                                        })
+                                        :
+                                        <View style={{ paddingTop: deviceHeight * 0.3, width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
+                                            <Text style={{ fontSize: 16 }}>Products coming soon....</Text>
+                                        </View>
+                                    :
 
+                                    null
                         }
 
 

@@ -37,20 +37,21 @@ class ShoppingCart extends Component {
     this.state = {
       productQuantity: 1,
       orderId: null,
-      userId: null
+      userId: null,
+      productOrderId: null
     };
   }
 
   async componentDidMount() {
 
-    // await AsyncStorage.getItem('OrderId').then(value => {
-    //   if (value) {
-    //     let objectvalue = JSON.parse(value)
-    //     this.setState({ orderId: objectvalue })
-    //     console.log("OrderId if shopping cart", objectvalue)
+    await AsyncStorage.getItem('OrderId').then(value => {
+      if (value) {
+        let objectvalue = JSON.parse(value)
+        this.setState({ productOrderId: objectvalue.order_id })
+        console.log("OrderId if shopping cart", objectvalue)
 
-    //   }
-    // });
+      }
+    });
     await AsyncStorage.getItem('LoggedInData').then(value => {
       if (value) {
         let objectvalue = JSON.parse(value)
@@ -58,8 +59,15 @@ class ShoppingCart extends Component {
         console.log("async value", objectvalue)
       }
     });
-    if (this.state.userId) {
+    if (this.state.userId && this.state.orderId || this.state.productOrderId  ) {
       this.getCartProductApi()
+    }
+    else if(this.state.userId){
+      NavService.goBack('root', 'Home');
+      RNToasty.Warn({
+        title: "You have no product in cart. Please add product to access it",
+        titleSize: 15
+      }) 
     }
     else {
       NavService.goBack('root', 'Home');
@@ -72,7 +80,10 @@ class ShoppingCart extends Component {
   }
 
   getCartProductApi() {
-    this.props.getCartProduct({ userId: this.state.userId, orderId: this.state.orderId })
+    console.log("userid, orderid", this.state.orderId, this.state.userId)
+    if (this.state.userId && this.state.orderId || this.state.productOrderId) {
+      this.props.getCartProduct({ userId: this.state.userId, orderId: this.state.orderId ? this.state.orderId : this.state.productOrderId })
+    }
 
   }
 
@@ -83,7 +94,7 @@ class ShoppingCart extends Component {
   productsDetails(item, index) {
     return (
 
-      <ShoppingCartProductDetails key={index} productDetailsData={item} userId={this.state.userId} orderId={this.state.orderId} />
+      <ShoppingCartProductDetails key={index} productDetailsData={item} userId={this.state.userId} orderId={this.state.orderId ? this.state.orderId : this.state.productOrderId} />
 
     )
   }
@@ -127,7 +138,7 @@ class ShoppingCart extends Component {
             this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData ?
               this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData.orderDetails && this.props.getCartProductReducer.getCartProductData.orderDetails.length > 0 ?
                 <View style={{ flex: 0.2, backgroundColor: "white", paddingHorizontal: deviceWidth * 0.07, justifyContent: "center", alignItems: "center" }}>
-                  <Text style={{ paddingVertical: deviceHeight * 0.02, fontSize: 16, color: "#2C2C2C" }}>Total <Text style={{ fontSize: 20, fontWeight: "bold", color: "#003351" }}>{this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData.orderUntextedAmount} KWD</Text></Text>
+                  <Text style={{ paddingVertical: deviceHeight * 0.02, fontSize: 16, color: "#2C2C2C" }}>Total <Text style={{ fontSize: 20, fontWeight: "bold", color: "#003351" }}>{this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData.orderTotalAmount} KWD</Text></Text>
 
                   <TouchableOpacity onPress={() => this.checkoutCart()} style={{ backgroundColor: "#3FC1C9", height: deviceHeight * 0.05, width: deviceWidth * 0.7, alignItems: "center", justifyContent: "center", borderRadius: 20 }}>
                     <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Checkout</Text>
@@ -214,7 +225,7 @@ class ShoppingCart extends Component {
                           <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Tax</Text>
                         </View>
                         <View style={{ flex: 0.5, alignItems: "flex-end" }}>
-                          <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>{this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData.orderTaxAmount} KWD</Text>
+                          <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>{this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData.orderTaxedAmount} KWD</Text>
                         </View>
                       </View>
 
@@ -223,7 +234,7 @@ class ShoppingCart extends Component {
                           <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Total</Text>
                         </View>
                         <View style={{ flex: 0.5, alignItems: "flex-end" }}>
-                          <Text style={{ fontSize: 20, color: "#003351", fontWeight: "700" }}>{this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData.orderUntextedAmount} KWD</Text>
+                          <Text style={{ fontSize: 20, color: "#003351", fontWeight: "700" }}>{this.props.getCartProductReducer.getCartProductData && this.props.getCartProductReducer.getCartProductData.orderTotalAmount} KWD</Text>
                         </View>
                       </View>
 

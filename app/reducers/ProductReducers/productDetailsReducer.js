@@ -12,7 +12,9 @@ export default function productDetailReducer(state = initialState, action) {
         case PRODUCT_DETAILS_LOADING:
             return {
                 ...state,
-                productDetailLoading: true
+                productDetailLoading: true,
+                productDetailData: null,
+                productDetailerror: null
             }
         case PRODUCT_DETAILS_SUCCESS:
             return {

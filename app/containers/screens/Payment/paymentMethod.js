@@ -83,10 +83,10 @@ export default class PaymentMethod extends Component {
 
         return (
             <View style={{ backgroundColor: "white", flex: 1 }}>
-                <View style={{ flex: 0.1 }}>
+               
                     <ProductStatus status={"payment"} />
-                </View>
-                <WebView
+            
+                {/* <WebView
                     source={{ uri: 'http://sms.future-club.com/bulksms/login.aspx' }}
                     onNavigationStateChange={this._onNavigationStateChange.bind(this)}
                     onError={this._onNavigationStateChange.bind(this)}
@@ -113,9 +113,9 @@ export default class PaymentMethod extends Component {
                         <Text style={{ fontSize: 15, color: colors.darkBlue, fontWeight: "700" }}>Pay with cash</Text>
                     </TouchableOpacity>
 
-                </View>
+                </View> */}
 
-                {/* <View style={{ flexDirection: "row", borderBottomWidth: 0.5, borderColor: "#A5A5A5", backgroundColor: "transparent", paddingTop: deviceHeight * 0.04 }}>
+                <View style={{ flexDirection: "row", borderBottomWidth: 0.5, borderColor: "#A5A5A5", backgroundColor: "transparent", paddingTop: deviceHeight * 0.04 }}>
 
                     <View style={{ paddingVertical: deviceHeight * 0.015, flex: 0.33, backgroundColor: "transparent", justifyContent: "center", alignItems: "center", borderBottomColor: this.state.paymentMethodFlag === "creditcard" ? colors.darkBlue : null, borderBottomWidth: this.state.paymentMethodFlag === "creditcard" ? 3 : null }}>
                         <TouchableOpacity onPress={() => this.paymentMethod("creditcard")} style={{ backgroundColor: "white" }}>
@@ -134,9 +134,9 @@ export default class PaymentMethod extends Component {
                     </View>
 
 
-                </View> */}
+                </View>
 
-                {/* <KeyboardAwareScrollView style={{ height: deviceHeight, width: deviceWidth }}>
+                <KeyboardAwareScrollView style={{ height: deviceHeight, width: deviceWidth }}>
                     {
                         this.state.paymentMethodFlag === 'creditcard' ?
 
@@ -194,7 +194,7 @@ export default class PaymentMethod extends Component {
                 </KeyboardAwareScrollView>
                 <View style={{ paddingVertical: deviceHeight * 0.015, paddingHorizontal: deviceWidth * 0.26, backgroundColor: "transparent" }}>
                     <View style={{ paddingVertical: deviceHeight * 0.025, paddingHorizontal: deviceWidth * 0.26, backgroundColor: "transparent" }} />
-                </View> */}
+                </View>
 
 
             </View>

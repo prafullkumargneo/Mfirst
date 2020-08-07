@@ -8,24 +8,24 @@ import { RNToasty } from 'react-native-toasty';
 
 export default function signUp(signUpData) {
     console.log("signupdata", signUpData)
-    let api = 'login=' + signUpData.login + '&password=' + signUpData.password + '&confirm_password=' + signUpData.confirmpassword + '&name=' + signUpData.name;
-    console.log("wholesignupsData:", api)
+    let method = 'POST'
+    // let api = 'login=' + signUpData.login + '&password=' + signUpData.password + '&confirm_password=' + signUpData.confirmpassword + '&name=' + signUpData.name;
     return (dispatch) => {
-         dispatch(signUpLoading())
-        return ApiCaller(ApiConstants.SIGNUP + api).then(res => {
-              if (res && res.data) {
-                AsyncStorage.setItem('LoggedInData',JSON.stringify(res.data));
+        dispatch(signUpLoading())
+        return ApiCaller(ApiConstants.SIGNUP, method, signUpData).then(res => {
+            if (res && res.data) {
+                AsyncStorage.setItem('LoggedInData', JSON.stringify(res.data));
                 dispatch(signUpSuccess(res.data));
                 dispatch(drawerProfile(res))
                 RNToasty.Success({
                     title: "You have succcessfully registered.",
                     titleSize: 15
-                  })
-            
+                })
+
                 NavService.navigate('root', 'MainDrawer');
-              } else {
+            } else {
                 dispatch(signUpFailure(res))
-              }
+            }
             console.log("response of signup api", res)
         })
     }

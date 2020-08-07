@@ -8,8 +8,8 @@ export default function getCartProduct(getCartData) {
   return (dispatch) => {
     dispatch(getCartProductLoading())
     return ApiCaller(ApiConstants.GETCART + api).then(res => {
-        if (res && res.Data) {
-          dispatch(getCartProductSuccess(res.Data));
+        if (res && res.data) {
+          dispatch(getCartProductSuccess(res.data));
         } else {
           dispatch(getCartProductFailure(res))
         }

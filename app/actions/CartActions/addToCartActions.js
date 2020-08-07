@@ -11,8 +11,8 @@ export default function addToCart(cartData,order_id,status) {
   return (dispatch) => {
     dispatch(addToCartLoading())
     return ApiCaller(ApiConstants.ADDTOCART,method,cartData).then(res => {
-        if (res && res.order_id) {
-          AsyncStorage.setItem('OrderId',JSON.stringify(res.order_id));
+        if (res && res.data) {
+          AsyncStorage.setItem('OrderId',JSON.stringify(res.data));
           AsyncStorage.getItem('OrderId').then(value => {
            console.log("value of cart data",value)
           });

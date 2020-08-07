@@ -133,8 +133,8 @@ class SignUp extends Component {
         login: this.state.email,
         name: this.state.firstName + "" + this.state.lastName,
         password: this.state.password,
-        confirmpassword: this.state.password,
-        token: null
+        confirm_password: this.state.password,
+        // token: null
       }
       this.props.signUp(signUpData)
     }

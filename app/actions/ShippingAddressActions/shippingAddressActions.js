@@ -8,8 +8,8 @@ let method='POST'
   return (dispatch) => {
     dispatch(shippingAddressLoading())
     return ApiCaller(ApiConstants.SHIPPINGADDRESS,method,addshippingData).then(res => {
-        if (res && res.Data) {
-          dispatch(shippingAddressSuccess(res.Data));
+        if (res && res.data) {
+          dispatch(shippingAddressSuccess(res.data));
         } else {
           dispatch(shippingAddressFailure(res))
         }

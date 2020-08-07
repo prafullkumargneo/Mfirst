@@ -15,10 +15,10 @@ export default function signIn(signInData) {
   return (dispatch) => {
     dispatch(signInLoading())
     return ApiCaller(ApiConstants.SIGNIN ,method,signInData).then(res => {
-      if (res && res.Data) {
+      if (res && res.data) {
         console.log("in signin api response", res)
-        dispatch(signInSuccess(res.Data));
-        AsyncStorage.setItem('LoggedInData', JSON.stringify(res.Data));
+        dispatch(signInSuccess(res.data));
+        AsyncStorage.setItem('LoggedInData', JSON.stringify(res.data));
         dispatch(categoryDetails(res.Data.userId));
         AsyncStorage.getItem('LoggedInData').then(value => {
 

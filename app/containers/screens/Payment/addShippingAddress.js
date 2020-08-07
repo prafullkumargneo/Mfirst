@@ -154,7 +154,7 @@ class AddShippingAddress extends Component {
                 user_id: this.state.userId && this.state.userId,
                 shipping_status: this.props.navigation.state.params && this.props.navigation.state.params.shipping_id ? 'update' : 'new',
                 ShippingId:this.props.navigation.state.params && this.props.navigation.state.params.shipping_id,
-                Email: 'test@test.com'
+                Email: this.state.email
             }
             console.log("whole shipping data", addShippingData)
             this.props.addshippingAddressAction(addShippingData)

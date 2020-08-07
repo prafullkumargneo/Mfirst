@@ -136,7 +136,7 @@ class ProductDetails extends Component {
 
     productAddResponse() {
 
-        if (this.props.addToCartReducer && this.props.addToCartReducer.addToCartData) {
+        if (this.props.addToCartReducer && this.props.addToCartReducer.addToCartData &&this.props.addToCartReducer.addToCartData.data) {
             RNToasty.Success({
                 title: "Product added to cart.",
                 titleSize: 15

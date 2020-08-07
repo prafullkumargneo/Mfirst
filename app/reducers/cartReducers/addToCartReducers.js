@@ -12,7 +12,9 @@ export default function addToCartReducer(state = initialState, action) {
         case ADD_TO_CART_LOADING:
             return {
                 ...state,
-                addToCartLoading: true
+                addToCartLoading: true,
+                  addToCartData: null,
+                  addToCartError: null
             }
         case ADD_TO_CART_SUCCESS:
             return {

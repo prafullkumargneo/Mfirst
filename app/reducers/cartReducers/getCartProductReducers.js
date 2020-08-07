@@ -11,7 +11,9 @@ export default function getCartProductReducer(state = initialState, action) {
         case GET_CART_LOADING:
             return {
                 ...state,
-                getCartProductLoading: true
+                getCartProductLoading: true,
+                getCartProductError: null,
+                getCartProductData: null,
             }
         case GET_CART_SUCCESS:
             return {

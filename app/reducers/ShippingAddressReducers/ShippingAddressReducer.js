@@ -18,13 +18,15 @@ console.log("in reducer of shipping",action.type,action.data)
             return {
                 ...state,
                 shippingAddressLoading: false,
-                shippingAddressData: action.data
+                shippingAddressData: action.data,
+                shippingAddressError:null
             }
         case SHIPPING_ADDRESS_FAILURE:
             return {
                 ...state,
                 shippingAddressLoading: false,
-                shippingAddressError: action.data
+                shippingAddressError: action.data,
+                shippingAddressData:null
             }
         default:
             return state

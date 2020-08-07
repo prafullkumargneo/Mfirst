@@ -28,6 +28,7 @@ import { RNToasty } from 'react-native-toasty';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import shippingAddressAction from '../../../actions/ShippingAddressActions/shippingAddressActions';
 import addshippingAddressAction from '../../../actions/ShippingAddressActions/addShippingAddressActions';
+import shippingAddressSelected from '../../../actions/ShippingAddressActions/ShippingAddressSelectedAction';
 import AsyncStorage from '@react-native-community/async-storage';
 
 
@@ -49,8 +50,10 @@ class ShippingAddress extends Component {
             phoneNumber: "",
             countryName: "",
             selectedAddress: null,
-            selectedAddressData:null,
-            userId: null
+            selectedAddressData: null,
+            userId: null,
+            orderId: null,
+            productOrderId: null
 
         };
         this.reRenderSomething = this.props.navigation.addListener('willFocus', () => {
@@ -63,7 +66,7 @@ class ShippingAddress extends Component {
     }
     async someAction() {
         // alert()
-        await  this.getAdress()
+        await this.getAdress()
     }
 
     componentWillUnmount() {
@@ -73,7 +76,7 @@ class ShippingAddress extends Component {
         await this.getAdress()
     }
 
-    getAdress(){
+    getAdress() {
         AsyncStorage.getItem('LoggedInData').then(value => {
 
             if (value) {
@@ -81,15 +84,24 @@ class ShippingAddress extends Component {
                 this.setState({ userId: objectvalue.userId })
                 let getShippingAdress = {
                     shipping_status: "get",
-                    user_id: objectvalue.userId
+                    user_id: objectvalue.userId,
+                    orderId: objectvalue.orderDetails && objectvalue.orderDetails.orderId
                 }
                 this.props.shippingAddressAction(getShippingAdress)
+            }
+        });
+        AsyncStorage.getItem('OrderId').then(value => {
+            if (value) {
+                let objectvalue = JSON.parse(value)
+                this.setState({ productOrderId: objectvalue.order_id })
+                console.log("OrderId if shopping cart", objectvalue)
+
             }
         });
     }
 
     selectedAddress(item, index) {
-        this.setState({ selectedAddress: index,selectedAddressData:item })
+        this.setState({ selectedAddress: index, selectedAddressData: item })
     }
     editAddress(item) {
         NavService.navigate('root', 'AddShippingAddress', item);
@@ -168,7 +180,12 @@ class ShippingAddress extends Component {
             })
         }
         else {
-            NavService.navigate('root', 'Payement')
+            let selectedAdress = {
+                orderId: this.state.productOrderId ? this.state.productOrderId : this.state.orderId,
+                shippingId: this.state.selectedAddressData.shipping_id
+            }
+            this.props.shippingAddressSelected(selectedAdress)
+          
         }
         // else if (this.state.lastName == '') {
         //     RNToasty.Error({
@@ -213,7 +230,7 @@ class ShippingAddress extends Component {
 
 
     render() {
-        console.log('this.state.selectedAddress',this.state.selectedAddress)
+        console.log('this.state.SelectedshippingAddressReducer', this.props.SelectedshippingAddressReducer)
         return (
             <View style={{ backgroundColor: "white", flex: 1 }}>
                 <ProductStatus status={"shipping"} />
@@ -231,18 +248,23 @@ class ShippingAddress extends Component {
                                 <ActivityIndicator size={"large"} />
                             </View>
                             :
-                            this.props.shippingAddressReducer.shippingAddressData && this.props.shippingAddressReducer.shippingAddressData.shippingDetails.map((item, index) => {
-                                return (
-                                    this.getShippingAddress(item, index)
-                                )
-                            })
+                            this.props.shippingAddressReducer.shippingAddressData && this.props.shippingAddressReducer.shippingAddressData.shippingDetails.length ?
+                                this.props.shippingAddressReducer.shippingAddressData.shippingDetails.map((item, index) => {
+                                    return (
+                                        this.getShippingAddress(item, index)
+                                    )
+                                })
+                                :
+                                <View style={{ alignItems: 'center', paddingTop: deviceHeight * 0.3 }}>
+                                    <Text>You dont have any address added.Please add an address</Text>
+                                </View>
                     }
                 </ScrollView>
 
                 {/* <View style={{ paddingVertical: deviceHeight * 0.01, paddingHorizontal: deviceWidth * 0.3, position:"absolute"}}> */}
 
-                <TouchableOpacity onPress={() => this.shipingAddressData()} style={{ position: 'absolute', backgroundColor: '#3FC1C9', alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.014, paddingHorizontal: deviceWidth * 0.1, top: deviceHeight * 0.84, left: deviceWidth * 0.35 }}>
-                    <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Confirm</Text>
+                <TouchableOpacity disabled={this.props.SelectedshippingAddressReducer.SelectedshippingAddresLoading} onPress={() => this.shipingAddressData()} style={{ position: 'absolute', backgroundColor: '#3FC1C9', alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.014, paddingHorizontal: deviceWidth * 0.1, top: deviceHeight * 0.84, left: deviceWidth * 0.35 }}>
+                    {this.props.SelectedshippingAddressReducer.SelectedshippingAddresLoading ? <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Please wait...</Text> : <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Confirm</Text>}
                 </TouchableOpacity>
                 {/* </View>  */}
 
@@ -255,13 +277,14 @@ class ShippingAddress extends Component {
 
 function mapStateToProps(state) {
     return {
-        shippingAddressReducer: state.shippingAddressReducer
+        shippingAddressReducer: state.shippingAddressReducer,
+        SelectedshippingAddressReducer: state.SelectedshippingAddressReducer
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        ...bindActionCreators({ shippingAddressAction,addshippingAddressAction }, dispatch)
+        ...bindActionCreators({ shippingAddressAction, addshippingAddressAction, shippingAddressSelected }, dispatch)
     }
 }
 
