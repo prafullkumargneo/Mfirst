@@ -12,7 +12,9 @@ console.log("in reducer of shipping",action.type,action.data)
         case SHIPPING_ADDRESS_LOADING:
             return {
                 ...state,
-                shippingAddressLoading: true
+                shippingAddressLoading: true,
+                shippingAddressData: null,
+                shippingAddressError: null
             }
         case SHIPPING_ADDRESS_SUCCESS:
             return {

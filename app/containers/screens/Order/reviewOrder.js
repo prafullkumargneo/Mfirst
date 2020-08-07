@@ -44,7 +44,10 @@ export default class ReviewOrder extends Component {
         };
     }
 
-
+componentDidMount(){
+    const { params } = this.props.navigation.state;
+    console.log('params in review order',params)
+}
 
 
 
