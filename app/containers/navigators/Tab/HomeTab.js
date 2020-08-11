@@ -38,15 +38,15 @@ const HomeTabNav = createMaterialTopTabNavigator(
       indicatorStyle: {
         //  borderWidth:2,
         justifyContent:'center',
-        height: deviceHeight*0.07,
+        height: deviceHeight*0.05,
         width:deviceWidth*0.3,
         marginHorizontal:"1%",
          backgroundColor: colors.primaryColor,
          borderRadius: 40
       },
       style: {
-        // height: "6%",
-        backgroundColor: colors.white,
+        height: "6%",
+        backgroundColor:colors.white,
         shadowOpacity: 0,
         shadowOffset: {
           height: 0,
