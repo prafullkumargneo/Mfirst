@@ -17,7 +17,8 @@ const ApiConstants = {
     DISCOVERCATEFORY:'mfl/discover',
     GETPAYMENTOPTIONS:'api/shop/get/payment',
     REVIEWORDER:'api/checkout/review_order',
-    ORDERPLACED:'api/shop/payment/process'
+    ORDERPLACED:'api/shop/payment/process',
+    ORDERLIST:'api/my/orders'
   };
   
   export default ApiConstants;

@@ -9,7 +9,7 @@ import {
     AsyncStorage,
     StatusBar,
     ScrollView,
-    FlatList,TouchableOpacity
+    FlatList,TouchableOpacity,Image
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DrawerActions } from 'react-navigation-drawer';
@@ -40,6 +40,9 @@ export default class OrderAccepted extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 0.4,justifyContent:"flex-end",alignItems:"center" }}>
+                    <View style={{paddingVertical:"10%"}}>
+                <Image source={require("../../../assets/images/magicstars.gif")} />
+                </View>
                     <Text style={{fontSize:20}}>Your Order is on the way</Text>
                 </View>
                 <View style={{ flex: 0.6,paddingTop:"7%",paddingHorizontal:deviceHeight*0.08}}>

@@ -6,13 +6,15 @@ import {
     StyleSheet,
     Keyboard,
     Alert,
-    AsyncStorage,
     StatusBar,
     ScrollView,
     FlatList, TouchableOpacity
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DrawerActions } from 'react-navigation-drawer';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 import _Input from '../../../components/Input/_Input';
 import _Button from '../../../components/Button/_Button';
 import _TouchItem from '../../../components/TouchItem/_TouchItem';
@@ -23,7 +25,7 @@ import DummyJSON from "../../../lib/dummyJson";
 import appStyles from '../../../constants/appStyle';
 import NavService from '../../navigators/navigationService';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import getorderList from "../../../actions/OrderActions/orderListingActions";
 
 const colors = {
 
@@ -33,16 +35,30 @@ const colors = {
     darkSkyBlue: "#3FC1C9",
 
 }
-export default class Orders extends Component {
+
+class Orders extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            userId:null
         };
     }
 
+    async componentDidMount() {
 
+        await AsyncStorage.getItem('LoggedInData').then(value => {
 
+            if (value) {
+                let objectvalue = JSON.parse(value)
+                this.setState({ userId: objectvalue.userId })
+                let orderListData = {
+                    userId: objectvalue.userId
+                }
+                this.props.getorderList(orderListData)
+            }
+        });
+
+    }
 
     render() {
 
@@ -52,11 +68,11 @@ export default class Orders extends Component {
 
                     {DummyJSON.OrdersList.map((item, index) => {
                         return (
-                            <TouchableOpacity onPress={()=>NavService.navigate('root','OrdersDetails')} key={index} style={{ flexDirection: "row", paddingHorizontal: deviceWidth * 0.04, paddingVertical: deviceHeight * 0.025, backgroundColor: "white", margin: "1%" }}>
+                            <TouchableOpacity onPress={() => NavService.navigate('root', 'OrdersDetails')} key={index} style={{ flexDirection: "row", paddingHorizontal: deviceWidth * 0.04, paddingVertical: deviceHeight * 0.025, backgroundColor: "white", margin: "1%" }}>
 
                                 <View style={{ flex: 0.6, backgroundColor: "transparent" }}>
                                     <Text style={{ fontSize: 15, color: colors.darkBlue }}>{item.orderId}</Text>
-                                    <Text style={{ fontSize: 12, color: item.orderStatus=="On its way"?"orange": item.orderStatus=="Delivered"?colors.darkSkyBlue:item.orderStatus=="Cancelled"?"red":colors.darkGrey}}>{item.orderStatus}</Text>
+                                    <Text style={{ fontSize: 12, color: item.orderStatus == "On its way" ? "orange" : item.orderStatus == "Delivered" ? colors.darkSkyBlue : item.orderStatus == "Cancelled" ? "red" : colors.darkGrey }}>{item.orderStatus}</Text>
 
                                 </View>
                                 <View style={{ flex: 0.25, backgroundColor: "transparent" }}>
@@ -72,13 +88,27 @@ export default class Orders extends Component {
                             </TouchableOpacity>
                         )
                     })}
-                    
+
                 </ScrollView>
             </View>
 
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        ...bindActionCreators({getorderList}, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Orders)
 
 const styles = StyleSheet.create({
     headerContainer: {
