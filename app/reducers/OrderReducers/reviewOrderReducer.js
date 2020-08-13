@@ -27,8 +27,8 @@ export default function reviewOrderReducer(state = initialState, action) {
             return {
                 ...state,
                 getReviewOrderLoading: false,
-                addToCartError: action.data,
-                getReviewOrderError:null
+                getReviewOrderError: action.data,
+                getReviewOrderData:null
             }
         default:
             return state

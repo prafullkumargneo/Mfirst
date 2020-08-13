@@ -8,7 +8,7 @@ import {
     Alert,
     AsyncStorage,
     StatusBar,
-    ScrollView,Image,
+    ScrollView, Image,
     FlatList, TouchableOpacity, ActivityIndicator
 } from 'react-native';
 import { bindActionCreators } from 'redux';
@@ -29,6 +29,7 @@ import DeliveryIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RNToasty } from 'react-native-toasty';
 import getReviewOrder from '../../../actions/OrderActions/reviewOrderActions';
+import orderPlaced from '../../../actions/OrderActions/orderPlacedActions';
 import AnimatedLoader from "react-native-animated-loader";
 
 const colors = {
@@ -44,28 +45,50 @@ class ReviewOrder extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            orderId: null,
+            paymentAcquirerId: null
         };
     }
 
     async componentDidMount() {
         const { params } = this.props.navigation.state;
+        await this.setState({ orderId: params.orderId, paymentAcquirerId: params.paymentAcquirerId })
         console.log('params in review order', params)
+        await this.fetchReviewOrderDetail()
+
+    }
+
+    fetchReviewOrderDetail() {
+
         let reviewOrderData = {
-            orderId: params.orderId,
-            paymentAcquirerId: params.paymentAcquirerId
+            orderId: this.state.orderId,
+            paymentAcquirerId: this.state.paymentAcquirerId
         }
-        await this.props.getReviewOrder(reviewOrderData)
+        this.props.getReviewOrder(reviewOrderData)
     }
 
 
+    retryReviewOrder() {
+        this.fetchReviewOrderDetail()
+    }
+
+    orderPlaced() {
+        let orderPlacedData = {
+            orderId: this.state.orderId,
+            paymentAcquirerId: this.state.paymentAcquirerId
+        }
+        this.props.orderPlaced(orderPlacedData)
+    }
 
     render() {
-        console.log("this,props.,reviewOrderReducer", this.props.reviewOrderReducer)
+        let shippingDetails = this.props.reviewOrderReducer.getReviewOrderData && this.props.reviewOrderReducer.getReviewOrderData.shippingDetails
+        let paymentDetails = this.props.reviewOrderReducer.getReviewOrderData && this.props.reviewOrderReducer.getReviewOrderData.paymentDetails
+        let orderDetails = this.props.reviewOrderReducer.getReviewOrderData && this.props.reviewOrderReducer.getReviewOrderData.orderDetails
+        console.log("this,props.,orderPlacedReducer", this.props.orderPlacedReducer)
         if (this.props.reviewOrderReducer.getReviewOrderLoading) {
             return (
                 <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-                <Image  source={require("../../../assets/images/gifloader.gif")}  />
+                    <Image source={require("../../../assets/images/gifloader.gif")} />
                 </View>
             )
         }
@@ -75,120 +98,139 @@ class ReviewOrder extends Component {
                     <View style={{ flex: 0.1 }}>
                         <ProductStatus status={"reviewOrder"} />
                     </View>
-                    <View style={{ flex: 0.87, backgroundColor: "transparent" }}>
-                        <ScrollView style={{ height: deviceHeight }}>
 
-                            <View style={{ backgroundColor: "transparent", flexDirection: "row", paddingHorizontal: deviceHeight * 0.03, paddingVertical: deviceHeight * 0.02, borderBottomWidth: 0.5, borderColor: "#A5A5A5" }}>
+                    {this.props.reviewOrderReducer && this.props.reviewOrderReducer.getReviewOrderData ?
 
-                                <View style={{ flex: 0.12, backgroundColor: "transparent" }}>
-                                    <Icon name={'check-circle'} size={30} color={"#3FC1C9"} />
-                                </View>
-                                <View style={{ flex: 0.76, backgroundColor: "transparent", backgroundColor: "transparent" }}>
-                                    <Text style={{ fontSize: 19 }}>Shipping</Text>
-                                    <View style={{ flexDirection: "row", paddingVertical: deviceHeight * 0.01 }}>
-                                        <DeliveryIcon name={"truck-fast"} size={30} color={"#00333A"} />
 
-                                        <Text style={{ paddingLeft: deviceHeight * 0.02, paddingTop: deviceHeight * 0.005, color: colors.darkGrey }}>Fast Delivery within 4 hrs</Text>
+
+                        <View style={{ flex: 0.87, backgroundColor: "transparent" }}>
+                            <ScrollView style={{ height: deviceHeight }}>
+
+                                <View style={{ backgroundColor: "transparent", flexDirection: "row", paddingHorizontal: deviceHeight * 0.03, paddingVertical: deviceHeight * 0.02, borderBottomWidth: 0.5, borderColor: "#A5A5A5" }}>
+
+                                    <View style={{ flex: 0.12, backgroundColor: "transparent" }}>
+                                        <Icon name={'check-circle'} size={30} color={"#3FC1C9"} />
                                     </View>
-                                </View>
-                                <View style={{ flex: 0.12, backgroundColor: "transparent", alignItems: "flex-end" }}>
-                                    <Text style={{ fontSize: 13, color: colors.darkBlue, textDecorationLine: "underline", textDecorationColor: colors.darkBlue }}>Edit</Text>
-                                </View>
+                                    <View style={{ flex: 0.76, backgroundColor: "transparent", backgroundColor: "transparent" }}>
+                                        <Text style={{ fontSize: 19 }}>Shipping</Text>
+                                        <View style={{ flexDirection: "row", paddingVertical: deviceHeight * 0.01 }}>
+                                            <DeliveryIcon name={"truck-fast"} size={30} color={"#00333A"} />
 
-                            </View>
-
-                            <View style={{ backgroundColor: "transparent", flexDirection: "row", paddingHorizontal: deviceHeight * 0.03, paddingVertical: deviceHeight * 0.02, borderWidth: 0.5, borderColor: "#A5A5A5" }}>
-
-                                <View style={{ flex: 0.12, backgroundColor: "transparent" }}>
-                                    <Icon name={'check-circle'} size={30} color={"#3FC1C9"} />
-                                </View>
-                                <View style={{ flex: 0.76, backgroundColor: "transparent", backgroundColor: "transparent" }}>
-                                    <Text style={{ fontSize: 19 }}>Sending to</Text>
-                                    <View style={{ paddingVertical: deviceHeight * 0.005 }}>
-                                        <Text style={{ color: colors.darkGrey }}>Street 12 palm strees</Text>
-                                        <Text style={{ color: colors.darkGrey }}>850 tower bridge</Text>
-                                        <Text style={{ color: colors.darkGrey }}>Sn matron CA 94066</Text>
+                                            <Text style={{ paddingLeft: deviceHeight * 0.02, paddingTop: deviceHeight * 0.005, color: colors.darkGrey }}>Fast Delivery within 4 hrs</Text>
+                                        </View>
                                     </View>
-                                </View>
-                                <View style={{ flex: 0.12, backgroundColor: "transparent", alignItems: "flex-end" }}>
-                                    <Text onPress={() => NavService.navigate('root', 'ShippingAddress')} style={{ fontSize: 13, color: colors.darkBlue, textDecorationLine: "underline", textDecorationColor: colors.darkBlue }}>Edit</Text>
-                                </View>
-
-                            </View>
-
-                            <View style={{ backgroundColor: "transparent", flexDirection: "row", paddingHorizontal: deviceHeight * 0.03, paddingVertical: deviceHeight * 0.02, borderWidth: 0.19, borderColor: "#A5A5A5" }}>
-
-                                <View style={{ flex: 0.12, backgroundColor: "transparent" }}>
-                                    <Icon name={'check-circle'} size={30} color={"#3FC1C9"} />
-                                </View>
-                                <View style={{ flex: 0.76, backgroundColor: "transparent", backgroundColor: "transparent" }}>
-                                    <Text style={{ fontSize: 19 }}>Paying with</Text>
-                                    <View style={{ paddingVertical: deviceHeight * 0.005 }}>
-                                        <Text style={{ color: colors.darkGrey }}>Visa ending 1234</Text>
+                                    <View style={{ flex: 0.12, backgroundColor: "transparent", alignItems: "flex-end" }}>
+                                        <Text style={{ fontSize: 13, color: colors.darkBlue, textDecorationLine: "underline", textDecorationColor: colors.darkBlue }}>Edit</Text>
                                     </View>
-                                </View>
-                                <View style={{ flex: 0.12, backgroundColor: "transparent", alignItems: "flex-end" }}>
-                                    <Text onPress={() => NavService.navigate('root', 'Payement')} style={{ fontSize: 13, color: colors.darkBlue, textDecorationLine: "underline", textDecorationColor: colors.darkBlue }}>Edit</Text>
+
                                 </View>
 
-                            </View>
+                                <View style={{ backgroundColor: "transparent", flexDirection: "row", paddingHorizontal: deviceHeight * 0.03, paddingVertical: deviceHeight * 0.02, borderWidth: 0.5, borderColor: "#A5A5A5" }}>
 
-                            <View style={{ backgroundColor: "transparent", paddingHorizontal: deviceHeight * 0.03, paddingVertical: deviceHeight * 0.02 }}>
-
-                                <Text style={{ color: '#2B2B2B', fontSize: 16, paddingVertical: deviceHeight * 0.01 }}> 3 items</Text>
-
-                                <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
-                                    <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
-                                        <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Shipping</Text>
+                                    <View style={{ flex: 0.12, backgroundColor: "transparent" }}>
+                                        <Icon name={'check-circle'} size={30} color={"#3FC1C9"} />
                                     </View>
-                                    <View style={{ flex: 0.5, alignItems: "flex-end" }}>
-                                        <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>77.500 KWD</Text>
+                                    <View style={{ flex: 0.76, backgroundColor: "transparent", backgroundColor: "transparent" }}>
+                                        <Text style={{ fontSize: 19 }}>Sending to</Text>
+                                        <View style={{ paddingVertical: deviceHeight * 0.005 }}>
+                                            <Text style={{ color: colors.darkGrey }}>{shippingDetails.name}, {shippingDetails.email}</Text>
+                                            <Text style={{ color: colors.darkGrey }}>{shippingDetails.street} {shippingDetails.street2 ? shippingDetails.street2 : null}</Text>
+                                            <Text style={{ color: colors.darkGrey }}>{shippingDetails.street} {shippingDetails.city} {shippingDetails.zip}</Text>
+                                            {shippingDetails.phone ? <Text style={{ color: colors.darkGrey }}>Contact number- {shippingDetails.phone}</Text> : null}
+                                        </View>
                                     </View>
+                                    <View style={{ flex: 0.12, backgroundColor: "transparent", alignItems: "flex-end" }}>
+                                        <Text onPress={() => NavService.navigate('root', 'ShippingAddress')} style={{ fontSize: 13, color: colors.darkBlue, textDecorationLine: "underline", textDecorationColor: colors.darkBlue }}>Edit</Text>
+                                    </View>
+
                                 </View>
 
-                                <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
-                                    <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
-                                        <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Tax</Text>
+                                <View style={{ backgroundColor: "transparent", flexDirection: "row", paddingHorizontal: deviceHeight * 0.03, paddingVertical: deviceHeight * 0.02, borderWidth: 0.19, borderColor: "#A5A5A5" }}>
+
+                                    <View style={{ flex: 0.12, backgroundColor: "transparent" }}>
+                                        <Icon name={'check-circle'} size={30} color={"#3FC1C9"} />
                                     </View>
-                                    <View style={{ flex: 0.5, alignItems: "flex-end" }}>
-                                        <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>0 KWD</Text>
+                                    <View style={{ flex: 0.76, backgroundColor: "transparent", backgroundColor: "transparent" }}>
+                                        <Text style={{ fontSize: 19 }}>Paying with</Text>
+                                        <View style={{ paddingVertical: deviceHeight * 0.005 }}>
+                                            <Text style={{ color: colors.darkGrey }}>{paymentDetails.paymentAcquirerName}</Text>
+                                        </View>
                                     </View>
+                                    <View style={{ flex: 0.12, backgroundColor: "transparent", alignItems: "flex-end" }}>
+                                        <Text onPress={() => NavService.navigate('root', 'Payement')} style={{ fontSize: 13, color: colors.darkBlue, textDecorationLine: "underline", textDecorationColor: colors.darkBlue }}>Edit</Text>
+                                    </View>
+
                                 </View>
 
-                                <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
-                                    <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
-                                        <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Total</Text>
+                                <View style={{ backgroundColor: "transparent", paddingHorizontal: deviceHeight * 0.03, paddingVertical: deviceHeight * 0.02 }}>
+
+                                    <Text style={{ color: '#2B2B2B', fontSize: 15, paddingVertical: deviceHeight * 0.01 }}> orderid {orderDetails.orderId}</Text>
+
+                                    <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
+                                        <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
+                                            <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Shipping</Text>
+                                        </View>
+                                        <View style={{ flex: 0.5, alignItems: "flex-end" }}>
+                                            <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>{orderDetails.orderUntaxtedAmount} KWD</Text>
+                                        </View>
                                     </View>
-                                    <View style={{ flex: 0.5, alignItems: "flex-end" }}>
-                                        <Text style={{ fontSize: 20, color: "#003351", fontWeight: "700" }}>77.500 KWD</Text>
+
+                                    <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
+                                        <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
+                                            <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Tax</Text>
+                                        </View>
+                                        <View style={{ flex: 0.5, alignItems: "flex-end" }}>
+                                            <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>{orderDetails.orderTaxedAmount} KWD</Text>
+                                        </View>
                                     </View>
+
+                                    <View style={{ flexDirection: "row", backgroundColor: "transparent", paddingVertical: deviceHeight * 0.015 }}>
+                                        <View style={{ flex: 0.5, backgroundColor: "transparent" }}>
+                                            <Text style={{ fontSize: 14, color: "#2B2B2B", fontWeight: "700" }}>Total</Text>
+                                        </View>
+                                        <View style={{ flex: 0.5, alignItems: "flex-end" }}>
+                                            <Text style={{ fontSize: 20, color: "#003351", fontWeight: "700" }}>{orderDetails.orderTotalAmount} KWD</Text>
+                                        </View>
+                                    </View>
+
                                 </View>
 
-                            </View>
 
-
-                        </ScrollView>
-                    </View>
-
-                    <View style={{ flex: 0.13, backgroundColor: "transparent", flexDirection: "row", paddingHorizontal: deviceHeight * 0.04, borderWidth: 1, borderColor: "#A5A5A5" }} >
-
-                        <View style={{ flex: 0.5, justifyContent: 'center', backgroundColor: "transparent" }}>
-                            <Text style={{ fontSize: 16, color: "#2B2B2B", fontWeight: "700" }}>Total</Text>
-                            <Text style={{ fontSize: 16, color: "#003351", fontWeight: "700" }}>77.500 KWD</Text>
+                            </ScrollView>
                         </View>
-
-                        <View style={{ flex: 0.5, justifyContent: 'center', backgroundColor: "transparent" }}>
-
-                            <TouchableOpacity onPress={() => {
-                                RNToasty.Success({
-                                    title: "Your order has been placed",
-                                    titleSize: 15
-                                }), NavService.navigate('root', 'OrderAccepted')
-                            }} style={{ backgroundColor: '#3FC1C9', alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.015 }}>
-                                <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Place Order</Text>
-                            </TouchableOpacity>
+                        :
+                        <View style={{ flex: 0.87, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ paddingVertical: '3%' }}>Something went wrong ..</Text>
+                            <Text onPress={() => this.retryReviewOrder()} style={{ color: 'skyblue' }}>Retry</Text>
                         </View>
-                    </View>
+                    }
+
+                    {
+                        this.props.reviewOrderReducer && this.props.reviewOrderReducer.getReviewOrderData ?
+
+                            <View style={{ flex: 0.13, backgroundColor: "transparent", flexDirection: "row", paddingHorizontal: deviceHeight * 0.04, borderWidth: 1, borderColor: "#A5A5A5" }} >
+
+                                <View style={{ flex: 0.5, justifyContent: 'center', backgroundColor: "transparent" }}>
+                                    <Text style={{ fontSize: 16, color: "#2B2B2B", fontWeight: "700" }}>Total</Text>
+                                    <Text style={{ fontSize: 16, color: "#003351", fontWeight: "700" }}>{orderDetails.orderTotalAmount} KWD</Text>
+                                </View>
+
+                                <View style={{ flex: 0.5, justifyContent: 'center', backgroundColor: "transparent" }}>
+
+                                    <TouchableOpacity disabled={this.props.orderPlacedReducer.orderPlacedLoading} onPress={() => {
+                                        this.orderPlaced()
+                                
+                                    }} style={{ backgroundColor: '#3FC1C9', alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.015 }}>
+                                        {this.props.orderPlacedReducer.orderPlacedLoading ? <Image source={require("../../../assets/images/PleaseWait.gif")} /> : <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Process Order</Text>}
+
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            :
+                            null
+                    }
+
+
 
 
                 </View>
@@ -201,13 +243,14 @@ class ReviewOrder extends Component {
 
 function mapStateToProps(state) {
     return {
-        reviewOrderReducer: state.reviewOrderReducer
+        reviewOrderReducer: state.reviewOrderReducer,
+        orderPlacedReducer: state.orderPlacedReducer
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        ...bindActionCreators({ getReviewOrder }, dispatch)
+        ...bindActionCreators({ getReviewOrder, orderPlaced }, dispatch)
     }
 }
 

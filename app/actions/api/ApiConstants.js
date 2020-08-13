@@ -16,7 +16,8 @@ const ApiConstants = {
     TRENDINGCATEGORY: 'mfl/trending/products?categoryId=',
     DISCOVERCATEFORY:'mfl/discover',
     GETPAYMENTOPTIONS:'api/shop/get/payment',
-    REVIEWORDER:'api/checkout/review_order'
+    REVIEWORDER:'api/checkout/review_order',
+    ORDERPLACED:'api/shop/payment/process'
   };
   
   export default ApiConstants;
