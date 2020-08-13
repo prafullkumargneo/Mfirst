@@ -22,6 +22,7 @@ import Login from './Stack/LoginStack';
 import LoginPhone from './Stack/LoginPhoneStack';
 import DiscoverNavigator from './Stack/DiscoverStack';
 import TrendingNavigator from './Stack/TrendingStack';
+import {greyIcon} from '../../constants/colors';
 
 
 import ProductDetails from '../screens/ProductDetails/productDetails';
@@ -245,6 +246,23 @@ const RootNavigation = createStackNavigator(
         headerTitleAlign: 'center',
         // headerTintColor: white,
         headerTitle: "Favorites",
+        headerLeft: () => {
+          return (
+            <_TouchItem
+              style={{margin: 10}}
+              onPress={() => {
+                // NavService.goBack('root');
+                NavService.goBack('root');
+              }}>
+              <Icon
+                style={{fontSize: 40}}
+                name={'chevron-left'}
+                color={greyIcon}
+                size={50}
+              />
+            </_TouchItem>
+          );
+        },
         headerTitleStyle: {
           fontWeight: '600',
           fontSize: 18

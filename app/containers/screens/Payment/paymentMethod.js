@@ -9,7 +9,7 @@ import {
     AsyncStorage,
     StatusBar,
     ScrollView,
-    FlatList, TextInput, TouchableOpacity, ActivityIndicator
+    FlatList, TextInput, TouchableOpacity, ActivityIndicator,Image
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DrawerActions } from 'react-navigation-drawer';
@@ -224,8 +224,8 @@ class PaymentMethod extends Component {
 
                 {
                     this.props.getPaymentOptionsData.getPaymentOptionLoading ?
-                        <View style={{ flex: 1 }}>
-                            <ActivityIndicator size={"large"} />
+                        <View style={{ flex: 1,alignItems:'center' }}>
+                             <Image  source={require("../../../assets/images/gifloader.gif")}  />
                         </View>
                         :
                         this.props.getPaymentOptionsData.getPaymentOptionData && this.props.getPaymentOptionsData.getPaymentOptionData ?

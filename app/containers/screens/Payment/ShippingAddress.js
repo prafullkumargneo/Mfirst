@@ -8,7 +8,7 @@ import {
     Alert,
     StatusBar,
     ScrollView,
-    FlatList, TextInput, TouchableOpacity, ActivityIndicator
+    FlatList, TextInput, TouchableOpacity, ActivityIndicator,Image
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { bindActionCreators } from 'redux';
@@ -245,7 +245,7 @@ class ShippingAddress extends Component {
                     {
                         this.props.shippingAddressReducer.shippingAddressLoading ?
                             <View style={{ height: deviceHeight * 0.7, justifyContent: "center", alignItems: "center" }}>
-                                <ActivityIndicator size={"large"} />
+                             <Image  source={require("../../../assets/images/gifloader.gif")}  />
                             </View>
                             :
                             this.props.shippingAddressReducer.shippingAddressData && this.props.shippingAddressReducer.shippingAddressData.shippingDetails.length ?
@@ -264,7 +264,7 @@ class ShippingAddress extends Component {
                 {/* <View style={{ paddingVertical: deviceHeight * 0.01, paddingHorizontal: deviceWidth * 0.3, position:"absolute"}}> */}
 
                 <TouchableOpacity disabled={this.props.SelectedshippingAddressReducer.SelectedshippingAddresLoading} onPress={() => this.shipingAddressData()} style={{ position: 'absolute', backgroundColor: '#3FC1C9', alignItems: "center", justifyContent: "center", borderRadius: 20, paddingVertical: deviceHeight * 0.014, paddingHorizontal: deviceWidth * 0.1, top: deviceHeight * 0.84, left: deviceWidth * 0.35 }}>
-                    {this.props.SelectedshippingAddressReducer.SelectedshippingAddresLoading ? <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Please wait...</Text> : <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Confirm</Text>}
+                    {this.props.SelectedshippingAddressReducer.SelectedshippingAddresLoading ?    <Image  source={require("../../../assets/images/PleaseWait.gif")}  /> : <Text style={{ fontSize: 15, color: "white", fontWeight: "700" }}>Confirm</Text>}
                 </TouchableOpacity>
                 {/* </View>  */}
 

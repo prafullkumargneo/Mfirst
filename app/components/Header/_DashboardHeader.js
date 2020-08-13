@@ -49,35 +49,41 @@ class DashboardHeader extends Component {
     render() {
         return (
 
-            <View style={{ flex: 1, backgroundColor: "transparent", flexDirection: 'row', paddingHorizontal: '15%' }}>
-                <View style={{ justifyContent: "center", paddingBottom: "5%" }}>
+            <View style={{  backgroundColor: "transparent", flexDirection: 'row', paddingHorizontal: '15%' }}>
+                <View style={{ justifyContent: "center", paddingBottom: "5%",marginRight: 23 }}>
+                    <TouchableOpacity onPress={() => { NavService.navigate('root', 'SearchBar') }}>
                     <SearchIcon
                         name={'search1'}
-                        onPress={() => { NavService.navigate('root', 'SearchBar') }}
+                      
                         color={'black'}
                         size={24}
-                        style={{ marginRight: 23, top: "5%" }}
+                        style={{  top: "5%" }}
                     />
+                    </TouchableOpacity>
                 </View>
 
                 <View style={{ justifyContent: "center", paddingBottom: "5%" }}>
+                <TouchableOpacity   onPress={() => { this.favouriteOrderNavigation() }}>
                     <Icon
                         name={'heart-outline'}
-                        onPress={() => { this.favouriteOrderNavigation() }}
+                      
                         color={'black'}
                         size={25}
                         style={{ marginRight: 25, top: "5%" }}
                     />
+                       </TouchableOpacity>
                 </View>
 
                 <View style={{ justifyContent: "center", paddingBottom: "5%" }}>
+                <TouchableOpacity   onPress={() => { this.cartNavigation() }}>
                     <Icon
                         name={'cart-outline'}
-                        onPress={() => { this.cartNavigation() }}
+                      
                         color={'black'}
                         size={25}
                         style={{ marginRight: 5, top: "5%" }}
                     />
+                     </TouchableOpacity>
                 </View>
 
             </View>

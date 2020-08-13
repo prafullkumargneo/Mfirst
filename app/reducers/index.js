@@ -15,6 +15,7 @@ import trendingProductReducers from './trendingReducers/trendingProductReducer';
 import trendingCategoryProductReducers from './trendingReducers/trendingCategoryProductReducer';
 import discoverCategoryReducer from './discoverReducers/discoverCategoryReducer';
 import getPaymentOptionsData from './paymentReducers/getPaymentOptionsReducers';
+import reviewOrderReducer from './OrderReducers/reviewOrderReducer';
 
 const rootReducer = combineReducers({
     categoryReducer,
@@ -32,7 +33,8 @@ const rootReducer = combineReducers({
     trendingCategoryProductReducers,
     discoverCategoryReducer,
     SelectedshippingAddressReducer,
-    getPaymentOptionsData
+    getPaymentOptionsData,
+    reviewOrderReducer
 })
 
 export default rootReducer

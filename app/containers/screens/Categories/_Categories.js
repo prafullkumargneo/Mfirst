@@ -137,8 +137,8 @@ class Categories extends Component {
           <View style={{ flex: 0.28, backgroundColor: "transparent" }}>
             {
               this.props.categoryBannerReducer.bannerCategoryLoading ?
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                  <ActivityIndicator />
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',paddingRight:'10%' }}>
+                  <Image  source={require("../../../assets/images/gifloader.gif")}  />
                 </View>
                 :
                 this.props.categoryBannerReducer.bannerCategoryData && this.props.categoryBannerReducer.bannerCategoryData.data ?
@@ -165,8 +165,8 @@ class Categories extends Component {
           <View style={{ flex: 0.72, backgroundColor: "transparent" }}>
             {
               this.props.categoryReducer && this.props.categoryReducer.isFetching ?
-                <View style={{ flex: 0.75, alignItems: "center", justifyContent: "center" }}>
-                  <ActivityIndicator size={'large'} />
+                <View style={{ flex: 0.72, alignItems: "center", justifyContent: "center" }}>
+       <Image  source={require("../../../assets/images/gifloader.gif")} />
                 </View>
                 :
                 this.props.categoryReducer && this.props.categoryReducer.categoriesData && this.props.categoryReducer.categoriesData.data?

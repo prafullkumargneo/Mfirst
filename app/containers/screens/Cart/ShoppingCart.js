@@ -6,11 +6,11 @@ import {
   StyleSheet,
   Keyboard,
   Alert,
-  AsyncStorage,
   StatusBar,
   ScrollView,
   FlatList, Image, ActivityIndicator
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -126,7 +126,10 @@ class ShoppingCart extends Component {
     if (this.props.getCartProductReducer.getCartProductLoading) {
       return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <ActivityIndicator size={'large'} />
+          {/* <ActivityIndicator size={'large'} /> */}
+         
+          <Image  source={require("../../../assets/images/gifloader.gif")} />
+
         </View>
       )
     }

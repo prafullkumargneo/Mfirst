@@ -9,12 +9,12 @@ export default function getReviewOrder(reviewOrderData) {
     return (dispatch) => {
         dispatch(getReviewOrderLoading())
         return ApiCaller(ApiConstants.REVIEWORDER, method, reviewOrderData).then(res => {
-            // if (res && res.Data) {
-            //     dispatch(getReviewOrderSuccess(res.Data));
-            // } else {
-            //     dispatch(getReviewOrderFailure(res.error))
-            // }
-            console.log("response of product details api", res)
+            if (res ) {
+                dispatch(getReviewOrderSuccess(res));
+            } else {
+                dispatch(getReviewOrderFailure(res))
+            }
+            console.log("response of review order details api", res)
         })
 
     }
