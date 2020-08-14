@@ -98,7 +98,7 @@ class Trending extends Component {
             {
               this.props.trendingProductReducers && this.props.trendingProductReducers.trendingProductLoading ?
                 <View style={{ flex: 0.75, alignItems: "center", justifyContent: "center" }}>
-                  <ActivityIndicator size={'large'} />
+               <Image  source={require("../../../assets/images/gifloader.gif")}  />
                 </View>
                 :
                 this.props.trendingProductReducers && this.props.trendingProductReducers.trendingProductData ?

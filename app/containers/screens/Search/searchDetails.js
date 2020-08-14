@@ -171,7 +171,7 @@ class SearchDetails extends Component {
                         {
                             this.props.subcategoryReducer.issubcategoryLoading ?
                                 <View style={{ width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
-                                    <ActivityIndicator size={"large"} />
+                           <Image  source={require("../../../assets/images/gifloader.gif")}  />
                                 </View>
                                 :
                                 this.props.subcategoryReducer.subcategoriesData ?
@@ -208,8 +208,8 @@ class SearchDetails extends Component {
 
                         {
                             this.state.subCategoryProductFlag || this.props.subcategoryReducer.issubcategoryLoading ?
-                                <View style={{ paddingTop: "4%", width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
-                                    <ActivityIndicator size={"large"} />
+                                <View style={{ paddingTop: deviceHeight * 0.3, width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
+                                 <Image  source={require("../../../assets/images/gifloader.gif")}  />
                                 </View>
 
                                 :

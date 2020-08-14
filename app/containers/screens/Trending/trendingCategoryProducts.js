@@ -89,7 +89,7 @@ class TrendingCategories extends Component {
                     {
                         this.props.trendingCategoryProductReducers && this.props.trendingCategoryProductReducers.trendingCategoryProductLoading ?
                             <View style={{ height:deviceHeight*0.8, alignItems: "center", justifyContent: "center" }}>
-                                <ActivityIndicator size={'large'} />
+                           <Image  source={require("../../../assets/images/gifloader.gif")}  />
                             </View>
                             :
                             this.props.trendingCategoryProductReducers && this.props.trendingCategoryProductReducers.trendingCategoryProductData && this.props.trendingCategoryProductReducers.trendingCategoryProductData.trendingProducts ?
