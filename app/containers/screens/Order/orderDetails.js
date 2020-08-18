@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DrawerActions } from 'react-navigation-drawer';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import _Input from '../../../components/Input/_Input';
 import _Button from '../../../components/Button/_Button';
 import _TouchItem from '../../../components/TouchItem/_TouchItem';
@@ -29,6 +31,7 @@ import DeliveryIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProgressBar from 'react-native-progress/Bar';
 import Modal from 'react-native-modal'
 import CountDown from 'react-native-countdown-component';
+import orderDetails from "../../../actions/OrderActions/orderDetailsActions";
 
 
 const colors = {
@@ -39,7 +42,7 @@ const colors = {
     darkSkyBlue: "#3FC1C9",
 
 }
-export default class OrdersDetails extends Component {
+class OrdersDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -48,11 +51,33 @@ export default class OrdersDetails extends Component {
         };
     }
 
+    async componentDidMount() {
 
+        await this.fetchOrderDetails()
+
+    }
+
+    async fetchOrderDetails() {
+        const { params } = this.props.navigation.state;
+        let orderDetailsData = {
+            orderId: params.orderId,
+            userId: params.userId
+        }
+        this.props.orderDetails(orderDetailsData)
+        console.log("params in order details navigation", params)
+    }
 
 
     render() {
-
+        console.log("this.props.orderDetailsReducer", this.props.orderDetailsReducer)
+        if(this.props.orderDetailsReducer.orderDetailsLoading){
+           return(
+           <View style={{ flex: 1, backgroundColor: '#e5e8e7', justifyContent: 'center', alignItems: "center" }}>
+            <Image source={require("../../../assets/images/gifloader.gif")} />
+        </View>
+           )
+        }
+        else{
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView style={{ height: deviceHeight, width: deviceWidth, backgroundColor: '#e5e8e7' }}>
@@ -219,7 +244,7 @@ export default class OrdersDetails extends Component {
                                 <Text style={{ fontSize: 13, color: '#9B9B9B' }}>Order Total</Text>
                             </View>
                             <View style={{ flex: 0.5, alignItems: "flex-end" }}>
-                                <Text style={{ fontSize: 13, color: colors.darkBlue, fontWeight: '700' }}>45.500 KWD</Text>
+                                <Text style={{ fontSize: 13, color: colors.darkBlue, fontWeight: '700' }}>{this.props.orderDetailsReducer.orderDetailsData.amountTotal} KWD</Text>
                             </View>
 
                         </View>
@@ -255,12 +280,12 @@ export default class OrdersDetails extends Component {
                 >
 
                     <View style={{ top: deviceHeight * 0.4, backgroundColor: "white", flex: 1 }}>
-                        <View style={{ flex: 0.05, backgroundColor: "transparent", paddingHorizontal: deviceWidth * 0.06, alignItems: "flex-end", justifyContent: "center",top:"1%" }}>
+                        <View style={{ flex: 0.05, backgroundColor: "transparent", paddingHorizontal: deviceWidth * 0.06, alignItems: "flex-end", justifyContent: "center", top: "1%" }}>
                             <Icon onPress={() => this.setState({ timerModalFlag: false })} name={'close'} size={28} />
                         </View>
-                        <View style={{ flex: 0.3, backgroundColor: "transparent", paddingHorizontal: deviceWidth * 0.06,justifyContent:"flex-end",alignItems:"center" }}>
+                        <View style={{ flex: 0.3, backgroundColor: "transparent", paddingHorizontal: deviceWidth * 0.06, justifyContent: "flex-end", alignItems: "center" }}>
                             <Text style={{ fontSize: 28, color: "#003A51", fontWeight: "700" }}>Tracking your order</Text>
-                            <View style={{ backgroundColor: "transparent", flexDirection: "row",paddingTop:deviceHeight*0.03 }}>
+                            <View style={{ backgroundColor: "transparent", flexDirection: "row", paddingTop: deviceHeight * 0.03 }}>
                                 <DeliveryIcon name={"truck-fast"} size={40} color={"#00333A"} />
 
                                 <Text style={{ paddingHorizontal: deviceWidth * 0.05, paddingTop: "3%" }}>Your order should be at your location in:</Text>
@@ -285,8 +310,23 @@ export default class OrdersDetails extends Component {
                 </Modal>
             </View>
         );
+        }
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        orderDetailsReducer: state.orderDetailsReducer
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        ...bindActionCreators({ orderDetails }, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrdersDetails)
 
 const styles = StyleSheet.create({
     headerContainer: {

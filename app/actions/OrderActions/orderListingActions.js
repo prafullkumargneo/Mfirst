@@ -9,12 +9,12 @@ export default function getorderList(orderListData) {
     return (dispatch) => {
         dispatch(getOrderListLoading())
         return ApiCaller(ApiConstants.ORDERLIST, method, orderListData).then(res => {
-            // if (res && res.status == true) {
-            //     dispatch(getOrderListSuccess(res));
+            if (res && res.data ) {
+                dispatch(getOrderListSuccess(res.data));
             
-            // } else {
-            //     dispatch(getOrderListFailure(res))
-            // }
+            } else {
+                dispatch(getOrderListFailure(res))
+            }
             console.log("response of order list api", res)
         })
 

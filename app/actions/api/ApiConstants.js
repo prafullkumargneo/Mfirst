@@ -18,7 +18,8 @@ const ApiConstants = {
     GETPAYMENTOPTIONS:'api/shop/get/payment',
     REVIEWORDER:'api/checkout/review_order',
     ORDERPLACED:'api/shop/payment/process',
-    ORDERLIST:'api/my/orders'
+    ORDERLIST:'api/my/orders',
+    ORDERDETAILS:'api/my/order/details'
   };
   
   export default ApiConstants;
