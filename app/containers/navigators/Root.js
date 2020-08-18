@@ -230,6 +230,23 @@ const RootNavigation = createStackNavigator(
       navigationOptions: {
         // gestureEnabled: false,
         headerTitleAlign: 'center',
+        headerLeft: () => {
+          return (
+            <_TouchItem
+              style={{margin: 10}}
+              onPress={() => {
+                // NavService.goBack('root');
+                NavService.goBack('root');
+              }}>
+              <Icon
+                style={{fontSize: 40}}
+                name={'chevron-left'}
+                color={greyIcon}
+                size={50}
+              />
+            </_TouchItem>
+          );
+        },
         // headerTintColor: white,
         headerTitle: "My Orders",
         headerTitleStyle: {
@@ -276,6 +293,23 @@ const RootNavigation = createStackNavigator(
       navigationOptions: {
         // gestureEnabled: false,
         headerTitleAlign: 'center',
+        headerLeft: () => {
+          return (
+            <_TouchItem
+              style={{margin: 10}}
+              onPress={() => {
+                // NavService.goBack('root');
+                NavService.goBack('root');
+              }}>
+              <Icon
+                style={{fontSize: 40}}
+                name={'chevron-left'}
+                color={greyIcon}
+                size={50}
+              />
+            </_TouchItem>
+          );
+        },
         // headerTintColor: white,
         headerTitle: "Order Details",
         headerTitleStyle: {
