@@ -322,9 +322,27 @@ const RootNavigation = createStackNavigator(
     SearchBar: {
       screen: Search,
       navigationOptions: {
-       
+        headerLeft: () => {
+          return (
+            <_TouchItem
+              style={{margin: 10}}
+              onPress={() => {
+                // NavService.goBack('root');
+                NavService.goBack('root');
+              }}>
+              <Icon
+                style={{fontSize: 40}}
+                name={'chevron-left'}
+                color={greyIcon}
+                size={50}
+              />
+            </_TouchItem>
+          );
+        },
         headerTitle: false,
-      
+        headerStyle: {
+          elevation: 0
+        },
          
       },
     },

@@ -64,29 +64,29 @@ class Orders extends Component {
         });
     }
 
-     retryOrderList() {
-         this.getOrder()
+    retryOrderList() {
+        this.getOrder()
 
     }
-    orderSelected(item, index){
-        let orderSelectedData={
-            orderId:item.orderId,
-            userId:this.state.userId
+    orderSelected(item, index) {
+        let orderSelectedData = {
+            orderId: item.orderId,
+            userId: this.state.userId
         }
-        NavService.navigate('root', 'OrdersDetails',orderSelectedData)
+        NavService.navigate('root', 'OrdersDetails', orderSelectedData)
     }
-   
+
     orderList(item, index) {
         return (
             <TouchableOpacity onPress={() => this.orderSelected(item, index)} key={index} style={{ flexDirection: "row", paddingHorizontal: deviceWidth * 0.04, paddingVertical: deviceHeight * 0.025, backgroundColor: "white", margin: "1%" }}>
 
                 <View style={{ flex: 0.65, backgroundColor: "transparent" }}>
                     <Text style={{ fontSize: 15, color: colors.darkBlue }}>Order #{item.orderId}</Text>
-                    <Text style={{ fontSize: 12, color: item.orderStatus == "On its way" ? "orange" : item.orderStatus == "Delivered" ? colors.darkSkyBlue : item.orderStatus == "Cancelled" ? "red" : colors.darkGrey }}>{item.orderStatus}</Text>
+                    <Text style={{ fontSize: 12, color: item.orderStatus == "Waiting for Approval" ? "orange" : item.orderStatus == "Delivered" ? colors.darkSkyBlue : item.orderStatus == "Cancelled" ? "red" : colors.darkGrey }}>{item.orderStatus}</Text>
 
                 </View>
                 <View style={{ flex: 0.25, backgroundColor: "transparent" }}>
-                    <Text style={{ fontSize: 15, color: colors.darkBlue, fontWeight: '700' }}>${item.orderTotalAmount}.00</Text>
+                    <Text style={{ fontSize: 15, color: colors.darkBlue, fontWeight: '700',textAlign:'center' }}>${item.orderTotalAmount}</Text>
                     <Text style={{ fontSize: 12, color: colors.darkGrey }}>{item.orderDate}</Text>
                 </View>
 
@@ -100,7 +100,7 @@ class Orders extends Component {
     }
 
     render() {
-   
+
         if (this.props.orderListingReducer.orderListingLoading) {
             return (
                 <View style={{ flex: 1, backgroundColor: '#e5e8e7', justifyContent: 'center', alignItems: "center" }}>
@@ -118,25 +118,25 @@ class Orders extends Component {
                             <ScrollView style={{ height: deviceHeight, width: deviceWidth, backgroundColor: '#e5e8e7' }}>
 
                                 {
-                                     this.props.orderListingReducer.orderListingData.orderDetails?
-                                    this.props.orderListingReducer.orderListingData.orderDetails.map((item, index) => {
-                                    return (
-                                        this.orderList(item, index)
-                                    )
+                                    this.props.orderListingReducer.orderListingData.orderDetails ?
+                                        this.props.orderListingReducer.orderListingData.orderDetails.map((item, index) => {
+                                            return (
+                                                this.orderList(item, index)
+                                            )
 
-                                })
-                            :
-                            <View style={{paddingHorizontal:"5%",height:deviceHeight,justifyContent:"center"}}>
-                              
-                                  <Image  source={require("../../../assets/images/favourite.gif")} style={{alignSelf:'center'}}  />
-                                <Text  style={{ paddingVertical: '3%', fontSize: 23, color: "#2C2C2C",textAlign:'center' }}>No orders placed yet.</Text>
-                                <Text  style={{ fontSize: 16, color:  "#003351",textAlign:'center' }}>Tap 'Add to cart' button below product to make it as your order'.</Text>
-                                </View>
-                            }
+                                        })
+                                        :
+                                        <View style={{ paddingHorizontal: "5%", height: deviceHeight, justifyContent: "center" }}>
+
+                                            <Image source={require("../../../assets/images/favourite.gif")} style={{ alignSelf: 'center' }} />
+                                            <Text style={{ paddingVertical: '3%', fontSize: 23, color: "#2C2C2C", textAlign: 'center' }}>No orders placed yet.</Text>
+                                            <Text style={{ fontSize: 16, color: "#003351", textAlign: 'center' }}>Tap 'Add to cart' button below product to make it as your order'.</Text>
+                                        </View>
+                                }
 
                             </ScrollView>
                             :
-                            <View style={{ flex:1,justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={{ paddingVertical: '3%' }}>Something went wrong ..</Text>
                                 <Text onPress={() => this.retryOrderList()} style={{ color: 'skyblue' }}>Retry</Text>
                             </View>

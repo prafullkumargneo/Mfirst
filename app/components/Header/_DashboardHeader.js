@@ -21,18 +21,20 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SearchIcon from 'react-native-vector-icons/AntDesign';
 import NavService from '../../containers/navigators/navigationService';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import Modal from 'react-native-modal';
+import { deviceWidth, deviceHeight } from '../../constants/globals';
 
 class DashboardHeader extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userId: null
+            userId: null,
+            visble: false
         };
     }
 
-     componentDidMount() {
-       
+    componentDidMount() {
+
     }
 
     cartNavigation() {
@@ -45,47 +47,50 @@ class DashboardHeader extends Component {
         NavService.navigate('root', 'FavoriteOrders')
 
     }
+    searchBarNavigation() {
+        NavService.navigate('root', 'SearchBar')
+
+    }
 
     render() {
         return (
 
-            <View style={{  backgroundColor: "transparent", flexDirection: 'row', paddingHorizontal: '15%' }}>
-                <View style={{ justifyContent: "center", paddingBottom: "5%",marginRight: 23 }}>
-                    <TouchableOpacity onPress={() => { NavService.navigate('root', 'SearchBar') }}>
-                    <SearchIcon
-                        name={'search1'}
-                      
-                        color={'black'}
-                        size={24}
-                        style={{  top: "5%" }}
-                    />
+            <View style={{ backgroundColor: "transparent", flexDirection: 'row', paddingHorizontal: '15%' }}>
+                <View style={{ justifyContent: "center", paddingBottom: "5%", marginRight: 23 }}>
+                    <TouchableOpacity onPress={() => { this.searchBarNavigation() }}>
+                        <SearchIcon
+                            name={'search1'}
+
+                            color={'black'}
+                            size={24}
+                            style={{ top: "5%" }}
+                        />
                     </TouchableOpacity>
                 </View>
 
                 <View style={{ justifyContent: "center", paddingBottom: "5%" }}>
-                <TouchableOpacity   onPress={() => { this.favouriteOrderNavigation() }}>
-                    <Icon
-                        name={'heart-outline'}
-                      
-                        color={'black'}
-                        size={25}
-                        style={{ marginRight: 25, top: "5%" }}
-                    />
-                       </TouchableOpacity>
+                    <TouchableOpacity onPress={() => { this.favouriteOrderNavigation() }}>
+                        <Icon
+                            name={'heart-outline'}
+
+                            color={'black'}
+                            size={25}
+                            style={{ marginRight: 25, top: "5%" }}
+                        />
+                    </TouchableOpacity>
                 </View>
 
                 <View style={{ justifyContent: "center", paddingBottom: "5%" }}>
-                <TouchableOpacity   onPress={() => { this.cartNavigation() }}>
-                    <Icon
-                        name={'cart-outline'}
-                      
-                        color={'black'}
-                        size={25}
-                        style={{ marginRight: 5, top: "5%" }}
-                    />
-                     </TouchableOpacity>
-                </View>
+                    <TouchableOpacity onPress={() => { this.cartNavigation() }}>
+                        <Icon
+                            name={'cart-outline'}
 
+                            color={'black'}
+                            size={25}
+                            style={{ marginRight: 5, top: "5%" }}
+                        />
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
