@@ -12,7 +12,9 @@ export default function categoryBannerReducer(state = initialState, action) {
         case BANNER_CATEGORIES_LOADING:
             return {
                 ...state,
-                bannerCategoryLoading: true
+                bannerCategoryLoading: true,
+                    bannerCategoryData: null,
+                    bannerCategoryerror: null
             }
         case BANNER_CATEGORIES_SUCCESS:
             return {
