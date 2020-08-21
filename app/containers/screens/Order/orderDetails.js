@@ -75,7 +75,7 @@ class OrdersDetails extends Component {
         return (
             <View style={{ flex: 1, flexDirection: 'row' }}>
                 <View style={{ flex: 0.25, backgroundColor: "transparent", paddingLeft: "3%" }}>
-                    <Image style={{ height: 65, width: 65 }} source={{ uri: "https://picsum.photos/200" }} />
+                    <Image style={{ height: 65, width: 65 }} source={{ uri: item.productImage }} />
 
                 </View>
                 <View style={{ flex: 0.5, backgroundColor: "transparent" }}>

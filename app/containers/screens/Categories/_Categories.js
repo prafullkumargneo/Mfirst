@@ -67,13 +67,13 @@ class Categories extends Component {
     this.props.bannerCategory()
   }
 
-  retryCategories(){
-    if(this.state.loggedInCredentials){
-    this.props.categoryDetails(this.state.loggedInCredentials && this.state.loggedInCredentials.userId)
+  retryCategories() {
+    if (this.state.loggedInCredentials) {
+      this.props.categoryDetails(this.state.loggedInCredentials && this.state.loggedInCredentials.userId)
     }
-    else{
+    else {
       this.props.categoryDetails()
- 
+
     }
   }
 
@@ -87,7 +87,7 @@ class Categories extends Component {
   _renderCategoriesList = ({ item, index }) => {
     console.log("item", item)
     return (
-      <CategoriesDetails categoryList={item} categoryIndex={index}/>
+      <CategoriesDetails categoryList={item} categoryIndex={index} />
     )
   }
   bannerView(item, index) {
@@ -107,13 +107,13 @@ class Categories extends Component {
 
   reorderProductList(item, index) {
     return (
-      <TouchableOpacity onPress={()=>{ NavService.navigate('root', 'ProductDetailsStack', item);}} style={{ backgroundColor: "transparent", width: deviceWidth * 0.3,paddingHorizontal:15 }}>
+      <TouchableOpacity onPress={() => { NavService.navigate('root', 'ProductDetailsStack', item); }} style={{ backgroundColor: "transparent", width: deviceWidth * 0.3, paddingHorizontal: 15 }}>
 
         <View style={{ paddingVertical: 5, backgroundColor: "transparent" }}>
-          <Image style={{ height: 114, width: 107,resizeMode:'contain' }} source={{ uri: item.productImage }} />
+          <Image style={{ height: 114, width: 107, resizeMode: 'contain' }} source={{ uri: item.productImage }} />
 
         </View>
-        <View style={{ paddingVertical: 10, backgroundColor: "transparent"}}>
+        <View style={{ paddingVertical: 10, backgroundColor: "transparent" }}>
           <Text style={{ fontSize: 14, color: "#2B2B2B", paddingVertical: 3, fontWeight: "700" }}>{item.productTitle}</Text>
           <Text style={{ fontSize: 14, color: "#003A51", fontWeight: "700" }}>{item.productAmount} KWD</Text>
         </View>
@@ -125,6 +125,13 @@ class Categories extends Component {
 
   render() {
     console.log("dummyjson", this.props.categoryReducer)
+    if (this.props.categoryReducer.isFetching) {
+      return (
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+          <Image source={require("../../../assets/images/gifloader.gif")} />
+        </View>
+      )
+    }
     return (
       <SafeAreaView style={[appStyles.container]}>
         <View
@@ -137,15 +144,15 @@ class Categories extends Component {
           <View style={{ flex: 0.28, backgroundColor: "transparent" }}>
             {
               this.props.categoryBannerReducer.bannerCategoryLoading ?
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',paddingRight:'10%' }}>
-                  <Image  source={require("../../../assets/images/gifloader.gif")}  />
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingRight: '10%' }}>
+                  {/* <Image  source={require("../../../assets/images/gifloader.gif")}  /> */}
                 </View>
                 :
                 this.props.categoryBannerReducer.bannerCategoryData && this.props.categoryBannerReducer.bannerCategoryData.data ?
                   <Swiper showsButtons={false} autoplay={true}
-                    buttonWrapperStyle={{ top: "10%" }}
-                    paginationStyle={{position:'absolute', bottom: 10}}
-                    style={styles.wrapper} showsButtons={true}>
+
+                    paginationStyle={{ position: 'absolute', bottom: 10 }}
+                    style={styles.wrapper} >
                     {
                       this.props.categoryBannerReducer.bannerCategoryData && this.props.categoryBannerReducer.bannerCategoryData.data.map((item, index) => {
                         return (
@@ -164,13 +171,9 @@ class Categories extends Component {
 
           <View style={{ flex: 0.72, backgroundColor: "transparent" }}>
             {
-              this.props.categoryReducer && this.props.categoryReducer.isFetching ?
-                <View style={{ flex: 0.72, alignItems: "center", justifyContent: "center" }}>
-       <Image  source={require("../../../assets/images/gifloader.gif")} />
-                </View>
-                :
-                this.props.categoryReducer && this.props.categoryReducer.categoriesData && this.props.categoryReducer.categoriesData.data?
-                <ScrollView contentContainerStyle={{paddingBottom:"10%"}}>
+
+              this.props.categoryReducer && this.props.categoryReducer.categoriesData && this.props.categoryReducer.categoriesData.data ?
+                <ScrollView contentContainerStyle={{ paddingBottom: "10%" }}>
                   <FlatList
                     data={this.props.categoryReducer && this.props.categoryReducer.categoriesData && this.props.categoryReducer.categoriesData.data}
                     extraData={this.state}
@@ -181,14 +184,14 @@ class Categories extends Component {
                   {
                     this.props.categoryReducer && this.props.categoryReducer.categoriesData && this.props.categoryReducer.categoriesData.reorderProducts ?
 
-                      <View style={{ backgroundColor: "transparent", paddingVertical: "5%",marginTop:4 }}>
+                      <View style={{ backgroundColor: "transparent", paddingVertical: "5%", marginTop: 4 }}>
 
                         <View style={{ paddingVertical: 10, paddingHorizontal: 17 }}>
                           <Text style={{ fontWeight: "700", color: "#2B2B2B" }}>REORDER AGAIN</Text>
                         </View>
-                        <ScrollView horizontal={true} style={{ backgroundColor: "transparent"}}>
+                        <ScrollView horizontal={true} style={{ backgroundColor: "transparent" }}>
                           {
-                             this.props.categoryReducer.categoriesData.reorderProducts.map((item, index) => {
+                            this.props.categoryReducer.categoriesData.reorderProducts.map((item, index) => {
                               return (
                                 this.reorderProductList(item, index)
                               )
@@ -202,9 +205,9 @@ class Categories extends Component {
                 </ScrollView>
                 :
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ paddingVertical: '3%' }}>Something went wrong ..</Text>
-                <Text onPress={() => this.retryCategories()} style={{ color: 'skyblue' }}>Retry</Text>
-              </View>
+                  <Text style={{ paddingVertical: '3%' }}>Something went wrong ..</Text>
+                  <Text onPress={() => this.retryCategories()} style={{ color: 'skyblue' }}>Retry</Text>
+                </View>
             }
           </View>
 

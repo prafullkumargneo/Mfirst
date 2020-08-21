@@ -54,6 +54,7 @@ class Orders extends Component {
         await AsyncStorage.getItem('LoggedInData').then(value => {
 
             if (value) {
+            
                 let objectvalue = JSON.parse(value)
                 this.setState({ userId: objectvalue.userId })
                 let orderListData = {
@@ -61,7 +62,9 @@ class Orders extends Component {
                 }
                 this.props.getorderList(orderListData)
             }
+           
         });
+
     }
 
     retryOrderList() {
@@ -86,7 +89,7 @@ class Orders extends Component {
 
                 </View>
                 <View style={{ flex: 0.25, backgroundColor: "transparent" }}>
-                    <Text style={{ fontSize: 15, color: colors.darkBlue, fontWeight: '700',textAlign:'center' }}>${item.orderTotalAmount}</Text>
+                    <Text style={{ fontSize: 15, color: colors.darkBlue, fontWeight: '700', textAlign: 'center' }}>${item.orderTotalAmount}</Text>
                     <Text style={{ fontSize: 12, color: colors.darkGrey }}>{item.orderDate}</Text>
                 </View>
 
@@ -100,7 +103,7 @@ class Orders extends Component {
     }
 
     render() {
-
+        console.log("this.props.orderListingReducer.orderListingData", this.props.orderListingReducer.orderListingData)
         if (this.props.orderListingReducer.orderListingLoading) {
             return (
                 <View style={{ flex: 1, backgroundColor: '#e5e8e7', justifyContent: 'center', alignItems: "center" }}>
@@ -113,18 +116,28 @@ class Orders extends Component {
                 <View style={{ flex: 1, backgroundColor: '#e5e8e7' }}>
 
                     {
+                        this.state.userId ?
+
                         this.props.orderListingReducer.orderListingData && this.props.orderListingReducer.orderListingData
                             ?
                             <ScrollView style={{ height: deviceHeight, width: deviceWidth, backgroundColor: '#e5e8e7' }}>
 
                                 {
-                                    this.props.orderListingReducer.orderListingData.orderDetails ?
-                                        this.props.orderListingReducer.orderListingData.orderDetails.map((item, index) => {
-                                            return (
-                                                this.orderList(item, index)
-                                            )
+                                    this.props.orderListingReducer.orderListingData.orderCount > 0 || this.state.userId ?
+                                        this.props.orderListingReducer.orderListingData.data && this.props.orderListingReducer.orderListingData.data.orderDetails ?
+                                            this.props.orderListingReducer.orderListingData.data.orderDetails.map((item, index) => {
+                                                return (
+                                                    this.orderList(item, index)
+                                                )
 
-                                        })
+                                            })
+                                            :
+                                            <View style={{ paddingHorizontal: "5%", height: deviceHeight, justifyContent: "center" }}>
+
+                                                <Image source={require("../../../assets/images/favourite.gif")} style={{ alignSelf: 'center' }} />
+                                                <Text style={{ paddingVertical: '3%', fontSize: 23, color: "#2C2C2C", textAlign: 'center' }}>No orders placed yet.</Text>
+                                                <Text style={{ fontSize: 16, color: "#003351", textAlign: 'center' }}>Tap 'Add to cart' button below product to make it as your order'.</Text>
+                                            </View>
                                         :
                                         <View style={{ paddingHorizontal: "5%", height: deviceHeight, justifyContent: "center" }}>
 
@@ -140,6 +153,13 @@ class Orders extends Component {
                                 <Text style={{ paddingVertical: '3%' }}>Something went wrong ..</Text>
                                 <Text onPress={() => this.retryOrderList()} style={{ color: 'skyblue' }}>Retry</Text>
                             </View>
+                            :
+                            <View style={{ paddingHorizontal: "5%",flex:1, justifyContent: "center" }}>
+
+                                            <Image source={require("../../../assets/images/favourite.gif")} style={{ alignSelf: 'center' }} />
+                                            <Text style={{ paddingVertical: '3%', fontSize: 23, color: "#2C2C2C", textAlign: 'center' }}>Sign in required.</Text>
+                                            <Text style={{ fontSize: 16, color: "#003351", textAlign: 'center' }}>Tap 'Add to cart' button below product to make it as your order'.</Text>
+                                        </View>
                     }
                 </View>
 

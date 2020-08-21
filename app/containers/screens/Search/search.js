@@ -81,22 +81,14 @@ class Search extends Component {
         let filter = [];
         console.log("insearch", search)
         this.setState({ search, initialSearchData: false })
-        // filter = this.props.getSearchListReducer.getSearchListData.categoryDetails[0].popularCategory.filter(data => {
-        //     if (data.categoryTitle.toLowerCase().startsWith(search.toLowerCase())) {
-        //         return data;
-        //     }
-        // });
-        this.props.getSearchListReducer.getSearchListData.categoryDetails.map((item) => {
+        filter = this.props.getSearchListReducer.getSearchListData.categoryDetails.filter(data => {
+            if (data.categoryTitle.toLowerCase().startsWith(search.toLowerCase())) {
+                return data;
+            }
+        });
 
-            filter = item.parentCategory && item.parentCategory.filter(data => {
-                console.log("data in filter", data.categoryTitle)
-                if (data.categoryTitle.toLowerCase().startsWith(search.toLowerCase())) {
-                    return data;
-                }
-            });
-        })
-        
-         this.setState({ searchArrayData: filter });
+
+        this.setState({ searchArrayData: filter });
 
     };
 
@@ -111,42 +103,37 @@ class Search extends Component {
 
         return (
 
-            <View style={{ flex: 1, backgroundColor: "white" }}>
+            <View style={{ height: deviceHeight, backgroundColor: "white" }}>
 
 
-                <View style={{ flex: 0.17, backgroundColor: "transparent" }}>
-                    {/* <SearchBar placeholder="Search contacts..."
-                            data={this.state.searchResultFriendsList}
-                            ref={(ref) => this.searchBar = ref}
-                            style={styles.searchbar}
-                            lightTheme round
-                            containerStyle={styles.searchcontainer}
-                        /> */}
 
-                    <SearchBar
-                        placeholder="Search..."
-                        onChangeText={this.updateSearch}
-                        value={search}
-                        containerStyle={styles.searchcontainer}
 
-                        round
-                        //  containerStyle={{ backgroundColor: "white", paddingHorizontal: deviceWidth * 0.05 }}
-                        style={styles.searchbar}
-                        inputContainerStyle={{ borderWidth: 1, backgroundColor: "white", borderBottomWidth: 1 }}
-                    />
+                <SearchBar
+                    placeholder="Search..."
+                    onChangeText={this.updateSearch}
+                    value={search}
+                    containerStyle={styles.searchcontainer}
 
-                </View>
+                    round
+                    //  containerStyle={{ backgroundColor: "white", paddingHorizontal: deviceWidth * 0.05 }}
+                    style={styles.searchbar}
+                    inputContainerStyle={{ borderWidth: 1, backgroundColor: "white", borderBottomWidth: 1 }}
+                />
 
-                <View style={{ flex: 0.83, backgroundColor: "transparent", paddingHorizontal: deviceWidth * 0.07 }}>
+
+
+                <View style={{ backgroundColor: "transparent", paddingHorizontal: deviceWidth * 0.07 }}>
                     {
 
                         this.props.getSearchListReducer.getSearchListLoading ?
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ height: deviceHeight, justifyContent: 'center', alignItems: 'center' }}>
+
                                 <Image source={require("../../../assets/images/gifloader.gif")} />
+
                             </View>
                             :
                             this.state.initialSearchData ?
-                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                <View style={{ height: deviceHeight, justifyContent: 'center', alignItems: 'center' }}>
 
                                     <Image source={require("../../../assets/images/searchicon.gif")} />
 
@@ -157,32 +144,15 @@ class Search extends Component {
                                 :
 
                                 this.props.getSearchListReducer.getSearchListData && this.props.getSearchListReducer.getSearchListData.categoryDetails ?
-                                    <ScrollView>
+                                    <ScrollView style={{ height: deviceHeight, paddingTop: deviceHeight * 0.02 }}>
 
-                                        {/* { 
-                                          this.props.getSearchListReducer.getSearchListData.categoryDetails[0].popularCategory.map((item, index) => {
-                                            return (
-                                                <View key={index} style={{ padding: "1.5%" }}>
-                                                    <TouchableOpacity key={index} onPress={() => {
-                                                        this.setState({ isloadingFilter: true })
-                                                        setTimeout(() => {
-                                                            NavService.navigate('root', 'SearchDetails', item);
-                                                            this.setState({ isloadingFilter: false })
-                                                        }, 300
+                                        <Text style={{ fontSize: 15, color: "#737373", fontWeight: 'bold', paddingVertical: deviceHeight * 0.01 }}>ALL CATEGORIES</Text>
 
-                                                        )
-                                                    }}>
-
-                                                        <Text style={{ fontSize: 17, color: "#737373", fontWeight: "bold" }}>{item.categoryTitle}</Text>
-                                                    </TouchableOpacity>
-                                                </View>
-                                            )
-                                        }) 
-                                        } */}
                                         {
                                             searchArrayData && searchArrayData.map((item, index) => {
                                                 return (
-                                                    <View key={index} style={{ padding: "1.5%" }}>
+                                                    <View key={index} style={{ padding: "1.8%", backgroundColor: 'transparent' }}>
+
                                                         <TouchableOpacity key={index} onPress={() => {
                                                             this.setState({ isloadingFilter: true })
                                                             setTimeout(() => {
@@ -193,7 +163,7 @@ class Search extends Component {
                                                             )
                                                         }}>
 
-                                                            <Text style={{ fontSize: 17, color: "#737373", fontWeight: "bold" }}>{item.categoryTitle}</Text>
+                                                            <Text style={{ fontSize: 15, color: "#737373" }}>{item.categoryTitle}</Text>
                                                         </TouchableOpacity>
                                                     </View>
                                                 )
@@ -202,7 +172,7 @@ class Search extends Component {
 
                                     </ScrollView>
                                     :
-                                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                    <View style={{ height: deviceHeight, justifyContent: 'center', alignItems: 'center' }}>
                                         <Text style={{ paddingVertical: '3%' }}>Something went wrong ..</Text>
                                         <Text onPress={() => this.retrySearchList()} style={{ color: 'skyblue' }}>Retry</Text>
                                     </View>

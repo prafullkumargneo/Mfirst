@@ -64,7 +64,7 @@ class SearchDetails extends Component {
         setTimeout(() => {
             this.setState({ subCategoryProductFlag: false })
         }, 1000);
-      
+
     }
 
     initialProductListingData(item, index) {
@@ -123,120 +123,122 @@ class SearchDetails extends Component {
     render() {
         const { params } = this.props.navigation.state;
         console.log(" subcategory selected data", this.state.subCategorySelectData)
+     
+       
+            return (
+                <View style={{ flex: 1 }}>
+                    <View style={{ flex: 0.09, backgroundColor: "white", flexDirection: "row", borderBottomColor: "#A5A5A5", borderBottomWidth: 0.5 }}>
 
-        return (
-            <View style={{ flex: 1 }}>
-                <View style={{ flex: 0.09, backgroundColor: "white", flexDirection: "row", borderBottomColor: "#A5A5A5", borderBottomWidth: 0.5 }}>
+                        <View style={{ backgroundColor: "transaparent", flex: 0.15, justifyContent: "center" }}>
+                            <_TouchItem
+                                style={{ margin: 10 }}
+                                onPress={() => {
+                                    NavService.goBack('root');
+                                }}>
+                                <CartIcon
+                                    style={{ fontSize: 35 }}
+                                    name={'chevron-left'}
+                                    color={greyIcon}
+                                    size={35}
+                                />
+                            </_TouchItem>
+                        </View>
+                        <View style={{ backgroundColor: "transaparent", flex: 0.7, justifyContent: "center", alignItems: "center" }}>
+                            <Text style={{ fontSize: 16, color: "black", fontWeight: '700' }}>{params.categoryTitle}</Text>
+                        </View>
+                        <View style={{ backgroundColor: "transaparent", flex: 0.15, justifyContent: "center" }}>
+                            <_TouchItem
+                                style={{ marginRight: 10, flexDirection: 'row' }}
+                            >
 
-                    <View style={{ backgroundColor: "transaparent", flex: 0.15, justifyContent: "center" }}>
-                        <_TouchItem
-                            style={{ margin: 10 }}
-                            onPress={() => {
-                                NavService.goBack('root');
-                            }}>
-                            <CartIcon
-                                style={{ fontSize: 35 }}
-                                name={'chevron-left'}
-                                color={greyIcon}
-                                size={35}
-                            />
-                        </_TouchItem>
+                                <CartIcon
+                                    name={'cart-outline'}
+                                    onPress={() => { NavService.navigate('root', 'Cart') }}
+                                    color={'black'}
+                                    size={23}
+                                    style={{ paddingLeft: 10, top: "1%" }}
+                                />
+                            </_TouchItem>
+                        </View>
+
+
                     </View>
-                    <View style={{ backgroundColor: "transaparent", flex: 0.7, justifyContent: "center", alignItems: "center" }}>
-                        <Text style={{ fontSize: 16, color: "black", fontWeight: '700' }}>{params.categoryTitle}</Text>
-                    </View>
-                    <View style={{ backgroundColor: "transaparent", flex: 0.15, justifyContent: "center" }}>
-                        <_TouchItem
-                            style={{ marginRight: 10, flexDirection: 'row' }}
-                        >
-
-                            <CartIcon
-                                name={'cart-outline'}
-                                onPress={() => { NavService.navigate('root', 'Cart') }}
-                                color={'black'}
-                                size={23}
-                                style={{ paddingLeft: 10, top: "1%" }}
-                            />
-                        </_TouchItem>
-                    </View>
 
 
-                </View>
+                    <View style={{ flex: 0.18, backgroundColor: "white" }}>
 
+                        <ScrollView horizontal={true} style={{ backgroundColor: "transparent", height: deviceHeight }}>
 
-                <View style={{ flex: 0.18, backgroundColor: "white" }}>
-
-                    <ScrollView horizontal={true} style={{ backgroundColor: "transparent", height: deviceHeight }}>
-
-                        {
-                            this.props.subcategoryReducer.issubcategoryLoading ?
-                                <View style={{ width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
-                           <Image  source={require("../../../assets/images/gifloader.gif")}  />
-                                </View>
-                                :
-                                this.props.subcategoryReducer.subcategoriesData ?
-                                    this.props.subcategoryReducer.subcategoriesData[0] && this.props.subcategoryReducer.subcategoriesData[0].subCategory.map((item, index) => {
-                                        return (
-                                            <View style={{ backgroundColor: "transparent", paddingHorizontal: 10 }}>
-                                                {this.renderSearchSubCategoriesItem(item, index)}
-                                            </View>
-                                        )
-
-                                    })
-                                    :
+                            {
+                                this.props.subcategoryReducer.issubcategoryLoading ?
                                     <View style={{ width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
-                                        <Text style={{ paddingVertical: '3%' }}>Something went wrong ..</Text>
-                                        <Text onPress={() => this.retryCategories()} style={{ color: 'skyblue' }}>Retry</Text>
+                                        <Image source={require("../../../assets/images/gifloader.gif")} />
                                     </View>
-                        }
-
-
-                    </ScrollView>
-
-                </View>
-                <View style={{ flex: 0.05, backgroundColor: "#FFE59C", flexDirection: "row", paddingLeft: "4%" }}>
-                    <View style={{ justifyContent: "center" }}>
-                        {this.state.isSameDayDeleveryFlag ? <ToggleIcon onPress={() => this.sameDayDelivery()} name={'toggle-on'} size={25} color={'#8AD5CA'} /> : <ToggleIcon onPress={() => this.sameDayDelivery()} name={'toggle-off'} size={25} color={'#8AD5CA'} />}
-                    </View>
-                    <View style={{ justifyContent: "center" }}>
-                        <Text style={{ paddingLeft: "3%", fontSize: 13, color: "#6E6E6E" }}>Same day delivery</Text>
-                    </View>
-                </View>
-
-                <View style={{ flex: 0.68 }}>
-                    <ScrollView style={{ backgroundColor: "white", height: deviceHeight, paddingHorizontal: 20 }}>
-
-                        {
-                            this.state.subCategoryProductFlag || this.props.subcategoryReducer.issubcategoryLoading ?
-                                <View style={{ paddingTop: deviceHeight * 0.3, width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
-                                 <Image  source={require("../../../assets/images/gifloader.gif")}  />
-                                </View>
-
-                                :
-                                this.state.subCategorySelectData && this.state.subCategorySelectData.productsData ?
-                                    this.state.subCategorySelectData && this.state.subCategorySelectData.productsData.length > 0 ?
-                                        this.state.subCategorySelectData.productsData.map((item, index) => {
+                                    :
+                                    this.props.subcategoryReducer.subcategoriesData ?
+                                        this.props.subcategoryReducer.subcategoriesData[0] && this.props.subcategoryReducer.subcategoriesData[0].subCategory.map((item, index) => {
                                             return (
-                                                this.renderSearchCategoriesItem(item, index)
+                                                <View style={{ backgroundColor: "transparent", paddingHorizontal: 10 }}>
+                                                    {this.renderSearchSubCategoriesItem(item, index)}
+                                                </View>
                                             )
 
                                         })
                                         :
-                                        <View style={{ paddingTop: deviceHeight * 0.3, width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
-                                            <Text style={{ fontSize: 16 }}>Products coming soon....</Text>
+                                        <View style={{ width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
+                                            <Text style={{ paddingVertical: '3%' }}>Something went wrong ..</Text>
+                                            <Text onPress={() => this.retryCategories()} style={{ color: 'skyblue' }}>Retry</Text>
                                         </View>
+                            }
+
+
+                        </ScrollView>
+
+                    </View>
+                    <View style={{ flex: 0.05, backgroundColor: "#FFE59C", flexDirection: "row", paddingLeft: "4%" }}>
+                        <View style={{ justifyContent: "center" }}>
+                            {this.state.isSameDayDeleveryFlag ? <ToggleIcon onPress={() => this.sameDayDelivery()} name={'toggle-on'} size={25} color={'#8AD5CA'} /> : <ToggleIcon onPress={() => this.sameDayDelivery()} name={'toggle-off'} size={25} color={'#8AD5CA'} />}
+                        </View>
+                        <View style={{ justifyContent: "center" }}>
+                            <Text style={{ paddingLeft: "3%", fontSize: 13, color: "#6E6E6E" }}>Same day delivery</Text>
+                        </View>
+                    </View>
+
+                    <View style={{ flex: 0.68 }}>
+                        <ScrollView style={{ backgroundColor: "white", height: deviceHeight, paddingHorizontal: 20 }}>
+
+                            {
+                                this.state.subCategoryProductFlag || this.props.subcategoryReducer.issubcategoryLoading ?
+                                    <View style={{ paddingTop: deviceHeight * 0.3, width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
+                                        <Image source={require("../../../assets/images/gifloader.gif")} />
+                                    </View>
+
                                     :
+                                    this.state.subCategorySelectData && this.state.subCategorySelectData.productsData ?
+                                        this.state.subCategorySelectData && this.state.subCategorySelectData.productsData.length > 0 ?
+                                            this.state.subCategorySelectData.productsData.map((item, index) => {
+                                                return (
+                                                    this.renderSearchCategoriesItem(item, index)
+                                                )
 
-                                    null
-                        }
+                                            })
+                                            :
+                                            <View style={{ paddingTop: deviceHeight * 0.3, width: deviceWidth, justifyContent: "center", alignItems: "center" }}>
+                                                <Text style={{ fontSize: 16 }}>Products coming soon....</Text>
+                                            </View>
+                                        :
+
+                                        null
+                            }
 
 
-                    </ScrollView>
+                        </ScrollView>
+                    </View>
                 </View>
-            </View>
 
 
-        );
+            );
+        
     }
 }
 

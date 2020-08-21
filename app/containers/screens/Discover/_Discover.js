@@ -9,7 +9,7 @@ import {
   AsyncStorage,
   StatusBar,
   ScrollView,
-  FlatList, ActivityIndicator
+  FlatList, ActivityIndicator,Image
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DrawerActions } from 'react-navigation-drawer';
@@ -187,7 +187,7 @@ class Discover extends Component {
     if (this.props.discoverCategoryReducer.discoverCategoryLoading) {
       return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <ActivityIndicator animating={true} color={"#003a51"} size={"large"} />
+          <Image  source={require("../../../assets/images/gifloader.gif")}  />
         </View>
       )
     }

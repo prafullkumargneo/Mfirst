@@ -28,7 +28,7 @@ const HomeTabNav = createMaterialTopTabNavigator(
     tabBarOptions: {
       labelStyle: {
         fontWeight: 'bold',
-       fontSize:14
+       fontSize:15
       },
 
       // indicatorStyle: {
@@ -38,14 +38,11 @@ const HomeTabNav = createMaterialTopTabNavigator(
       indicatorStyle: {
         //  borderWidth:2,
         justifyContent:'center',
-        height: deviceHeight*0.05,
-        width:deviceWidth*0.3,
-        marginHorizontal:"1%",
+        height: '100%',
          backgroundColor: colors.primaryColor,
          borderRadius: 40
       },
       style: {
-        height: "7%",
         backgroundColor:colors.white,
         shadowOpacity: 0,
         shadowOffset: {

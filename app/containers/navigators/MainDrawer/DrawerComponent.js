@@ -51,14 +51,7 @@ class DrawerComponent extends PureComponent {
     this.reRenderSomething.remove();
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    // do things with nextProps.someProp and prevState.cachedSomeProp
-    console.log("in drawer component will receive  props", nextProps.drawerProfileReducer, prevState)
-    // return {
-    //   cachedSomeProp: nextProps.someProp,
-    //   // ... other derived state properties
-    // };
-  }
+ 
 
   async componentDidMount() {
     this.reRenderSomething = this.props.navigation.addListener('willFocus', () => {

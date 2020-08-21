@@ -9,8 +9,8 @@ export default function getorderList(orderListData) {
     return (dispatch) => {
         dispatch(getOrderListLoading())
         return ApiCaller(ApiConstants.ORDERLIST, method, orderListData).then(res => {
-            if (res && res.data ) {
-                dispatch(getOrderListSuccess(res.data));
+            if (res && res.data || res.status==true ) {
+                dispatch(getOrderListSuccess(res));
             
             } else {
                 dispatch(getOrderListFailure(res))
