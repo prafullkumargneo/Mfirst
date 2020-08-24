@@ -32,12 +32,23 @@ import { RNToasty } from 'react-native-toasty';
 import productDetailsActions from '../../../actions/ProductActions/productDetailsAction';
 import addToCart from '../../../actions/CartActions/addToCartActions';
 
+const colors = {
+
+    darkGrey: "#737373",
+    lightGrey: "#A5A5A5",
+    darkBlue: "#003A52",
+    darkSkyBlue: "#3FC1C9",
+
+}
+
 class ProductDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
             productDetailFlag: "overview",
-            userId: null
+            userId: null,
+            sizeMethodFlag: null,
+            selectedSizeFlag: false
         };
     }
 
@@ -49,14 +60,14 @@ class ProductDetails extends Component {
             if (value) {
                 let objectvalue = JSON.parse(value)
                 this.setState({ userId: objectvalue.userId })
-                console.log("async value", objectvalue)
+
             }
         });
-        console.log("product details", productId)
+
     }
 
     productImages(item, index) {
-        console.log("item of banner", item)
+
         return (
             <View style={styles.slide1}>
                 <Image resizeMethod='resize' resizeMode='stretch' style={{
@@ -136,7 +147,7 @@ class ProductDetails extends Component {
 
     productAddResponse() {
 
-        if (this.props.addToCartReducer && this.props.addToCartReducer.addToCartData &&this.props.addToCartReducer.addToCartData.data) {
+        if (this.props.addToCartReducer && this.props.addToCartReducer.addToCartData && this.props.addToCartReducer.addToCartData.data) {
             RNToasty.Success({
                 title: "Product added to cart.",
                 titleSize: 15
@@ -153,14 +164,30 @@ class ProductDetails extends Component {
 
     }
 
+    selectSizeMethod(size) {
+        this.setState({ sizeMethodFlag: size })
+    }
+    selectedSize(item) {
+        this.setState({ selectedSizeFlag: true })
+    }
+
+    sizeSelection(item, index) {
+        return (
+            <TouchableOpacity onPress={() => { this.selectedSize(item) }} style={{ justifyContent: "center", alignItems: "center", borderRadius: 70, paddingHorizontal: deviceWidth * 0.05, padding: 8, marginHorizontal: 4, borderWidth: 2, borderColor: this.state.selectedSizeFlag ? '#393939' : colors.lightGrey }}>
+                <Text style={{ color: this.state.selectedSizeFlag ? '#393939' : colors.lightGrey }}>S</Text>
+            </TouchableOpacity>
+        )
+    }
+
     render() {
+        let productDetailData = this.props.productDetailReducer.productDetailData && this.props.productDetailReducer.productDetailData
         const { params } = this.props.navigation.state;
         let ProductId = this.props.productDetailReducer.productDetailData && this.props.productDetailReducer.productDetailData.productId
-        console.log("props of cart", this.props.productDetailReducer.productDetailData && this.props.productDetailReducer.productDetailData.productImage)
+
         if (this.props.productDetailReducer.productDetailLoading) {
             return (
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                    <ActivityIndicator size={'large'} />
+                    <Image source={require("../../../assets/images/gifloader.gif")} />
                 </View>
             )
         }
@@ -242,6 +269,47 @@ class ProductDetails extends Component {
 
                                 </View>
 
+                                {
+                                    productDetailData && productDetailData.productOption ?
+                                        <View style={{ backgroundColor: "yellow", borderWidth: 0.5, borderColor: "#A5A5A5", paddingHorizontal: deviceHeight * 0.01 }}>
+
+                                            <ScrollView horizontal={true} style={{ paddingVertical: deviceHeight * 0.01, backgroundColor: 'pink', paddingHorizontal: deviceHeight * 0.02 }}>
+                                                {
+                                                    productDetailData && productDetailData.productOption.map((item, index) => {
+
+                                                        return (
+                                                            <View>
+                                                                <TouchableOpacity onPress={() => { this.setState({ sizeMethodFlag: item.attribute_id }) }} style={{ backgroundColor: "orange", paddingVertical: deviceHeight * 0.01 }} onPress={() => { this.selectSizeMethod(item.attribute_id) }}>
+                                                                    <Text>Size Guide</Text>
+                                                                </TouchableOpacity>
+                                                                {
+                                                                    this.state.sizeMethodFlag == item.attribute_id || index == 0 ?
+                                                                        <ScrollView horizontal={true} style={{ paddingVertical: "2%" }}>
+                                                                            {productDetailData && productDetailData.productOption ?
+                                                                                productDetailData && productDetailData.productOption.map((item, index) => {
+
+                                                                                    return (
+                                                                                        this.sizeSelection(item, index)
+                                                                                    )
+                                                                                })
+                                                                                :
+                                                                                null}
+                                                                        </ScrollView>
+
+                                                                        :
+                                                                        null
+
+                                                                }
+                                                            </View>
+                                                        )
+                                                    })
+
+                                                }
+                                            </ScrollView>
+
+                                        </View>
+                                        : null
+                                }
                             </View>
 
                             <View style={{ backgroundColor: "white" }}>
