@@ -9,7 +9,7 @@ import {
   AsyncStorage,
   StatusBar,
   ScrollView,
-  FlatList,Image
+  FlatList, Image
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DrawerActions } from 'react-navigation-drawer';
@@ -29,38 +29,47 @@ export default class TitleDiscover extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isTitlecheckedindexStatus:false
+      isTitlecheckedindexStatus: false,
+      // TitleData: []
+   
     };
   }
 
-  
-  Titlestatus(index,item){
+
+  Titlestatus(index, item) {
+
+ 
+ 
+    this.setState({ isTitlecheckedindexStatus: !this.state.isTitlecheckedindexStatus})
+    console.log("this.state.tite",item)
     let titleData= item &&!this.state.isTitlecheckedindexStatus ?item:null
-    console.log("titlle list",titleData)
-      this.setState({isTitlecheckedindexStatus:!this.state.isTitlecheckedindexStatus})
-      this.props.callbackTitleList(titleData)
+    this.props.callbackTitleList(titleData,item.valueId)
+    // let titleData= item &&!this.state.isTitlecheckedindexStatus ?item:null
+    // console.log("titlle list",titleData)
+    // this.props.callbackTitleList(titleData)
 
   }
 
 
 
   render() {
-    console.log("dummy data", this.props.Content,this.props.ContentIndex)
-    let contentIndex=this.props.ContentIndex
-    let contentItem=this.props.Content
+
+    console.log("dummy data", this.props.Content, this.props.ContentIndex)
+    let contentIndex = this.props.ContentIndex
+    let contentItem = this.props.Content
     return (
-        <View>
+      <View>
         {/* {contentItem.valueName.split(' ').map((item, i) =>  */}
-      <TouchableOpacity onPress={()=>{this.Titlestatus(contentIndex,contentItem)}}>
-          <View style={{ height: 76, width: 83, backgroundColor: this.state.isTitlecheckedindexStatus ? "#E9F8FB" : "white", borderRadius: 20, justifyContent: "center", alignItems: "center", margin: 5,borderWidth:1,borderColor:"#003A51"}}>
-          {/* <Icon size={40} color="black" name="human-male-boy" /> */}
-          <Image resizeMethod='resize' style={{ height: 55, width: 55 }} source={{ uri: contentItem.valueImageUrl }} />
+        <TouchableOpacity onPress={() => { this.Titlestatus(contentIndex, contentItem) }}>
+          <View style={{ height: 76, width: 83, backgroundColor: this.state.isTitlecheckedindexStatus ? "#E9F8FB" : "white", borderRadius: 20, justifyContent: "center", alignItems: "center", margin: 5, borderWidth: 1, borderColor: "#003A51" }}>
+            {/* <Icon size={40} color="black" name="human-male-boy" /> */}
+            <Image resizeMethod='resize' style={{ height: 55, width: 55 }} source={{ uri: contentItem.valueImageUrl }} />
           </View>
           <View>
-          {contentItem.valueName.split(' ').map((item, i) => <Text style={{ textAlign: 'center', fontSize: 13,color: "#848484" }}>{item}</Text>)}
+            {contentItem.valueName.split(' ').map((item, i) => <Text style={{ textAlign: 'center', fontSize: 13, color: "#848484" }}>{item}</Text>)}
           </View>
-        </TouchableOpacity> 
-         {/* )}  */}
+        </TouchableOpacity>
+        {/* )}  */}
 
       </View>
 

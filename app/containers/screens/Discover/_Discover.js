@@ -9,7 +9,7 @@ import {
   AsyncStorage,
   StatusBar,
   ScrollView,
-  FlatList, ActivityIndicator,Image
+  FlatList, ActivityIndicator, Image
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DrawerActions } from 'react-navigation-drawer';
@@ -43,7 +43,8 @@ class Discover extends Component {
       filterData: [],
       priceValue: 50,
       colorFilterData: null,
-      isloadingFilter: false
+      isloadingFilter: false,
+      titleData: []
     };
   }
 
@@ -58,10 +59,14 @@ class Discover extends Component {
 
   _keyExtractor = (item, index) => item.valueId;
 
+
+
+
   _renderDiscoverTitleList = ({ item, index }) => {
     console.log("item of discover", item, this.state.isTitlecheckedindex)
     return (
-      <TitleDiscover Content={item} ContentIndex={index} callbackTitleList={(item) => this.TitlefilterList(item)} />
+
+      <TitleDiscover Content={item} ContentIndex={index} callbackTitleList={(item,valueId) => this.TitlefilterList(item, valueId)} />
     )
   }
   renderTitle(item, index) {
@@ -84,7 +89,7 @@ class Discover extends Component {
   }
 
   _renderDiscoverGenderList = ({ item, index }) => {
-    console.log("item of discover", item, this.state.isTitlecheckedindex)
+
     return (
       <GenderDiscover Content={item} ContentIndex={index} callbackTitleList={(item) => this.GenderFilterList(item)} />
     )
@@ -133,11 +138,18 @@ class Discover extends Component {
     );
   }
 
-  TitlefilterList(item) {
-    let FilterData = [item]
-    this.setState({ filterData: FilterData })
-    console.log("itemmm in title fliter list===>", FilterData)
+  TitlefilterList(item, valueId) {
+    console.log("coming in discover page", item, valueId)
+    if (item) {
+      this.state.filterData.push(item)
+    }
+    else {
+      const filteredData = this.state.filterData.filter(item => item.valueId !== valueId);
+      this.setState({ filterData: filteredData });
+    }
 
+    this.setState({})
+ 
   }
 
   FeedingFilterList(item) {
@@ -183,11 +195,11 @@ class Discover extends Component {
   }
 
   render() {
-    console.log("discoverCategoryData", this.props.discoverCategoryReducer)
+    console.log("render fliter list===>", this.state.filterData)
     if (this.props.discoverCategoryReducer.discoverCategoryLoading) {
       return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <Image  source={require("../../../assets/images/gifloader.gif")}  />
+          <Image source={require("../../../assets/images/gifloader.gif")} />
         </View>
       )
     }
@@ -217,32 +229,32 @@ class Discover extends Component {
             }
 
 
-           { 
-             this.props.discoverCategoryReducer && this.props.discoverCategoryReducer.discoverCategoryData && this.props.discoverCategoryReducer.discoverCategoryData.attributeDetails.length > 0 ?
-           <View style={{ height: deviceHeight * 0.17, backgroundColor: "transparent", flexDirection: "row", paddingTop: '9%' }}>
-              <View style={{ flex: 0.5, justifyContent: 'center', alignItems: "center" }}>
-                <_Button
-                  text="Clear all"
-                  theme={this.state.isSelectFilter == "ClearProducts" ? "primary" : "secondary"}
-                  onPress={() => {
-                    this.clearProductFilter()
-                  }}
-                  halfButton={true}
-                />
-              </View>
-              <View style={{ flex: 0.5, justifyContent: 'center', alignItems: "center" }}>
-                <_Button
-                  text="Find Products"
-                  theme={this.state.isSelectFilter == "FindProducts" ? "primary" : "secondary"}
-                  onPress={() => {
-                    this.findProductsFilter()
-                  }}
-                  halfButton={true}
-                />
-              </View>
-            </View>
-            :
-            null}
+            {
+              this.props.discoverCategoryReducer && this.props.discoverCategoryReducer.discoverCategoryData && this.props.discoverCategoryReducer.discoverCategoryData.attributeDetails.length > 0 ?
+                <View style={{ height: deviceHeight * 0.17, backgroundColor: "transparent", flexDirection: "row", paddingTop: '9%' }}>
+                  <View style={{ flex: 0.5, justifyContent: 'center', alignItems: "center" }}>
+                    <_Button
+                      text="Clear all"
+                      theme={this.state.isSelectFilter == "ClearProducts" ? "primary" : "secondary"}
+                      onPress={() => {
+                        this.clearProductFilter()
+                      }}
+                      halfButton={true}
+                    />
+                  </View>
+                  <View style={{ flex: 0.5, justifyContent: 'center', alignItems: "center" }}>
+                    <_Button
+                      text="Find Products"
+                      theme={this.state.isSelectFilter == "FindProducts" ? "primary" : "secondary"}
+                      onPress={() => {
+                        this.findProductsFilter()
+                      }}
+                      halfButton={true}
+                    />
+                  </View>
+                </View>
+                :
+                null}
 
             {/* {this.renderGender(DummyJSON.DiscoverData.Gender)}
              {this.renderFeeding(DummyJSON.DiscoverData.Feeding)} */}
