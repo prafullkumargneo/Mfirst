@@ -20,7 +20,8 @@ const ApiConstants = {
     ORDERPLACED:'api/shop/payment/process',
     ORDERLIST:'api/my/orders',
     ORDERDETAILS:'api/my/order/details',
-    GETSEARCHLIST:'get_search_category_list'
+    GETSEARCHLIST:'get_search_category_list',
+    GETFILTEROPTION:'api/get_color_price_range'
   };
   
   export default ApiConstants;
