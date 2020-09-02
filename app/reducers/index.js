@@ -21,6 +21,7 @@ import orderListingReducer from './OrderReducers/orderListingReducer';
 import orderDetailsReducer from './OrderReducers/orderDetailsReducer';
 import getSearchListReducer from './SearchReducers/getSearchListingReducer';
 import getFilterOptionReducer from './SearchReducers/getFilterOptionsReducer';
+import filterReducer from './SearchReducers/filterReducer';
 
 
 
@@ -46,7 +47,8 @@ const rootReducer = combineReducers({
     orderListingReducer,
     orderDetailsReducer,
     getSearchListReducer,
-    getFilterOptionReducer
+    getFilterOptionReducer,
+    filterReducer
 })
 
 export default rootReducer

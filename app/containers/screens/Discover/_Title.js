@@ -42,7 +42,7 @@ export default class TitleDiscover extends Component {
  
     this.setState({ isTitlecheckedindexStatus: !this.state.isTitlecheckedindexStatus})
     console.log("this.state.tite",item)
-    let titleData= item &&!this.state.isTitlecheckedindexStatus ?item:null
+    let titleData= item &&!this.state.isTitlecheckedindexStatus ?item.valueId:null
     this.props.callbackTitleList(titleData,item.valueId)
     // let titleData= item &&!this.state.isTitlecheckedindexStatus ?item:null
     // console.log("titlle list",titleData)

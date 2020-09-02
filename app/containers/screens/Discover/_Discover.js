@@ -32,6 +32,7 @@ import Modal from 'react-native-modal';
 import Slider from 'react-native-slider';
 import { RNToasty } from 'react-native-toasty';
 import discoverCategory from '../../../actions/DiscoverActions/discoverCategoryActions';
+import filterData from '../../../actions/SearchActions/filterActions';
 
 class Discover extends Component {
   constructor(props) {
@@ -46,7 +47,19 @@ class Discover extends Component {
       isloadingFilter: false,
       titleData: []
     };
+    this.reRenderSomething = this.props.navigation.addListener('willFocus', () => {
+      //Put your code here you want to rerender, in my case i want to rerender the data 
+      //im fetching from firebase and display the changes
+
+      this.someAction();
+
+    });
   }
+  someAction() {
+  this.setState({filterData:[]})
+    this.props.discoverCategory()
+  }
+
 
   componentDidMount() {
     this.props.discoverCategory()
@@ -66,7 +79,7 @@ class Discover extends Component {
     console.log("item of discover", item, this.state.isTitlecheckedindex)
     return (
 
-      <TitleDiscover Content={item} ContentIndex={index} callbackTitleList={(item,valueId) => this.TitlefilterList(item, valueId)} />
+      <TitleDiscover Content={item} ContentIndex={index} callbackTitleList={(item, valueId) => this.TitlefilterList(item, valueId)} />
     )
   }
   renderTitle(item, index) {
@@ -88,55 +101,55 @@ class Discover extends Component {
     );
   }
 
-  _renderDiscoverGenderList = ({ item, index }) => {
+  // _renderDiscoverGenderList = ({ item, index }) => {
 
-    return (
-      <GenderDiscover Content={item} ContentIndex={index} callbackTitleList={(item) => this.GenderFilterList(item)} />
-    )
-  }
-
-
-  renderGender(DummyJSON) {
-
-    return (
-      <View style={{ backgroundColor: "white", paddingHorizontal: 25, justifyContent: "center", paddingVertical: 15 }} >
-        <View style={{ paddingVertical: 10 }}>
-          <Text style={{ color: "#848484", fontSize: 15, fontWeight: '700' }}>{DummyJSON.headername}</Text>
-        </View>
-        <FlatList
-          horizontal
-          data={DummyJSON.GenderDescription}
-          keyExtractor={this._keyExtractor}
-          renderItem={this._renderDiscoverGenderList}
-        />
-      </View>
-    );
-  }
+  //   return (
+  //     <GenderDiscover Content={item} ContentIndex={index} callbackTitleList={(item) => this.GenderFilterList(item)} />
+  //   )
+  // }
 
 
-  _renderDiscoverFeedingList = ({ item, index }) => {
-    console.log("item of discover", item, this.state.isTitlecheckedindex)
-    return (
-      <FeedingDiscover Content={item} ContentIndex={index} callbackTitleList={this.FeedingFilterList} />
-    )
-  }
+  // renderGender(DummyJSON) {
 
-  renderFeeding(DummyJSON) {
+  //   return (
+  //     <View style={{ backgroundColor: "white", paddingHorizontal: 25, justifyContent: "center", paddingVertical: 15 }} >
+  //       <View style={{ paddingVertical: 10 }}>
+  //         <Text style={{ color: "#848484", fontSize: 15, fontWeight: '700' }}>{DummyJSON.headername}</Text>
+  //       </View>
+  //       <FlatList
+  //         horizontal
+  //         data={DummyJSON.GenderDescription}
+  //         keyExtractor={this._keyExtractor}
+  //         renderItem={this._renderDiscoverGenderList}
+  //       />
+  //     </View>
+  //   );
+  // }
 
-    return (
-      <View style={{ backgroundColor: "white", paddingHorizontal: 25, justifyContent: "center", paddingVertical: 15 }} >
-        <View style={{ paddingVertical: 10 }}>
-          <Text style={{ color: "#848484", fontSize: 15, fontWeight: '700' }}>{DummyJSON.headername}</Text>
-        </View>
-        <FlatList
-          horizontal
-          data={DummyJSON.feedingDescription}
-          keyExtractor={this._keyExtractor}
-          renderItem={this._renderDiscoverFeedingList}
-        />
-      </View>
-    );
-  }
+
+  // _renderDiscoverFeedingList = ({ item, index }) => {
+  //   console.log("item of discover", item, this.state.isTitlecheckedindex)
+  //   return (
+  //     <FeedingDiscover Content={item} ContentIndex={index} callbackTitleList={this.FeedingFilterList} />
+  //   )
+  // }
+
+  // renderFeeding(DummyJSON) {
+
+  //   return (
+  //     <View style={{ backgroundColor: "white", paddingHorizontal: 25, justifyContent: "center", paddingVertical: 15 }} >
+  //       <View style={{ paddingVertical: 10 }}>
+  //         <Text style={{ color: "#848484", fontSize: 15, fontWeight: '700' }}>{DummyJSON.headername}</Text>
+  //       </View>
+  //       <FlatList
+  //         horizontal
+  //         data={DummyJSON.feedingDescription}
+  //         keyExtractor={this._keyExtractor}
+  //         renderItem={this._renderDiscoverFeedingList}
+  //       />
+  //     </View>
+  //   );
+  // }
 
   TitlefilterList(item, valueId) {
     console.log("coming in discover page", item, valueId)
@@ -144,46 +157,53 @@ class Discover extends Component {
       this.state.filterData.push(item)
     }
     else {
-      const filteredData = this.state.filterData.filter(item => item.valueId !== valueId);
+      const filteredData = this.state.filterData.filter(item => item !== valueId);
       this.setState({ filterData: filteredData });
     }
 
-    this.setState({})
- 
-  }
-
-  FeedingFilterList(item) {
-    let FilterData = [item]
-    console.log("itemmm in feeding fliter list===>", FilterData)
+     this.setState({})
 
   }
 
-  GenderFilterList(item) {
-    let FilterData = [item]
-    this.setState({ filterData: FilterData })
-    console.log("itemmm in gender fliter list===>", FilterData)
+  // FeedingFilterList(item) {
+  //   let FilterData = [item]
+  //   console.log("itemmm in feeding fliter list===>", FilterData)
 
-  }
+  // }
+
+  // GenderFilterList(item) {
+  //   let FilterData = [item]
+  //   this.setState({ filterData: FilterData })
+  //   console.log("itemmm in gender fliter list===>", FilterData)
+
+  // }
 
   findProductsFilter() {
-    console.log("whole filter data", this.state.priceValue, this.state.colorFilterData)
-    this.setState({ isSelectFilter: "FindProducts" })
-    NavService.navigate('home', 'DiscoverCategories');
-    // if (this.state.priceValue && this.state.colorFilterData) {
-    //   this.setState({ isloadingFilter: true })
-    //   setTimeout(() => {
-    //     NavService.navigate('home', 'DiscoverCategories');
-    //     this.setState({ isloadingFilter: false })
-    //   }, 300
 
-    //   )
-    // }
-    // else {
-    //   RNToasty.Error({
-    //     title: "Please select color"
-    //   })
-    // }
+    console.log("whole filter data", this.state.priceValue, this.state.colorFilterData)
+   
+  
+    if (this.state.filterData.length>0) {
+      console.log("render fliter list===>", this.state.filterData)
+      // this.setState({ isloadingFilter: true })
+      // setTimeout(() => {
+      //   NavService.navigate('home', 'DiscoverCategories');
+      //   this.setState({ isloadingFilter: false })
+      // }, 300
+
+      // )
+      this.props.filterData({selectedAttribute:this.state.filterData})
+      NavService.navigate('home', 'DiscoverCategories');
+  
+    }
+    else {
+      RNToasty.Error({
+        title: "Please select at least one options."
+      })
+    }
   }
+
+  
 
   clearProductFilter() {
     this.setState({ isSelectFilter: "ClearProducts", filterData: [] })
@@ -195,7 +215,7 @@ class Discover extends Component {
   }
 
   render() {
-    console.log("render fliter list===>", this.state.filterData)
+    console.log("filter reducer", this.props.filterReducer)
     if (this.props.discoverCategoryReducer.discoverCategoryLoading) {
       return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -235,7 +255,7 @@ class Discover extends Component {
                   <View style={{ flex: 0.5, justifyContent: 'center', alignItems: "center" }}>
                     <_Button
                       text="Clear all"
-                      theme={this.state.isSelectFilter == "ClearProducts" ? "primary" : "secondary"}
+                      theme={"secondary"}
                       onPress={() => {
                         this.clearProductFilter()
                       }}
@@ -244,8 +264,9 @@ class Discover extends Component {
                   </View>
                   <View style={{ flex: 0.5, justifyContent: 'center', alignItems: "center" }}>
                     <_Button
-                      text="Find Products"
-                      theme={this.state.isSelectFilter == "FindProducts" ? "primary" : "secondary"}
+                    disabled={this.props.filterReducer.filterLoading}
+                      text={this.props.filterReducer.filterLoading?"Please wait...":"Find Products"}
+                      theme={ "primary"}
                       onPress={() => {
                         this.findProductsFilter()
                       }}
@@ -343,13 +364,14 @@ class Discover extends Component {
 
 function mapStateToProps(state) {
   return {
-    discoverCategoryReducer: state.discoverCategoryReducer
+    discoverCategoryReducer: state.discoverCategoryReducer,
+    filterReducer:state.filterReducer
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    ...bindActionCreators({ discoverCategory }, dispatch)
+    ...bindActionCreators({ discoverCategory, filterData }, dispatch)
   }
 }
 

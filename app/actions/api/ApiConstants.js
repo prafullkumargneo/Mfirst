@@ -21,7 +21,8 @@ const ApiConstants = {
     ORDERLIST:'api/my/orders',
     ORDERDETAILS:'api/my/order/details',
     GETSEARCHLIST:'get_search_category_list',
-    GETFILTEROPTION:'api/get_color_price_range'
+    GETFILTEROPTION:'api/get_color_price_range',
+    FILTER:'mfl/discover/filter'
   };
   
   export default ApiConstants;

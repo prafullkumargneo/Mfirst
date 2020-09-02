@@ -43,7 +43,8 @@ class SearchDetails extends Component {
             isSameDayDeleveryFlag: false,
             subCategorySelectData: null,
             subCategoryProductFlag: false,
-            isFilterVisible: false
+            isFilterVisible: false,
+            priceValue:1
 
         };
     }
@@ -211,13 +212,13 @@ class SearchDetails extends Component {
                     </View>
                 </View>
 
-                <View style={{ flex: 0.04, flexDirection: "row", paddingHorizontal: deviceWidth * 0.05, paddingVertical: deviceHeight * 0.01 }}>
+                <View style={{ flex: 0.04, flexDirection: "row", paddingHorizontal: deviceWidth * 0.05, paddingVertical: deviceHeight * 0.01,backgroundColor:'white' }}>
 
-                    <View style={{ flex: 0.3, backgroundColor: 'purple' }}>
+                    <View style={{ flex: 0.3 }}>
                     </View>
-                    <View style={{ flex: 0.45, backgroundColor: 'yellow' }}>
+                    <View style={{ flex: 0.45 }}>
                     </View>
-                    <TouchableOpacity onPress={() => { this.setState({ isFilterVisible: true }) }} style={{ flex: 0.25, backgroundColor: 'pink', borderWidth: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => { this.setState({ isFilterVisible: true }) }} style={{ flex: 0.25, borderWidth: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', borderColor:'#e5e8e7' }}>
                         <Text style={{ fontSize: 13, color: "#737373" }}>Filters</Text>
                         <FilterIcon name='filter-list' size={23} color="#737373" />
                     </TouchableOpacity>
@@ -254,47 +255,7 @@ class SearchDetails extends Component {
 
                     </ScrollView>
                 </View>
-                {/* {
-            this.state.isFilterVisible ?
-              <View style={{ height: deviceHeight * 0.26, width: deviceWidth, position: "absolute", top: deviceHeight*0.7, backgroundColor: "white", paddingHorizontal: 20 }}>
-                <View style={{ backgroundColor: "white", paddingVertical: 13 }}>
-                  <View style={{ justifyContent: "center", paddingVertical: 4 }}>
-                    <Text style={{ color: "#848484", fontSize: 14, fontWeight: '700' }}>PRICE</Text>
-                  </View>
-                  <View style={{paddingHorizontal:'10%'}}>
-                  <Slider
-                    value={this.state.priceValue}
-                    onValueChange={(priceValue) => this.setState({ priceValue })}
-                    // trackStyle={{ color: "#003A51" }}
-                    minimumValue={30}
-                    maximumValue={500}
-                    step={20}
-                    thumbTintColor={"#003A51"}
-                             />
-                             </View>
-                  <Text style={{ color: "#848484", fontSize: 14 }}>{this.state.priceValue} KWD</Text>
-                </View>
-
-                <View style={{ backgroundColor: "white" }}>
-
-                  <View style={{ justifyContent: "center", paddingVertical: 4 }}>
-                    <Text style={{ color: "#848484", fontSize: 14, fontWeight: '700' }}>COLORS</Text>
-                  </View>
-                  <ScrollView horizontal={true} contentContainerStyle={{ flexDirection: "row" }}>
-                    {
-                      DummyJSON.DiscoverData.colors.map((item, index) => {
-                        return (
-                          <View style={{ backgroundColor: "white", margin: 3, width: deviceWidth * 0.1, height: deviceHeight * 0.05, borderRadius: 50, borderWidth: this.state.colorFilterData === index ? 2 : 1, justifyContent: "center", alignItems: "center", borderColor: this.state.colorFilterData === index ? 'black' : "#848484" }}>
-                            <TouchableOpacity onPress={() => { this.filterColorData(item, index) }} style={{ backgroundColor: item, width: deviceWidth * 0.08, height: deviceHeight * 0.04, borderRadius: 50 }} />
-                          </View>
-                        )
-                      })
-                    }
-                  </ScrollView>
-                </View>
-              </View>
-              : null
-          } */}
+            
                 <Modal
                     backdropColor="#B4B3DB"
                     backdropOpacity={0.8}
@@ -308,23 +269,23 @@ class SearchDetails extends Component {
                     style={styles.filterModal}
                 >
                     <View style={{ flex: 1 }}>
-                        <View style={{ backgroundColor: "pink", paddingHorizontal: deviceWidth * 0.03, alignItems: "flex-end", justifyContent: "center" }}>
-                            <Icon onPress={() => this.setState({ isFilterVisible: false })} name={'close'} size={28} />
+                        <View style={{ backgroundColor: "transparent", paddingHorizontal: deviceWidth * 0.03, alignItems: "flex-end", justifyContent: "center",paddingVertical:deviceHeight*0.01 }}>
+                            <Icon onPress={() => this.setState({ isFilterVisible: false })} name={'close'} size={25} />
                         </View>
-                        <View style={{ backgroundColor: "yellow", paddingVertical: 13 }}>
+                        <View style={{ backgroundColor: "transparent", paddingVertical: 13,paddingHorizontal: deviceWidth * 0.04  }}>
 
                             <View style={{ justifyContent: "center" }}>
                                 <Text style={{ color: "#848484", fontSize: 14, fontWeight: '700' }}>PRICE</Text>
                             </View>
                             <View>
-                                <View style={{ paddingHorizontal: deviceWidth * 0.06 }}>
+                                <View style={{}}>
                                     <Slider
                                         value={this.state.priceValue}
                                         onValueChange={(priceValue) => this.setState({ priceValue })}
                                         // trackStyle={{ color: "#003A51" }}
                                         minimumValue={filterData && filterData.PriceRange.minPrice}
                                         maximumValue={filterData && filterData.PriceRange.maxPrice}
-                                        step={20}
+                                        step={1}
                                         thumbTintColor={"#003A51"}
                                     />
                                 </View>
@@ -332,9 +293,9 @@ class SearchDetails extends Component {
                             </View>
                         </View>
 
-                        <View style={{ backgroundColor: "pink" }}>
+                        <View style={{ backgroundColor: "transparent" }}>
 
-                            <View style={{ justifyContent: "center" }}>
+                            <View style={{ justifyContent: "center",paddingVertical:deviceHeight*0.01,paddingHorizontal: deviceWidth * 0.04  }}>
                                 <Text style={{ color: "#848484", fontSize: 14, fontWeight: '700' }}>COLORS</Text>
                             </View>
                             <ScrollView horizontal={true} contentContainerStyle={{ flexDirection: "row" }}>
@@ -342,7 +303,7 @@ class SearchDetails extends Component {
                                     filterData && filterData.ValueDetails.map((item, index) => {
                                         return (
                                             <View style={{ backgroundColor: "white", margin: 3, width: deviceWidth * 0.1, height: deviceHeight * 0.05, borderRadius: 50, borderWidth: this.state.colorFilterData === index ? 2 : 1, justifyContent: "center", alignItems: "center", borderColor: this.state.colorFilterData === index ? 'black' : "#848484" }}>
-                                                <TouchableOpacity onPress={() => { this.filterColorData(item, index) }} style={{ backgroundColor: "purple", width: deviceWidth * 0.08, height: deviceHeight * 0.04, borderRadius: 50 }} />
+                                                <TouchableOpacity onPress={() => { this.filterColorData(item, index) }} style={{ backgroundColor: "pink", width: deviceWidth * 0.08, height: deviceHeight * 0.04, borderRadius: 50 }} />
                                             </View>
                                         )
                                     })
@@ -387,7 +348,7 @@ const styles = StyleSheet.create({
     },
     filterModal: {
 
-        backgroundColor: "yellow",
-        top: deviceHeight * 0.7
+        backgroundColor: "white",
+        top: deviceHeight * 0.5
     }
 });
